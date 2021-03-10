@@ -1,0 +1,23 @@
+.popover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-style: solid;
+  text-decoration-color: var(--text-color);
+}
+
+.popover:hover,
+.popover.active {
+  background-color: var(--primary-accent);
+}
+
+.popover:focus {
+  outline: none;
+}
+
+.popoverContainer {
+  display: block;
+  padding: 0.5em;
+  margin: 0.5em;
+  border: 1px solid var(--primary-accent);
+}

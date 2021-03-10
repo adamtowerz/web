@@ -1,0 +1,18 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.homeLink {
+  width: auto;
+  display: inline;
+  border: 1px solid var(--text-color);
+  padding: 8px;
+  transition: border-radius 50ms ease-in-out;
+
+  &:hover {
+    border-radius: 8px;
+  }
+}

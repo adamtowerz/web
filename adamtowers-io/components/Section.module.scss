@@ -1,0 +1,14 @@
+.section {
+  &.border {
+    border: 1px solid var(--text-color);
+  }
+
+  &.padding,
+  &.border {
+    padding: 8px;
+  }
+
+  &:not(:first-child) {
+    margin-top: 16px;
+  }
+}

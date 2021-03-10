@@ -1,0 +1,26 @@
+.singleCol {
+  max-width: 800px;
+  width: calc(100vw - 2rem);
+
+  padding-top: 4rem;
+  margin: 0 1rem;
+
+  main {
+    margin: 1rem 0;
+    min-height: 45vh;
+  }
+
+  footer {
+    padding-bottom: 4rem;
+    color: var(--text-color);
+  }
+}
+
+.titlebox {
+  margin-bottom: 1rem;
+}
+
+.titlebox > h1 {
+  margin-bottom: 0;
+  white-space: nowrap;
+}

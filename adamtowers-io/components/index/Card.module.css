@@ -1,0 +1,119 @@
+/*************************
+  *****   Card List    ***
+  ************************/
+.list {
+  width: 100%;
+}
+
+/*************************
+  *****   Cards CSS    ***
+  ************************/
+
+.card {
+  display: block;
+  background-color: transparent;
+  text-align: left;
+  border: 1px solid #777;
+  margin: 16px 0;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: var(--text-color);
+}
+
+.title {
+  color: var(--text-color);
+  font-size: var(--medium-text);
+}
+
+.titleRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.image {
+  margin: 4px;
+  width: 64px;
+  height: 64px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  background-color: white;
+  object-fit: cover;
+  height: 64px !important;
+  width: 64px !important;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 64px;
+  flex-shrink: 0;
+}
+
+.titlebox {
+  margin-left: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title__link {
+  text-decoration: none;
+}
+
+.title__link:hover > h3 {
+  color: var(--primary);
+}
+
+.titlebox * {
+  margin: 0;
+}
+
+.subtitle {
+  font-weight: bold;
+}
+
+.tagList {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.tag {
+  padding: 4px 12px;
+  margin: 2px 4px;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  border-radius: 16px;
+  font-size: var(--small-text);
+}
+
+.longDesc {
+  margin-top: 16px;
+}
+
+.longDesc > ul {
+  margin-left: 16px;
+}
+
+.link {
+  padding: 8px 24px;
+  border: 1px solid var(--text-color);
+  font-weight: bold;
+  background-color: transparent;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-radius 50ms ease-in-out;
+}
+
+.link:hover {
+  border-radius: 8px;
+}
