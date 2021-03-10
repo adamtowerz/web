@@ -1,0 +1,92 @@
+.main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cli-bar-container {
+  height: 50vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cli-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: text;
+  margin: 32px;
+  min-width: 50%;
+  max-width: 800px;
+  display: flex;
+  border: 1px solid grey;
+  background-color: white;
+  border-radius: 4px;
+  padding: 4px 8px;
+
+  h1 {
+    padding: 0 2px;
+    color: grey;
+  }
+
+  input {
+    width: auto;
+    outline: none;
+    border: none;
+    font-family: monospace;
+  }
+
+  h1,
+  input {
+    font-size: medium;
+    font-weight: normal;
+  }
+
+  .tab-complete-text {
+    color: grey;
+  }
+}
+
+.cli-bar-options {
+  position: absolute;
+  cursor: pointer;
+  top: calc(100% - 4px);
+  left: -1px; // to align perfectly with container which has a border width of 1px
+  width: calc(100% + 2px);
+  border: solid 1px grey;
+  z-index: 0;
+  border-radius: 0 0 4px 4px;
+  background-color: inherit;
+
+  .cli-bar-option {
+    padding: 4px 8px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &.active {
+      background-color: aquamarine;
+    }
+
+    &:last-child {
+      border-radius: 0 0 4px 4px;
+    }
+
+    .option-alias {
+      display: inline-block;
+      min-width: 150px;
+      padding-right: 8px;
+    }
+
+    .option-label {
+      color: grey;
+      overflow: hidden;
+    }
+
+    a {
+      display: block;
+    }
+  }
+}
