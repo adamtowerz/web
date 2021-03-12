@@ -1,9 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext, createContext } from "react";
 import classNames from "classnames";
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
+import { Modal } from "../components/Modal";
 
-const externalData = {
+type LinkData = {
+  label?: string;
+  priority?: number;
+  aliases: string[];
+};
+const externalData: Record<string, LinkData> = {
   "mailto:adam@towers.email": {
     label: "adam@towers.email",
     priority: 98,
@@ -36,19 +42,19 @@ const externalData = {
   },
 };
 
-const pivotedExternalDate = Object.entries(externalData).reduce(
-  (agg, [key, option]) => {
-    option.aliases.forEach((alias) => {
-      agg[alias] = {
-        link: key,
-        label: option.label,
-        priority: option.priority || 0,
-      };
-    });
-    return agg;
-  },
-  {}
-);
+const pivotedExternalDate: Record<
+  string,
+  { link: string; label?: string; priority: number }
+> = Object.entries(externalData).reduce((agg, [key, option]) => {
+  option.aliases.forEach((alias) => {
+    agg[alias] = {
+      link: key,
+      label: option.label,
+      priority: option.priority || 0,
+    };
+  });
+  return agg;
+}, {});
 
 function cleanLink(link) {
   return link.replace("https://", "").replace("http://", "");
@@ -67,7 +73,22 @@ function getTabCompleteText(query, options) {
   }
 }
 
-function CliBarOption({ alias, link, label, active, onFocus }) {
+const AuthContext = createContext(false);
+
+interface CliBarOptionProps {
+  alias: string;
+  link: string;
+  label?: string;
+  active: boolean;
+  onFocus: () => void;
+}
+function CliBarOption({
+  alias,
+  link,
+  label,
+  active,
+  onFocus,
+}: CliBarOptionProps) {
   return (
     <div
       onMouseEnter={onFocus}
@@ -106,7 +127,7 @@ function CliBarOptions({ options, focusIndex = 0, setFocusIndex }) {
   );
 }
 
-export default function Home() {
+function CliBar() {
   const [query, setQuery] = useState("");
   const [focusIndex, setFocusIndex] = useState(0);
   const [options, setOptions] = useState([]);
@@ -158,7 +179,59 @@ export default function Home() {
   useEffect(() => {
     focusInput();
   }, []);
+  return (
+    <div className={styles["cli-bar"]} onClick={focusInput}>
+      <h1>ajt.to/</h1>
+      <input
+        autoFocus
+        type="text"
+        ref={inputEl}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+        size={query.length}
+      ></input>
+      {tabCompleteText && (
+        <span className={styles["tab-complete-text"]}>{tabCompleteText}</span>
+      )}
+      <CliBarOptions
+        options={options}
+        focusIndex={focusIndex}
+        setFocusIndex={setFocusIndex}
+      />
+    </div>
+  );
+}
 
+function LoginButton() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [password, setPassword] = useState("");
+
+  return (
+    <>
+      <button onClick={() => setModalOpen(true)}>I'm Adam! (login)</button>
+      <Modal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={<h1>Login!</h1>}
+      >
+        <>
+          <p>If you're really me you'll know the super secret passcode!!</p>
+          <input
+            autoFocus
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder=":D"
+          />
+          <button type="button">Login</button>
+        </>
+      </Modal>
+    </>
+  );
+}
+
+export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
@@ -168,30 +241,15 @@ export default function Home() {
 
       <main className={styles.main}>
         <div className={styles["cli-bar-container"]}>
-          <div className={styles["cli-bar"]} onClick={focusInput}>
-            <h1>ajt.to/</h1>
-            <input
-              autoFocus
-              type="text"
-              ref={inputEl}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={handleKeyDown}
-              size={query.length}
-            ></input>
-            {tabCompleteText && (
-              <span className={styles["tab-complete-text"]}>
-                {tabCompleteText}
-              </span>
-            )}
-            <CliBarOptions
-              options={options}
-              focusIndex={focusIndex}
-              setFocusIndex={setFocusIndex}
-            />
-          </div>
+          <CliBar />
         </div>
       </main>
+      <footer className={styles.footer}>
+        <span>
+          Made by <a href="https://twitter.com/adamtowerz">Adam</a>
+        </span>{" "}
+        <LoginButton />
+      </footer>
     </div>
   );
 }

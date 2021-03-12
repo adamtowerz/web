@@ -1,0 +1,38 @@
+$border: 1px solid black;
+$color-accent: aquamarine;
+$font-family: monospace;
+
+input,
+button {
+  font-family: $font-family;
+  padding: 4px 8px;
+  outline-color: $color-accent;
+
+  &:not(:last-child) {
+    margin-right: 8px;
+  }
+}
+
+input {
+  font-size: large;
+  background-color: white;
+  border: $border;
+
+  &:focus {
+  }
+}
+
+button {
+  font-size: large;
+  background-color: $color-accent;
+  border: $border;
+  cursor: pointer;
+
+  &:hover {
+    filter: contrast(1.5);
+  }
+
+  &:focus {
+    filter: contrast(0.8) !important;
+  }
+}
