@@ -2,6 +2,21 @@ $border: 1px solid black;
 $color-accent: aquamarine;
 $font-family: monospace;
 
+.red {
+  color: red;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 0;
+}
+
 input,
 button {
   font-family: $font-family;
@@ -11,15 +26,16 @@ button {
   &:not(:last-child) {
     margin-right: 8px;
   }
+
+  &:focus {
+    outline: 2px solid aquamarine;
+  }
 }
 
 input {
   font-size: large;
   background-color: white;
   border: $border;
-
-  &:focus {
-  }
 }
 
 button {
@@ -28,11 +44,25 @@ button {
   border: $border;
   cursor: pointer;
 
-  &:hover {
+  &.link {
+    font-size: medium;
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+  }
+
+  &:hover:not(.disabled),
+  &:hover:not(.loading) {
     filter: contrast(1.5);
   }
 
-  &:focus {
-    filter: contrast(0.8) !important;
+  &.disabled,
+  &.loading {
+    filter: contrast(0.7) !important;
+    cursor: default;
   }
+}
+
+hr {
+  border-top: 1px solid black;
 }

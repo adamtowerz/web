@@ -18,6 +18,10 @@ a {
   box-sizing: border-box;
 }
 
+.d-flex {
+  display: flex;
+}
+
 .p-1 {
   padding: 8px;
 }
@@ -25,4 +29,31 @@ a {
 .px-1 {
   padding-left: 8px;
   padding-right: 8px;
+}
+
+.pl-1 {
+  padding-left: 8px;
+}
+
+.pr-1 {
+  padding-right: 8px;
+}
+
+.py-1 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.row-space-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

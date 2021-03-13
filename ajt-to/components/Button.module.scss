@@ -1,0 +1,17 @@
+.btn {
+  position: relative;
+}
+
+.loadingContainer {
+  z-index: 2;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-color: inherit;
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

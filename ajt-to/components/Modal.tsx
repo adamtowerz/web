@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactNode } from "react";
 import { createPortal } from "react-dom";
 import styles from "./Modal.module.scss";
 
@@ -6,7 +6,7 @@ export interface ModalBaseProps {
   open: boolean;
   onClose: () => void;
   canClose?: boolean;
-  children: ReactElement;
+  children: ReactNode;
 }
 export function ModalBase({
   open,
@@ -27,8 +27,8 @@ export function ModalBase({
   return open ? createPortal(modal, document.body) : null;
 }
 export interface ModalProps extends ModalBaseProps {
-  title?: ReactElement;
-  footer?: ReactElement;
+  title?: ReactNode;
+  footer?: ReactNode;
 }
 export function Modal({
   title,

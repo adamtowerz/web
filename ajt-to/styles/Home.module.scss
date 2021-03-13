@@ -19,24 +19,32 @@
   align-items: center;
 }
 
-.cli-bar {
+.cli-bar-wrapper {
   position: relative;
   display: flex;
   align-items: center;
-  cursor: text;
   margin: 32px 16px;
   min-width: 50%;
   width: 800px;
   max-width: 95%;
+}
+
+.cli-bar {
+  z-index: 1;
+  width: 100%;
   display: flex;
+  align-items: center;
+  cursor: text;
+
   border: 1px solid grey;
   background-color: white;
   border-radius: 4px;
-  padding: 4px 8px;
+  padding: 8px;
 
   h1 {
     padding: 0 2px;
     color: grey;
+    margin: 0;
   }
 
   input {
@@ -44,6 +52,8 @@
     outline: none;
     border: none;
     font-family: monospace;
+    padding: 0;
+    margin: 0;
   }
 
   h1,
@@ -55,24 +65,38 @@
   .tab-complete-text {
     color: grey;
   }
+
+  .new-alias-btn {
+    margin-left: auto;
+    padding: 0;
+    display: block;
+    border-radius: 4px;
+    height: 1.5em;
+    width: 1.5em;
+    line-height: 1.5em;
+    font-size: medium;
+  }
 }
 
 .cli-bar-options {
   position: absolute;
   cursor: pointer;
   top: calc(100% - 4px);
-  left: -1px; // to align perfectly with container which has a border width of 1px
-  width: calc(100% + 2px);
+  width: 100%;
   border: solid 1px grey;
   z-index: 0;
   border-radius: 0 0 4px 4px;
-  background-color: inherit;
+  background-color: white;
 
   .cli-bar-option {
     padding: 4px 8px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+
+    &:first-child {
+      padding-top: 8px;
+    }
 
     &.active {
       background-color: aquamarine;
@@ -96,6 +120,10 @@
     a {
       display: block;
     }
+  }
+
+  .zero-state {
+    padding-top: 8px;
   }
 }
 

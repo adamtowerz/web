@@ -1,10 +1,9 @@
 module.exports.up = async function up(knex) {
   return knex.schema.createTable("aliases", function (t) {
-    t.increments("id").unsigned().primary();
-    t.text("link").unique();
+    t.text("alias").unique();
+    t.text("link");
     t.text("label").nullable();
     t.integer("priority").nullable();
-    t.specificType("aliases", "text ARRAY").defaultTo("{}");
     t.boolean("internal").defaultTo(true);
   });
 };
