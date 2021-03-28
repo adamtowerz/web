@@ -1,4 +1,11 @@
-import { useState, useEffect, useRef, useContext, createContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  createContext,
+  ReactNode,
+} from "react";
 import classNames from "classnames";
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
@@ -6,6 +13,7 @@ import { Modal } from "../components/Modal";
 import { Button } from "../components/Button";
 
 const AUTH_ENDPOINT = "/api/auth";
+const ALIAS_ENDPOINT = "/api/alias";
 const LOCAL_TOKEN_KEY = "LOCAL_TOKEN_KEY";
 
 let localLoginTokenCache = undefined;
@@ -26,63 +34,30 @@ function setLocalLogin(token: string) {
   localLoginTokenCache = token;
 }
 
-type LinkData = {
+type AliasData = {
   label?: string;
   priority?: number;
-  aliases: string[];
-};
-const externalData: Record<string, LinkData> = {
-  "mailto:adam@towers.email": {
-    label: "adam@towers.email",
-    priority: 98,
-    aliases: ["email", "email"],
-  },
-  "https://hireadam.today": {
-    aliases: ["resume"],
-  },
-  "https://twitter.com/adamtowerz": {
-    priority: 99,
-    aliases: ["twitter", "twitter"],
-  },
-  "https://adamtowers.io": {
-    priority: 100,
-    aliases: ["website"],
-  },
-  "https://linkedin.com/in/adam-towers": {
-    aliases: ["linkedin"],
-  },
-  "https://xkcd.com/927": {
-    aliases: ["927", "standards"],
-  },
-  "https://justblackhats.com": {
-    aliases: ["JustBlackHats"],
-    priority: 96,
-  },
-  "https://8760app.com": {
-    aliases: ["8760"],
-    priority: 97,
-  },
+  link: string;
+  alias: string;
 };
 
-const pivotedExternalDate: Record<
-  string,
-  { link: string; label?: string; priority: number }
-> = Object.entries(externalData).reduce((agg, [key, option]) => {
-  option.aliases.forEach((alias) => {
-    agg[alias] = {
-      link: key,
-      label: option.label,
-      priority: option.priority || 0,
-    };
-  });
-  return agg;
-}, {});
-
-function cleanLink(link) {
-  return link.replace("https://", "").replace("http://", "");
+// this is lodash.keyBy
+function processLinkData(links: AliasData[]): Record<string, AliasData> {
+  return links.reduce((agg, link) => {
+    agg[link.alias] = link;
+    return agg;
+  }, {});
 }
 
-function getTabCompleteText(query, options) {
+// TODO: refactor
+function cleanLink(link) {
+  return link
+    .replace("https://", "")
+    .replace("http://", "")
+    .replace("mailto:", "");
+}
+
+function getTabCompleteText(query: string, options: any) {
   if (query.length === 0 || options.length === 0) {
     return null;
   }
@@ -95,12 +70,64 @@ function getTabCompleteText(query, options) {
   }
 }
 
+// Context value is auth token is exists and valid, otherwise null
 const TokenContext = createContext(null);
-const AuthContext = createContext(false);
+
+enum AuthState {
+  LoggedOut,
+  LoggedIn,
+  Resolving,
+}
+const AuthContext = createContext<AuthState>(AuthState.Resolving);
+
+// Context value is [true, func] if `NewAliasModal` should be rendered, [false, func] otherwise.
+// Invoking func sets bool to false.
 const NewAliasModalContext = createContext<[boolean, (boolean) => void]>([
   false,
   () => {},
 ]);
+
+// Stores link data for use in rendering and a function that re-fetches aliases
+const AliasesContext = createContext<[AliasData[], () => void]>(null);
+
+// Fetches link data and populates the `AliasesContext`
+function AliasesContextProvider({ children }: { children: ReactNode }) {
+  const [linksData, setLinksData] = useState<AliasData[]>(null);
+  const token = useContext(TokenContext);
+  const authState = useContext(AuthContext);
+
+  const fetchLinkData = async () => {
+    if (authState === AuthState.Resolving) return;
+
+    const headers = token
+      ? {
+          Authorization: `Basic ${token}`,
+        }
+      : {};
+
+    const res = await fetch(ALIAS_ENDPOINT, {
+      method: "GET",
+      headers,
+    });
+
+    if (res.ok) {
+      const links = (await res.json()).aliases;
+      setLinksData(links);
+    } else {
+      console.error("Failed to fetch link data");
+    }
+  };
+
+  useEffect(() => {
+    fetchLinkData();
+  }, [authState]);
+
+  return (
+    <AliasesContext.Provider value={[linksData, fetchLinkData]}>
+      {children}
+    </AliasesContext.Provider>
+  );
+}
 
 interface CliBarOptionProps {
   alias: string;
@@ -144,6 +171,30 @@ function NewAliasModal({ open, onClose }: NewAliasModalProps) {
   const [label, setLabel] = useState("");
   const [internal, setInternal] = useState(true);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function addAlias() {
+    setIsLoading(true);
+    setError(null);
+    try {
+      await fetch(ALIAS_ENDPOINT, {
+        method: "POST",
+        body: JSON.stringify({
+          alias,
+          link,
+          label,
+          internal,
+        }),
+      });
+    } catch {
+      setError("An error occured");
+    } finally {
+      setIsLoading(false);
+      onClose();
+    }
+  }
+
   return (
     <Modal
       open={open}
@@ -151,7 +202,9 @@ function NewAliasModal({ open, onClose }: NewAliasModalProps) {
       title={<h1>New alias</h1>}
       footer={
         <div className="d-flex">
-          <Button className="ml-auto">Link it up</Button>
+          <Button onClick={addAlias} loading={isLoading} className="ml-auto">
+            Link it up
+          </Button>
         </div>
       }
     >
@@ -192,6 +245,7 @@ function NewAliasModal({ open, onClose }: NewAliasModalProps) {
           ></input>
         </span>
       </div>
+      <div>{error && <span>{error}</span>}</div>
     </Modal>
   );
 }
@@ -240,19 +294,26 @@ function CliBar() {
   const [options, setOptions] = useState([]);
 
   const inputEl = useRef(null);
-  const isAuthed = useContext(AuthContext);
+  const authState = useContext(AuthContext);
   const [_, setModalOpen] = useContext(NewAliasModalContext);
+  const [linksData] = useContext(AliasesContext);
 
   // generate the options when the query changes
   useEffect(() => {
-    const newOptions = Object.entries(pivotedExternalDate)
+    if (!linksData) return;
+
+    const linkMap = processLinkData(linksData);
+    const newOptions = Object.entries(linkMap)
       .filter(([key]) => key.toLowerCase().startsWith(query.toLowerCase()))
-      .sort(([, aValue], [, bValue]) => aValue.priority - bValue.priority)
+      .sort(
+        ([, { priority: aPrio = 1 }], [, { priority: bPrio = 1 }]) =>
+          aPrio - bPrio
+      )
       .reverse()
       .slice(0, 6);
 
     setOptions(newOptions);
-  }, [query]);
+  }, [query, linksData]);
 
   // reset the focus when the query changes
   useEffect(() => {
@@ -291,6 +352,7 @@ function CliBar() {
   useEffect(() => {
     focusInput();
   }, []);
+
   return (
     <div className={styles["cli-bar-wrapper"]}>
       <div className={styles["cli-bar"]} onClick={focusInput}>
@@ -307,7 +369,7 @@ function CliBar() {
         {tabCompleteText && (
           <span className={styles["tab-complete-text"]}>{tabCompleteText}</span>
         )}
-        {isAuthed && (
+        {authState === AuthState.LoggedIn && (
           <Button
             className={styles["new-alias-btn"]}
             onClick={() => setModalOpen(true)}
@@ -402,24 +464,28 @@ function LogoutButton({ onLogout }: LogoutButtonProps) {
 }
 
 export default function Home() {
-  const [login, setLogin] = useState<string | null>(null);
-  const isLoggedIn = !!login;
+  const [authState, setAuthState] = useState<AuthState>(AuthState.Resolving);
+  const [token, setToken] = useState<string | null>(null);
+  const isLoggedIn = authState === AuthState.LoggedIn;
 
   const [newAliasModalOpen, setNewAliasModalOpen] = useState(false);
 
   useEffect(() => {
-    const login = getLocalLogin();
-    setLogin(login);
+    const token = getLocalLogin();
+    setToken(token);
+    setAuthState(token !== null ? AuthState.LoggedIn : AuthState.LoggedOut);
   }, []);
 
   function onLogin(token) {
     setLocalLogin(token);
-    setLogin(token);
+    setToken(token);
+    setAuthState(AuthState.LoggedIn);
   }
 
   function onLogout() {
     setLocalLogin(null);
-    setLogin(null);
+    setToken(null);
+    setAuthState(AuthState.LoggedOut);
   }
 
   return (
@@ -429,17 +495,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <AuthContext.Provider value={isLoggedIn}>
-        <TokenContext.Provider value={login}>
-          <NewAliasModalContext.Provider
-            value={[newAliasModalOpen, setNewAliasModalOpen]}
-          >
-            <main className={styles.main}>
-              <div className={styles["cli-bar-container"]}>
-                <CliBar />
-              </div>
-            </main>
-          </NewAliasModalContext.Provider>
+      <AuthContext.Provider value={authState}>
+        <TokenContext.Provider value={token}>
+          <AliasesContextProvider>
+            <NewAliasModalContext.Provider
+              value={[newAliasModalOpen, setNewAliasModalOpen]}
+            >
+              <main className={styles.main}>
+                <div className={styles["cli-bar-container"]}>
+                  <CliBar />
+                </div>
+              </main>
+            </NewAliasModalContext.Provider>
+          </AliasesContextProvider>
         </TokenContext.Provider>
       </AuthContext.Provider>
 

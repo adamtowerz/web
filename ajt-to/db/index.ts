@@ -5,7 +5,7 @@ export type AliasRecord = {
     link: string,
     priority?: number,
     label?: string,
-    aliases: string[],
+    alias: string,
     internal: boolean,
 }
 
