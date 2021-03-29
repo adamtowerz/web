@@ -1,57 +1,79 @@
-import DB, { AliasRecord} from '../db';
+import DB, { AliasRecord } from "../db";
 
+const MAX_CACHE_STALENESS = 1000 * 60 * 5; // 5min in ms
+
+let internalCacheUpdateMs = 0;
 let internalCache: AliasRecord[] = null;
+
+let externalCacheUpdateMs = 0;
 let externalCache: AliasRecord[] = null;
 
-async function updateInternalCache() {
-    const aliases = await DB<AliasRecord>('aliases')
-        .select('link')
-        .select('label')
-        .select('priority')
-        .select('alias') as AliasRecord[];
+function currentMs() {
+  return new Date().getTime();
+}
+
+async function updateInternalCache(force = false) {
+  if (
+    !internalCache ||
+    force ||
+    currentMs() - internalCacheUpdateMs > MAX_CACHE_STALENESS
+  ) {
+    const aliases = (await DB<AliasRecord>("aliases")
+      .select("link")
+      .select("label")
+      .select("priority")
+      .select("alias")) as AliasRecord[];
     internalCache = aliases;
+  }
 }
 
-async function updateExternalCache() {
-    const aliases = await DB<AliasRecord>('aliases')
-        .select('link')
-        .select('label')
-        .select('priority')
-        .select('alias')
-        .whereRaw('internal is not true') as AliasRecord[];
+async function updateExternalCache(force = false) {
+  if (
+    !externalCache ||
+    force ||
+    currentMs() - externalCacheUpdateMs > MAX_CACHE_STALENESS
+  ) {
+    const aliases = (await DB<AliasRecord>("aliases")
+      .select("link")
+      .select("label")
+      .select("priority")
+      .select("alias")
+      .whereRaw("internal is not true")) as AliasRecord[];
     externalCache = aliases;
+  }
 }
 
-export async function addAlias(alias: string, link: string, {
-    label, internal = true
-}: {label?: string, internal?: boolean}) {
-    await DB<AliasRecord>('aliases').insert({
-        alias, link, label, internal
-    })
+export async function addAlias(
+  alias: string,
+  link: string,
+  { label, internal = true }: { label?: string; internal?: boolean }
+) {
+  await DB<AliasRecord>("aliases").insert({
+    alias,
+    link,
+    label,
+    internal,
+  });
 
-    await Promise.all([updateInternalCache(), updateExternalCache()]);
+  await Promise.all([updateInternalCache(true), updateExternalCache(true)]);
 }
 
 export async function getInternalAliases() {
-    if (!internalCache) {
-        await updateInternalCache();
-    }
+  await updateInternalCache();
 
-    return internalCache;
+  return internalCache;
 }
 
-export async function getLinkForAlias(alias: string): Promise<string | undefined> {
-    if (!externalCache) {
-        await updateExternalCache();
-    }
-    
-    return externalCache.find(record => record.alias === alias)?.link;
+export async function getLinkForAlias(
+  alias: string
+): Promise<string | undefined> {
+  await updateExternalCache();
+
+  return externalCache.find((record) => record.alias === alias)?.link;
 }
 
 export async function getExternalAliases() {
-    if (!externalCache) {
-        await updateExternalCache();
-    }
+  await updateExternalCache();
 
-    return externalCache;
+  return externalCache;
 }

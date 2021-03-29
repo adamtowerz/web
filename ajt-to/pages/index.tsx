@@ -87,8 +87,18 @@ const NewAliasModalContext = createContext<[boolean, (boolean) => void]>([
   () => {},
 ]);
 
+interface AliasContext {
+  aliases: AliasData[] | undefined;
+  fetchAliases: () => Promise<void>;
+}
+
 // Stores link data for use in rendering and a function that re-fetches aliases
-const AliasesContext = createContext<[AliasData[], () => void]>(null);
+const AliasesContext = createContext<AliasContext>({
+  aliases: undefined,
+  fetchAliases: async () => {
+    alert("default!!");
+  },
+});
 
 // Fetches link data and populates the `AliasesContext`
 function AliasesContextProvider({ children }: { children: ReactNode }) {
@@ -122,8 +132,13 @@ function AliasesContextProvider({ children }: { children: ReactNode }) {
     fetchLinkData();
   }, [authState]);
 
+  const aliasContext = {
+    aliases: linksData,
+    fetchAliases: fetchLinkData,
+  };
+
   return (
-    <AliasesContext.Provider value={[linksData, fetchLinkData]}>
+    <AliasesContext.Provider value={aliasContext}>
       {children}
     </AliasesContext.Provider>
   );
@@ -174,6 +189,8 @@ function NewAliasModal({ open, onClose }: NewAliasModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const fetchLinksData = useContext(AliasesContext).fetchAliases;
+
   async function addAlias() {
     setIsLoading(true);
     setError(null);
@@ -187,6 +204,7 @@ function NewAliasModal({ open, onClose }: NewAliasModalProps) {
           internal,
         }),
       });
+      await fetchLinksData();
     } catch {
       setError("An error occured");
     } finally {
@@ -296,13 +314,13 @@ function CliBar() {
   const inputEl = useRef(null);
   const authState = useContext(AuthContext);
   const [_, setModalOpen] = useContext(NewAliasModalContext);
-  const [linksData] = useContext(AliasesContext);
+  const aliases = useContext(AliasesContext).aliases;
 
   // generate the options when the query changes
   useEffect(() => {
-    if (!linksData) return;
+    if (!aliases) return;
 
-    const linkMap = processLinkData(linksData);
+    const linkMap = processLinkData(aliases);
     const newOptions = Object.entries(linkMap)
       .filter(([key]) => key.toLowerCase().startsWith(query.toLowerCase()))
       .sort(
@@ -313,7 +331,7 @@ function CliBar() {
       .slice(0, 6);
 
     setOptions(newOptions);
-  }, [query, linksData]);
+  }, [query, aliases]);
 
   // reset the focus when the query changes
   useEffect(() => {
@@ -507,14 +525,13 @@ export default function Home() {
                 </div>
               </main>
             </NewAliasModalContext.Provider>
+            <NewAliasModal
+              open={newAliasModalOpen}
+              onClose={() => setNewAliasModalOpen(false)}
+            />
           </AliasesContextProvider>
         </TokenContext.Provider>
       </AuthContext.Provider>
-
-      <NewAliasModal
-        open={newAliasModalOpen}
-        onClose={() => setNewAliasModalOpen(false)}
-      />
 
       <footer className={styles.footer}>
         <span>
