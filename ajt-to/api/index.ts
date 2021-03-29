@@ -1,14 +1,14 @@
 import DB, { AliasRecord} from '../db';
 
-let internalCache = null;
-let externalCache = null;
+let internalCache: AliasRecord[] = null;
+let externalCache: AliasRecord[] = null;
 
 async function updateInternalCache() {
     const aliases = await DB<AliasRecord>('aliases')
         .select('link')
         .select('label')
         .select('priority')
-        .select('alias')
+        .select('alias') as AliasRecord[];
     internalCache = aliases;
 }
 
@@ -18,7 +18,7 @@ async function updateExternalCache() {
         .select('label')
         .select('priority')
         .select('alias')
-        .whereRaw('internal is not true')
+        .whereRaw('internal is not true') as AliasRecord[];
     externalCache = aliases;
 }
 
@@ -30,7 +30,6 @@ export async function addAlias(alias: string, link: string, {
     })
 
     await Promise.all([updateInternalCache(), updateExternalCache()]);
-
 }
 
 export async function getInternalAliases() {
@@ -39,6 +38,14 @@ export async function getInternalAliases() {
     }
 
     return internalCache;
+}
+
+export async function getLinkForAlias(alias: string): Promise<string | undefined> {
+    if (!externalCache) {
+        await updateExternalCache();
+    }
+    
+    return externalCache.find(record => record.alias === alias)?.link;
 }
 
 export async function getExternalAliases() {
