@@ -15,6 +15,7 @@ import { Button } from "../components/Button";
 const AUTH_ENDPOINT = "/api/auth";
 const ALIAS_ENDPOINT = "/api/alias";
 const LOCAL_TOKEN_KEY = "LOCAL_TOKEN_KEY";
+const LOCAL_ALIASES_KEY = "LOCAL_ALIASES_KEY";
 
 let localLoginTokenCache = undefined;
 function getLocalLogin(): string | null {
@@ -32,6 +33,25 @@ function getLocalLogin(): string | null {
 function setLocalLogin(token: string) {
   localStorage.setItem(LOCAL_TOKEN_KEY, token);
   localLoginTokenCache = token;
+}
+
+let localAliasCache = undefined;
+function getLocalAliases(): AliasData[] | null {
+  if (localAliasCache !== undefined) {
+    return localAliasCache;
+  }
+
+  if (!process.browser) {
+    return undefined;
+  }
+
+  localAliasCache = JSON.parse(localStorage.getItem(LOCAL_ALIASES_KEY));
+  return localAliasCache;
+}
+
+function setLocalAliases(aliases: AliasData[]) {
+  localStorage.setItem(LOCAL_TOKEN_KEY, JSON.stringify(aliases));
+  localAliasCache = aliases;
 }
 
 type AliasData = {
@@ -89,12 +109,14 @@ const NewAliasModalContext = createContext<[boolean, (boolean) => void]>([
 
 interface AliasContext {
   aliases: AliasData[] | undefined;
+  aliasesLoading: boolean;
   fetchAliases: () => Promise<void>;
 }
 
 // Stores link data for use in rendering and a function that re-fetches aliases
 const AliasesContext = createContext<AliasContext>({
   aliases: undefined,
+  aliasesLoading: false,
   fetchAliases: async () => {
     alert("default!!");
   },
@@ -102,19 +124,20 @@ const AliasesContext = createContext<AliasContext>({
 
 // Fetches link data and populates the `AliasesContext`
 function AliasesContextProvider({ children }: { children: ReactNode }) {
-  const [linksData, setLinksData] = useState<AliasData[]>(null);
+  const [linksData, setLinksData] = useState<AliasData[]>(getLocalAliases());
+  const [loading, setLoading] = useState(false);
   const token = useContext(TokenContext);
   const authState = useContext(AuthContext);
 
   const fetchLinkData = async () => {
     if (authState === AuthState.Resolving) return;
 
+    setLoading(true);
     const headers = token
       ? {
           Authorization: `Basic ${token}`,
         }
       : {};
-
     const res = await fetch(ALIAS_ENDPOINT, {
       method: "GET",
       headers,
@@ -123,9 +146,11 @@ function AliasesContextProvider({ children }: { children: ReactNode }) {
     if (res.ok) {
       const links = (await res.json()).aliases;
       setLinksData(links);
+      setLocalAliases(links);
     } else {
       console.error("Failed to fetch link data");
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -133,6 +158,7 @@ function AliasesContextProvider({ children }: { children: ReactNode }) {
   }, [authState]);
 
   const aliasContext = {
+    aliasesLoading: loading,
     aliases: linksData,
     fetchAliases: fetchLinkData,
   };
@@ -314,13 +340,13 @@ function CliBar() {
   const inputEl = useRef(null);
   const authState = useContext(AuthContext);
   const [_, setModalOpen] = useContext(NewAliasModalContext);
-  const aliases = useContext(AliasesContext).aliases;
+  const aliasesContext = useContext(AliasesContext);
 
   // generate the options when the query changes
   useEffect(() => {
-    if (!aliases) return;
+    if (!aliasesContext.aliases) return;
 
-    const linkMap = processLinkData(aliases);
+    const linkMap = processLinkData(aliasesContext.aliases);
     const newOptions = Object.entries(linkMap)
       .filter(([key]) => key.toLowerCase().startsWith(query.toLowerCase()))
       .sort(
@@ -331,7 +357,7 @@ function CliBar() {
       .slice(0, 6);
 
     setOptions(newOptions);
-  }, [query, aliases]);
+  }, [query, aliasesContext.aliases]);
 
   // reset the focus when the query changes
   useEffect(() => {
@@ -358,7 +384,7 @@ function CliBar() {
     } else if (e.keyCode === 13) {
       // enter
       if (options.length > 0) {
-        location.href = options[0][1].link;
+        location.href = options[focusIndex][1].link;
       }
     }
   }
