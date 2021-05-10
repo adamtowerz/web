@@ -528,6 +528,7 @@ export default function Home() {
 
   function onLogout() {
     setLocalLogin(null);
+    setLocalAliases(null);
     setToken(null);
     setAuthState(AuthState.LoggedOut);
   }
