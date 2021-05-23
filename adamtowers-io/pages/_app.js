@@ -1,5 +1,5 @@
 import "../styles/base.css";
-import "../styles/theme.css";
+import "../styles/theme.scss";
 import "../styles/fontawesome/css/fontawesome.min.css";
 import "../styles/fontawesome/css/brands.min.css";
 import "../styles/fontawesome/css/all.min.css";

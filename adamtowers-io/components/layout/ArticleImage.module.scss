@@ -1,0 +1,17 @@
+.articleImage {
+  display: inline-block;
+  width: 150px;
+  div {
+    border: 2px solid var(--background-color-dark);
+    padding: 1px;
+  }
+
+  p {
+    width: 100%;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: var(--small-text);
+    line-height: var(--small-text);
+    text-align: center;
+  }
+}
