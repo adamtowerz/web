@@ -15,7 +15,7 @@ export default function Home() {
           stressful majors was tough, and although I think I handled that stress
           fairly well it was hard. That being said, I don't remember much of the
           grind at all. What I do remember with high clarity is experiences with
-          new friends &mdash; maybe there's a listen here, hmm.
+          new friends &mdash; maybe there's a lesson here, hmm.
         </p>
         <hr />
         <div className="d-flex">
