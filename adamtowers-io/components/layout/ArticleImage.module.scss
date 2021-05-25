@@ -1,6 +1,8 @@
 .articleImage {
   display: inline-block;
   width: 150px;
+  min-width: 150px;
+  margin: 8px;
   div {
     border: 2px solid var(--background-color-dark);
     padding: 1px;
@@ -13,5 +15,13 @@
     font-size: var(--small-text);
     line-height: var(--small-text);
     text-align: center;
+  }
+
+  &.left {
+    float: left;
+  }
+
+  &.right {
+    float: right;
   }
 }

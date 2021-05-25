@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SingleColumn from "@/components/layout/SingleColumn";
 import ArticleImage from "@/components/layout/ArticleImage";
+import ArticleImageSet from "@/components/layout/ArticleImageSet";
 import ArticleSection from "@/components/layout/ArticleSection";
 
 export default function Home() {
@@ -25,57 +26,47 @@ export default function Home() {
             load, "well I know linear and I know algebra, how bad can it be?".
             Well.. it was bad, real bad.
           </p>
-          <div className="d-flex align-center">
-            <div style={{ marginRight: "1rem" }}>
-              <p>
-                I had this professor who was supposedly a genius. And it wasn't
-                even supposedly, it was extremely obvious he was a genius. The
-                mad lad discovered the sets of numbers that modern cryptography
-                uses so we can browse the internet with a semblance of privacy.
-                And I'd think that was super super cool if he wasn't such a god
-                awful lecturer. I don't want your sympathy. It's not even that
-                bad a grade. I'm writing about this because I want you to know
-                that I got the last laugh. While Koblitz was droning on about
-                content I would re-teach myself with YouTube a year later, I
-                quietly sat at the back and applied for jobs. So despite how
-                INCREDIBLY BORING AND USELESS AND PAINFUL those lectures were I
-                MADE IT WORK (please do appreciate the pun on the word "work"
-                here).
-              </p>
-            </div>
+          <p>
             <ArticleImage
-              style={{ minWidth: "150px" }}
               src="/honors/sophmore1.png"
               caption="Still salty."
+              right
             />
-          </div>
+            I had this professor who was supposedly a genius. And it wasn't even
+            supposedly, it was extremely obvious he was a genius. The mad lad
+            discovered the sets of numbers that modern cryptography uses so we
+            can browse the internet with a semblance of privacy. And I'd think
+            that was super super cool if he wasn't such a god awful lecturer. I
+            don't want your sympathy. It's not even that bad a grade. I'm
+            writing about this because I want you to know that I got the last
+            laugh. While Koblitz was droning on about content I would re-teach
+            myself with YouTube a year later, I quietly sat at the back and
+            applied for jobs. So despite how INCREDIBLY BORING AND USELESS AND
+            PAINFUL those lectures were I MADE IT WORK (please do appreciate the
+            pun on the word "work" here).
+          </p>
         </ArticleSection>
         <ArticleSection title="DH '18">
-          <div className="d-flex align-center">
+          <p>
             <ArticleImage
-              style={{ minWidth: "150px" }}
               src="/honors/sophmore2.png"
               caption="Caffeine and snacks and caffeine and snacks."
+              left
             />
-            <div style={{ marginLeft: "1rem" }}>
-              <p>
-                Fall quarter wasn't all bad though, it was also the time of year
-                for DubHacks: "the largest hackathon in the PNW" (little did I
-                know at the time how many times I would say that sentence). With
-                a gang of friends new and old I attended the event and over 36
-                hours developed a tool that interpeted people's facial
-                expressions and presented them in a visualization that could be
-                more easily understood by people with social disabilities like
-                autism spectrum disorders. Which sounds super impressive, but
-                like most hackathon projects was an amalgamation of
-                off-the-shelf pieces assembled in a pretty way with little
-                chance of meaningful commercialization (this idea is important
-                for later, but no spoilers). Nonetheless it was an amazing
-                experience and we won a bunch of prizes, including a longboard I
-                still ride to this day.
-              </p>
-            </div>
-          </div>
+            Fall quarter wasn't all bad though, it was also the time of year for
+            DubHacks: "the largest hackathon in the PNW" (little did I know at
+            the time how many times I would say that sentence). With a gang of
+            friends new and old I attended the event and over 36 hours developed
+            a tool that interpeted people's facial expressions and presented
+            them in a visualization that could be more easily understood by
+            people with social disabilities like autism spectrum disorders.
+            Which sounds super impressive, but like most hackathon projects was
+            an amalgamation of off-the-shelf pieces assembled in a pretty way
+            with little chance of meaningful commercialization (this idea is
+            important for later, but no spoilers). Nonetheless it was an amazing
+            experience and we won a bunch of prizes, including a longboard I
+            still ride to this day.
+          </p>
           <p>
             Having been on the DubHacks team for 3 years now, this event was the
             start of my most meaningful contribution to this campus and I am so
@@ -109,46 +100,41 @@ export default function Home() {
           </p>
         </ArticleSection>
         <ArticleSection title="Bottomline">
-          <div className="d-flex align-center">
-            <div style={{ marginRight: "1rem" }}>
-              <p>
-                After the class the natural next step was the Dempsey startup
-                competition. CSE, or Ed specifically, was gracious enough to
-                fund our competition expenses including a banner for the tabling
-                stage and t-shirts so we coud look fly (or as fly as a bunch of
-                tech nerds with a logo on their chest could ever look). We
-                practiced and practiced, honing our demo and pitch. Eventually
-                we got to the final 4 (of more than 100 teams) and got to pitch
-                to an audience, another moment I will never forget. We took 3rd,
-                winning $7k on a big check for our efforts.
-              </p>
-              <p>
-                After the momentum of the competition and the class began to
-                fade, so did we. Some of us had internships, some had fulltime
-                jobs; everyone had other obligations. I tried to hang-on for a
-                while but eventually when push came to shove as my internship
-                sucked up my energy, I left and the team disbanded. I wasn't the
-                first to leave, but it felt shitty to be the straw that broke
-                the camel's back.
-              </p>
-              <p>
-                I'm still incredibly proud of the work we did, even though in
-                the end this wasn't <i>it</i>. But importantly, this experience
-                proved to me that this was what I wanted to do. Not <i>this</i>{" "}
-                as Bottomline specifically,{" "}
-                <b>
-                  but now I knew small technology startups were where I wanted
-                  to be.
-                </b>{" "}
-                I then spent that summer at Google, oops.
-              </p>
-            </div>
+          <p>
+            After the class the natural next step was the Dempsey startup
+            competition. CSE, or Ed specifically, was gracious enough to fund
+            our competition expenses including a banner for the tabling stage
+            and t-shirts so we coud look fly (or as fly as a bunch of tech nerds
+            with a logo on their chest could ever look). We practiced and
+            practiced, honing our demo and pitch. Eventually we got to the final
+            4 (of more than 100 teams) and got to pitch to an audience, another
+            moment I will never forget. We took 3rd, winning $7k on a big check
+            for our efforts.
+          </p>
+          <p>
             <ArticleImage
-              style={{ minWidth: "150px" }}
               src="/honors/sophmore4.png"
               caption="That check was such a pain to carry around."
+              right
             />
-          </div>
+            After the momentum of the competition and the class began to fade,
+            so did we. Some of us had internships, some had fulltime jobs;
+            everyone had other obligations. I tried to hang-on for a while but
+            eventually when push came to shove as my internship sucked up my
+            energy, I left and the team disbanded. I wasn't the first to leave,
+            but it felt shitty to be the straw that broke the camel's back.
+          </p>
+          <p>
+            I'm still incredibly proud of the work we did, even though in the
+            end this wasn't <i>it</i>. But importantly, this experience proved
+            to me that this was what I wanted to do. Not <i>this</i> as
+            Bottomline specifically,{" "}
+            <b>
+              but now I knew small technology startups were where I wanted to
+              be.
+            </b>{" "}
+            I then spent that summer at Google, oops.
+          </p>
         </ArticleSection>
         <ArticleSection title="TAing CSE 340">
           <p>
@@ -205,6 +191,42 @@ export default function Home() {
             about doing them well.
           </p>
         </ArticleSection>
+        <ArticleSection title="Summer">
+          <p>
+            Outside of working, this summer was amazing (not to say work wasn't
+            fun, because that's about all it was). I had some close friends
+            visit me down in the Bay; one interesting facet of going away for
+            school is that I had two separate lives: my family (and dog) at
+            home, and my friends at school. This was a fun crossover event. I
+            remember thinking at the time{" "}
+            <b>"wow, I have friends that will literally fly to come see me"</b>{" "}
+            and feeling all warm and happy. Anyway, here's some picz
+          </p>
+          <ArticleImageSet caption="There's something about showing people around that makes old views especially beautiful">
+            <ArticleImage src="/honors/sophmore6.png" />
+            <ArticleImage src="/honors/sophmore8.png" />
+            <ArticleImage src="/honors/sophmore7.png" />
+          </ArticleImageSet>
+          <p>
+            <ArticleImage
+              src="/honors/sophmore9.png"
+              caption="I really, really want to go back."
+              right
+            />
+            Along with having friends come to visit I was working one city over
+            from my girlfriend. Introducing her to my parents felt like a
+            growing up moment, not that they hadn't met previous romantic
+            entanglements of mine but this time it was college, so obviously it
+            was different (it wasn't, but reading into things as rites of
+            passage seems like a part of growing up). We also went on a trip
+            together to San Francisco to attend a music festival, that also felt
+            like a step in getting older.
+          </p>
+          <p>
+            I think this summer marked a latent transformation in the kinds of
+            relationships I had/have with friends and partners.
+          </p>
+        </ArticleSection>
         <ArticleSection title="Google">
           <p>
             So it was really validating to get an internship at Google, I mean
@@ -214,6 +236,11 @@ export default function Home() {
             extra cool. Nonetheless, this was not a fit for me.
           </p>
           <p>
+            <ArticleImage
+              src="/honors/sophmore5.png"
+              caption="Meeting bikes! What pragmatism!"
+              right
+            />
             I worked with some incredibly bright and talented people, but I
             never felt an incredible pressure to work hard. For many people
             that's great, they want a fourty hour week that pays well; one day
@@ -227,11 +254,17 @@ export default function Home() {
             </b>
           </p>
         </ArticleSection>
-
         <hr />
-        <p>TODO: conclusiony paragraph</p>
+        <p>
+          This year grew the depth of my relationships and cemented my career
+          path, which is sort of the whole point of college. Oddly the themes
+          and lessons of this year are so obviously self-evident that I don't
+          have to say much here. I'll leave this paragraph, though, because some
+          people (hopefully you, I guess) find meandering streams of
+          conciousness interesting. It's the most literal picture of my brain
+          that I can provide. Anyways, onwards.
+        </p>
       </article>
-
       <div className="d-flex sp-between">
         <Link href="/honors/freshman">← Freshman year</Link>
         <Link href="/honors/freshman">Junior year →</Link>

@@ -23,6 +23,11 @@ export default function Home() {
           <div className="d-flex align-center">
             <div style={{ marginRight: "1rem" }}>
               <p>
+                <ArticleImage
+                  src="/honors/freshman4.png"
+                  caption="The view and additional fence in question"
+                  right
+                />
                 I started freshman year off by immediately getting written up by
                 the RA for sneaking out through a window onto the roof of my
                 building with a gang of fellow hooligan college students to eat
@@ -31,6 +36,7 @@ export default function Home() {
                 jumped an additional fence into the maintenance area for an even
                 better view. No snitches in that squad.
               </p>
+
               <p>
                 I'm not quite sure why I remember this incident so fondly, but
                 it's likely rooted in how college gave me an oppurtunity to
@@ -38,11 +44,6 @@ export default function Home() {
                 on the RAs for not locking the window.
               </p>
             </div>
-            <ArticleImage
-              style={{ minWidth: "150px" }}
-              src="/honors/freshman4.png"
-              caption="The view and additional fence in question"
-            />
           </div>
         </ArticleSection>
         <ArticleSection title="New friends">
@@ -160,6 +161,11 @@ export default function Home() {
           <div className="d-flex align-center">
             <div style={{ marginRight: "1rem" }}>
               <p>
+                <ArticleImage
+                  src="/honors/freshman5.png"
+                  caption="Nick &amp; I, Intuit took all the interns on a cruise. Love big tech for that."
+                  right
+                />
                 It was while I was at Intuit that I got into CSE. I remember
                 that moment extremely clearly. I was sitting at my desk, which
                 wasn't really a desk because the interns in my department had a
@@ -176,11 +182,6 @@ export default function Home() {
                 after), and walked outside to call my parents.
               </p>
             </div>
-            <ArticleImage
-              style={{ minWidth: "150px" }}
-              src="/honors/freshman5.png"
-              caption="Nick &amp; I, Intuit took all the interns on a cruise. Love big tech for that."
-            />
           </div>
           <p>
             I am happy the competitive major system for CSE is going away. I
@@ -192,6 +193,14 @@ export default function Home() {
             that shit no one deserves that experience.
           </p>
         </ArticleSection>
+        <hr />
+        <p>
+          Bangin' year honestly. I'll moan and whine about CSE because it
+          sucked, but don't get me wrong: all things told, this was an awesome
+          year chock full of amazing memories in a new place with new people.
+          It's always a risk moving to a new place, but by the end of this year
+          I was extremely confident and optimistic about the future.
+        </p>
       </article>
       <div className="d-flex sp-between">
         <Link href="/honors">← Intro</Link>
