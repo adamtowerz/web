@@ -87,6 +87,22 @@ p {
 article {
   p {
     margin: 0.65rem 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  section {
+    margin: 1rem 0;
+
+    &:not(:last-child) {
+      margin-bottom: 2rem;
+    }
   }
 }
 
@@ -129,4 +145,12 @@ hr {
 
 .d-flex {
   display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.sp-between {
+  justify-content: space-between;
 }
