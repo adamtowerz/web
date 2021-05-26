@@ -267,7 +267,7 @@ export default function Home() {
       </article>
       <div className="d-flex sp-between">
         <Link href="/honors/freshman">← Freshman year</Link>
-        <Link href="/honors/freshman">Junior year →</Link>
+        <Link href="/honors/junior">Junior year →</Link>
       </div>
     </SingleColumn>
   );
