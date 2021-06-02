@@ -15,8 +15,11 @@ export default function Home() {
           UW from out of state to compete for a spot in one of the most
           stressful majors was tough, and although I think I handled that stress
           fairly well it was hard. That being said, I don't remember much of the
-          grind at all. What I do remember with high clarity is experiences with
-          new friends &mdash; maybe there's a lesson here, hmm.
+          grind at all.{" "}
+          <span className="thematic">
+            What I do remember with high clarity is experiences with new friends
+          </span>{" "}
+          &mdash; maybe there's a lesson here, hmm.
         </p>
         <hr />
         <ArticleSection title="Week 1">
@@ -48,15 +51,18 @@ export default function Home() {
         </ArticleSection>
         <ArticleSection title="New friends">
           <p>
-            Looking back, it's interesting to me how many people from fall
-            quarter of freshman year remain in my life. And it's also
-            interesting how wrong I would've been if you asked me then who those
-            would be. It's the boy I sat next to in A&amp;O, the girl I studied
-            next to once for a math midterm, and the boy across from me in a
-            writing class that made it. Not either of my roommates, nor many of
-            the people I spent most of my time with. Here's a few photos from
-            that first quarter, I'm not close with many of these people anymore
-            but they're still happy memories.
+            Looking back,{" "}
+            <span className="thematic">
+              it's interesting to me how many people from fall quarter of
+              freshman year remain in my life
+            </span>
+            . And it's also interesting how wrong I would've been if you asked
+            me then who those would be. It's the boy I sat next to in A&amp;O,
+            the girl I studied next to once for a math midterm, and the boy
+            across from me in a writing class that made it. Not either of my
+            roommates, nor many of the people I spent most of my time with.
+            Here's a few photos from that first quarter, I'm not close with many
+            of these people anymore but they're still happy memories.
           </p>
           <ArticleImageSet>
             <ArticleImage
@@ -92,15 +98,18 @@ export default function Home() {
         </ArticleSection>
         <ArticleSection title="More time w/ friends">
           <p>
-            In winter and spring quarter I got close with a lot of my best
-            friends to this day. Funnily I met a lot of them by comically pining
-            for a girl. Funny how things work out, and I'm endlessly
-            appreciative for the forgiving social dynamics of university as I
-            was kind of an idiot. I put 'kind of' in that sentence to make it a
-            tiny bit funnier, but 'idiot' alone is definitley more accurate. Lot
-            of learnings here I won't go into :D. I am truly greatful for Terry
-            Hall and the honors LLC for putting me in the same evironment as so
-            many amazing people. Rare moment of sincerity over.
+            In winter and spring quarter{" "}
+            <span className="thematic">
+              I got close with a lot of my best friends to this day
+            </span>
+            . Funnily I met a lot of them by comically pining for a girl. Funny
+            how things work out, and I'm endlessly appreciative for the
+            forgiving social dynamics of university as I was kind of an idiot. I
+            put 'kind of' in that sentence to make it a tiny bit funnier, but
+            'idiot' alone is definitley more accurate. Lot of learnings here I
+            won't go into :D. I am truly grateful for Terry Hall and the honors
+            LLC for putting me in the same evironment as so many amazing people.
+            Rare moment of sincerity over.
           </p>
 
           <p>
@@ -132,12 +141,10 @@ export default function Home() {
             and debate software in highschool piqued the interest of an Intuit
             employee who moonlighted making debate tech. I'd done some work for
             him and he introduced me to a coworker of his at Intuit and I
-            somehow passed a very informal interview.{" "}
-            <b>
-              Finding my way to Intuit really cemented a learning, although I
-              didn't realize it at the time, that my casual side project hacking
-              created oppurtunity for me.
-            </b>
+            somehow passed a very informal interview. Finding my way to Intuit
+            really cemented a learning, although I didn't realize it at the
+            time, that my casual side project hacking created oppurtunity for
+            me.
           </p>
 
           <p>
@@ -149,12 +156,13 @@ export default function Home() {
             their debt, some were so oblivious to the massive financial hole
             they were digging themselves into. I did learn, through some very
             hard conversations with users, that I really really enjoyed thinking
-            about how to help them.{" "}
-            <b>
-              This summer helped me distinguish between my presumed passion for
+            about how to help them. This summer helped me{" "}
+            <span className="thematic">
+              distinguish between my presumed passion for
               engineering/programming and my real passion for building things
-              that help people.
-            </b>
+              that help people
+            </span>
+            .
           </p>
         </ArticleSection>
         <ArticleSection title="CSE">
@@ -198,8 +206,12 @@ export default function Home() {
           Bangin' year honestly. I'll moan and whine about CSE because it
           sucked, but don't get me wrong: all things told, this was an awesome
           year chock full of amazing memories in a new place with new people.
-          It's always a risk moving to a new place, but by the end of this year
-          I was extremely confident and optimistic about the future.
+          It's always a risk moving to a new place, but{" "}
+          <span className="thematic">
+            by the end of this year I was extremely confident and optimistic
+            about the future
+          </span>
+          .
         </p>
       </article>
       <div className="d-flex sp-between">

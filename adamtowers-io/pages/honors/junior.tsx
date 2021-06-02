@@ -10,16 +10,23 @@ export default function Home() {
       <Link href="/honors">Honors Portfolio</Link>
       <h1>Junior Year</h1>
       <article>
-        {/* <p>
-          Junior year was a blur. I took the spring off to work which with the
-          advent of covid-19 turned out to be fairly serendipitious.
+        <p>
+          Freshman year was about finding new people and sophmore year about
+          finding my passions. So maybe it seems like a let down that junior
+          year doesn't have an obvious theme or set of learnings to list here,
+          but I don't think it is. Junior year was a time of validation and
+          refinement:{" "}
+          <span className="thematic">
+            you can't say you're on the right path until you've rode it a while
+          </span>
+          .
         </p>
-        <hr /> */}
+        <hr />
         <ArticleSection title="Apartment">
           <p>
             <ArticleImage
               src="/honors/junior1.png"
-              caption="A very long and thin room."
+              caption="A very long and thin room"
               left
             />
             I finally had my own door: a lovely hinged plank of white-painted
@@ -32,7 +39,7 @@ export default function Home() {
           <p>
             <ArticleImage
               src="/honors/junior2.png"
-              caption="Life ain't bad."
+              caption="Life ain't bad"
               right
             />
             Though we did have an absolutely bangin' view of the city. On a good
@@ -51,14 +58,18 @@ export default function Home() {
           <p>
             <ArticleImage
               src="/honors/junior3.png"
-              caption="Such a cute team."
+              caption="What a cute team"
               right
             />
-            I joined the DubHacks team in January of 2019, and come October it
-            was finally time for our big annual hackathon. We'd raised almost
-            one hundred thousands dollars, invested in building bespoke software
-            solutions, and brought one thousand people to the HUB. It had to go
-            well right? Right??
+            I joined the{" "}
+            <a href="https://dubhacks.co" target="blank">
+              DubHacks
+            </a>{" "}
+            team in January of 2019, and come October it was finally time for
+            our big annual hackathon. We'd raised almost one hundred thousands
+            dollars, invested in building bespoke software solutions, and
+            brought one thousand people to the HUB. It had to go well right?
+            Right??
           </p>
           <p>
             I'm creating tension for nothing, it actually went off almost
@@ -66,11 +77,18 @@ export default function Home() {
             derailed train in Oregon and judging was too slow leading to a team
             member awkwardly stalling for time on stage with hunders of people
             watching and waiting (the most I have ever cringed in my life), but
-            honestly: pretty darn good. Deleriously wandering around at 4am
-            seeing tons of students hacking away was incredibly fufilling. It
-            was also super rewarding to see the investment I'd made in checkin
-            technology work so well, I'd written code so we could do QR code
-            based checkin and we managed to checkin 700+ hackers in an hour.
+            honestly: pretty darn good.{" "}
+            <span className="thematic">
+              I often think back to deliriously wandering the HUB at 4 AM, a
+              cozy blanket wrapped around my exhausted shoulders, watching all
+              these talented and inspiring students hack away at their ideas.
+              Many of them were <i>in it</i>, and playing a role in that
+              continuously makes me proud.
+            </span>
+            It was also super rewarding to see the investment I'd made in
+            checkin technology work so well, I'd written code so we could do QR
+            code based checkin and we managed to checkin 700+ hackers in an
+            hour.
           </p>
         </ArticleSection>
         <ArticleSection title="JailBird">
@@ -80,12 +98,14 @@ export default function Home() {
             left
           />
           <p>
-            JailBird is a party card game created by my group during the
-            Entrepreneurship Minor at UW's Creating a Company Series. In CaC
-            students form groups and over the course of two quarters start,
-            operate, and exit a small product-based business. As card game
-            lovers we decided to design, manufacture, and sell a party card
-            game.
+            <a href="https://jailbirdgame.com" target="blank">
+              JailBird
+            </a>{" "}
+            is a party card game created by my group during the Entrepreneurship
+            Minor at UW's Creating a Company Series. In CaC students form groups
+            and over the course of two quarters start, operate, and exit a small
+            product-based business. As card game lovers we decided to design,
+            manufacture, and sell a party card game.
           </p>
           <p>
             I managed the technical operations including our website and
@@ -96,16 +116,13 @@ export default function Home() {
             physical things, especially compared to software. But honestly, I
             should've left the moment the class was over. I was simultaneously
             chronically disappointed in our operational excellence (or lack
-            thereof) and unwilling to step in and try and do better;{" "}
-            <b>I should've just left</b>. Instead I dragged it out for a bit,
-            and eventually, when push came to shove, quit.
+            thereof) and unwilling to step in and try and do better; I should've
+            just left. Instead I dragged it out for a bit, and eventually, when
+            push came to shove, quit.
           </p>
-          <p>
-            The game looks hecka cute and is super fun, the art team did an
-            excellent job.{" "}
-            <b>
-              I just wasn't <i>in it</i>.
-            </b>
+          <p className="thematic">
+            The game looks hecka cute and its super fun, but by the end I just
+            wasn't <i>in it</i>.
           </p>
         </ArticleSection>
         <ArticleSection title="Early Covid">
@@ -139,13 +156,17 @@ export default function Home() {
         <ArticleSection title="Productiv">
           <p>
             I took spring off to do a double length internship with a technology
-            startup called Productiv. This was the direct result of my learnings
-            from CSE599 and my time at Google, so I was thrilled to work in a
-            smaller and faster paced environment. I got exactly what I was
-            looking for: a ton of ownership, an expectation to ship quickly, and
-            I was learning a lot. It was a bit frusturating at times because I
-            had to learn how to operate in a much smaller organization than I
-            was used to, but my coworkers were great and I picked it up quickly.
+            startup called{" "}
+            <a href="https://productiv.com" target="blank">
+              Productiv
+            </a>{" "}
+            . This was the direct result of my learnings from CSE599 and my time
+            at Google, so I was thrilled to work in a smaller and faster paced
+            environment. I got exactly what I was looking for: a ton of
+            ownership, an expectation to ship quickly, and I was learning a lot.
+            It was a bit frusturating at times because I had to learn how to
+            operate in a much smaller organization than I was used to, but my
+            coworkers were great and I picked it up quickly.
           </p>
           <p>
             Although I'd met my boss and a few other employees in person
@@ -167,9 +188,11 @@ export default function Home() {
             about the company.
           </p>
           <p>
-            Overall, this experience validated that startups were where I wanted
-            to be. So I stayed, and, at least at the time of writing, am still
-            working at Productiv.
+            <span className="thematic">
+              This experience validated that startups were where I wanted to be
+            </span>
+            . So I stayed, and, at least at the time of writing, am still
+            working there.
           </p>
         </ArticleSection>
         <ArticleSection title="Hack '20">
@@ -181,31 +204,34 @@ export default function Home() {
             and organically engaging with like-minded peers and no amount of
             Zoom and Slack could match the dynamism of real life. With that in
             mind DubHacks tech (which I was running) got to work building a
-            virtual experience to that could house the same organic social
-            dynamism of real life. We called it <i>Reality</i> and it was an
-            old-school Pokémon-esque virtual world with drop-in-drop-out audio.
-            This is all a fancy way of saying "you move with the arrow-keys and
-            you could talk to people".
-          </p>
-          <p>
-            Reality took months to develop but witnessing hackers meet and
-            engage in our world was an incredible experience.
+            virtual experience that could house the same organic social dynamism
+            of real life. We called it <i>Reality</i> and it was an old-school
+            Pokémon-esque virtual world with drop-in-drop-out audio. This is all
+            a fancy way of saying "you move with the arrow-keys and you could
+            talk to people". I got to build Reality with a close friend, and{" "}
+            <span className="thematic">
+              there's honestly no greater joy than getting to work closely with
+              an insanely talented friend
+            </span>
+            . It was still hard fuckin' work, and a slog at times, but I think
+            the effort paid off: witnessing hackers meet and engage in our world
+            was an incredible experience. Months later I was chatting with
+            someone and they told me about someone they met in our world, damn
+            did that feel good.
           </p>
         </ArticleSection>
         <hr />
         <p>
-          Freshman year was about new people and sophmore year about finding my
-          passions. So maybe it seems like a let down that junior year doesn't
-          have an obvious theme or set of learnings to list here, but I don't
-          think it is. Junior year was a time of validation and refinement:
-          ensuring that those things I thought I thought were right. Continuous
-          radical change is generally pointless, instead you want to tune down
-          the magnitude of change as you approach your goal (I am painfully
-          aware that it is a very me thing to turn life into an optimization
-          problem, but its also not inaccurate). This year was a part of that
-          approach towards a more and more accurate Adam, there wasn't radical
-          change (beyond pandemic adaptation) because things were going well.
-          Cheers to that.
+          Continuous radical change is generally pointless, instead you want to
+          tune down the magnitude of change as you approach your goal (I am
+          painfully aware that it is a very me thing to turn life into an
+          optimization problem, but its also not inaccurate).{" "}
+          <span className="thematic">
+            This year was a part of that approach towards a more and more
+            accurate Adam
+          </span>
+          , there wasn't radical change (beyond pandemic adaptation) because
+          things were going well. Cheers to that.
         </p>
       </article>
       <div className="d-flex sp-between">

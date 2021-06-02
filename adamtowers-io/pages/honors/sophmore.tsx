@@ -14,9 +14,12 @@ export default function Home() {
           If freshman year was about meeting the people I'd stick with, then
           sophmore year was about meeting the passions I'd stick with. This is
           an awfully artsy way of saying that{" "}
-          <b>I discovered technology entrepreurship.</b> I also got my lowest
-          grade ever in college, participated in an extremely dysfunctional hall
-          council, and survived the snowmageddon.
+          <span className="thematic">
+            I discovered my obsession with technology entrepreurship
+          </span>
+          . I also got my lowest grade ever in college, participated in an
+          extremely dysfunctional hall council, and survived the snowmageddon
+          (only 8 inches, oh Seattle).
         </p>
         <hr />
         <ArticleSection title="Math 308">
@@ -68,9 +71,12 @@ export default function Home() {
             still ride to this day.
           </p>
           <p>
-            Having been on the DubHacks team for 3 years now, this event was the
-            start of my most meaningful contribution to this campus and I am so
-            so happy I attended.
+            Having been on the DubHacks team for 3 years now,{" "}
+            <span className="thematic">
+              this event was the start of my most meaningful contribution to
+              this campus
+            </span>{" "}
+            and I am so so happy I attended.
           </p>
         </ArticleSection>
         <ArticleSection title="CSE 599">
@@ -81,9 +87,11 @@ export default function Home() {
             what we did. The class started with every student pitching a company
             in a minute and then teams formed around the most popular ideas (how
             did my idea do, you wonder? Shot down immediately :D). Over the next
-            8 weeks we ideated, validated, prototyped, and presented our work.
-            There's a rare feeling of being <i>in it</i> that I've only felt a
-            few times in my life. In this class, I was <i>in it</i>.
+            8 weeks we ideated, validated, prototyped, and presented our work.{" "}
+            <span className="thematic">
+              There's a rare feeling of being <i>in it</i> that I've only felt a
+              few times in my life. In this class, I was <i>in it</i>.
+            </span>
           </p>
           <p>
             My team toiled for weeks, pivoting left and right trying to find a
@@ -92,7 +100,11 @@ export default function Home() {
             people get paid what they deserve and to help companies acquire and
             retain talent by crafting best-in-class offers. I vividly remember
             the energy of presenting in front of a crowd of peers and investors
-            downtown at Pioneer Square Labs' offices, this was <i>it</i>.
+            downtown at Pioneer Square Labs' offices,{" "}
+            <span className="thematic">
+              this was <i>it</i>
+            </span>
+            .
           </p>
           <p>
             The final went well and our startup, Bottomline, took first. So we
@@ -127,13 +139,11 @@ export default function Home() {
           <p>
             I'm still incredibly proud of the work we did, even though in the
             end this wasn't <i>it</i>. But importantly, this experience proved
-            to me that this was what I wanted to do. Not <i>this</i> as
-            Bottomline specifically,{" "}
-            <b>
-              but now I knew small technology startups were where I wanted to
-              be.
-            </b>{" "}
-            I then spent that summer at Google, oops.
+            to me that{" "}
+            <span className="thematic">this was what I wanted to do</span>. Not{" "}
+            <i>this</i> as Bottomline specifically, but now I knew small
+            technology startups were where I wanted to be. I then spent that
+            summer at Google, oops.
           </p>
         </ArticleSection>
         <ArticleSection title="TAing CSE 340">
@@ -185,10 +195,12 @@ export default function Home() {
           </p>
           <p>
             Problem three is hopefully a one-off, but one and two have a simple
-            solution that I've been working on: <b>living intentionally</b>.
-            Don't do things on autopilot, don't do things because they're right
-            in front of me, do things only because I want to do them and care
-            about doing them well.
+            solution that I've been working on: living intentionally.{" "}
+            <span className="thematic">
+              Don't do things on autopilot, don't do things because they're
+              right in front of me, do things only because I want to do them and
+              care about doing them well.
+            </span>
           </p>
         </ArticleSection>
         <ArticleSection title="Summer">
@@ -199,7 +211,9 @@ export default function Home() {
             school is that I had two separate lives: my family (and dog) at
             home, and my friends at school. This was a fun crossover event. I
             remember thinking at the time{" "}
-            <b>"wow, I have friends that will literally fly to come see me"</b>{" "}
+            <span className="thematic">
+              "wow, I have friends that will literally fly to come see me"
+            </span>{" "}
             and feeling all warm and happy. Anyway, here's some picz
           </p>
           <ArticleImageSet caption="There's something about showing people around that makes old views especially beautiful">
@@ -222,7 +236,7 @@ export default function Home() {
             together to San Francisco to attend a music festival, that also felt
             like a step in getting older.
           </p>
-          <p>
+          <p className="thematic">
             I think this summer marked a latent transformation in the kinds of
             relationships I had/have with friends and partners.
           </p>
@@ -233,7 +247,8 @@ export default function Home() {
             there's a whole movie about it starring Owen Wilson and I got to
             walk around Mountain View saying "wow" in his voice. And my team was
             super cool and I can tell you very little about it, which makes it
-            extra cool. Nonetheless, this was not a fit for me.
+            extra cool. Nonetheless,{" "}
+            <span className="thematic">this was not a fit for me</span>.
           </p>
           <p>
             <ArticleImage
@@ -246,12 +261,12 @@ export default function Home() {
             that's great, they want a fourty hour week that pays well; one day
             I'll want that too, probably when I have a family and other
             priorities. At the moment, though, I love the pressure and the
-            ownership that comes with it.{" "}
-            <b>
-              I want things to break and people to get mad when I fuck up,
-              because if I'm insulated from causing trouble then I'm not having
-              a big enough impact.
-            </b>
+            ownership that comes with it. I want things to break and people to
+            get mad when I fuck up, because{" "}
+            <span className="thematic">
+              if I'm insulated from causing trouble then I'm not having a big
+              enough impact.
+            </span>
           </p>
         </ArticleSection>
         <hr />

@@ -2,9 +2,10 @@
   display: inline-block;
   width: 150px;
   min-width: 150px;
-  margin: 8px;
+  margin: 16px;
+  margin-top: 8px;
   div {
-    border: 2px solid var(--background-color-dark);
+    border: 2px solid var(--text-color);
     padding: 1px;
   }
 

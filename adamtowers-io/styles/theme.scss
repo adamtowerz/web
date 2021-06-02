@@ -109,14 +109,11 @@ article {
 
 a {
   color: var(--text-color);
-  text-decoration: none;
-  font-weight: bold;
+  text-decoration: underline;
 }
 
 a:hover {
-  text-decoration: solid;
-  text-decoration-color: var(--primary);
-  text-decoration-thickness: 2px;
+  color: var(--light-primary-accent);
 }
 
 ul {
@@ -162,4 +159,27 @@ footer > hr {
 
 .sp-between {
   justify-content: space-between;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.thematic {
+  background-color: #f3ec78;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 }
