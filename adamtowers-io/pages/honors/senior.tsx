@@ -101,7 +101,7 @@ export default function Senior() {
             This section is really really fucking easy to write. The pandemic
             was coming to a close, we got our vaccines, and I finally got to see
             my friends again. That's it. That's all I can possibly say about
-            this moment in time. All that matters about it.
+            this moment in time. That's all that matters about it.
           </p>
           <p>
             Maybe later I'll have some complicated, nuanced thoughts about
