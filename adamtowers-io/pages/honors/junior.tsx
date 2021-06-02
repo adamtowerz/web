@@ -4,7 +4,7 @@ import ArticleImage from "@/components/layout/ArticleImage";
 import ArticleImageSet from "@/components/layout/ArticleImageSet";
 import ArticleSection from "@/components/layout/ArticleSection";
 
-export default function Home() {
+export default function Junior() {
   return (
     <SingleColumn footer>
       <Link href="/honors">Honors Portfolio</Link>
@@ -236,7 +236,7 @@ export default function Home() {
       </article>
       <div className="d-flex sp-between">
         <Link href="/honors/sophmore">← Sophmore year</Link>
-        <Link href="/honors/freshman">TODO: Senior year →</Link>
+        <Link href="/honors/senior">Senior year →</Link>
       </div>
     </SingleColumn>
   );

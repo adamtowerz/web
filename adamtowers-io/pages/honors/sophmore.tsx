@@ -4,7 +4,7 @@ import ArticleImage from "@/components/layout/ArticleImage";
 import ArticleImageSet from "@/components/layout/ArticleImageSet";
 import ArticleSection from "@/components/layout/ArticleSection";
 
-export default function Home() {
+export default function Sophmore() {
   return (
     <SingleColumn footer>
       <Link href="/honors">Honors Portfolio</Link>
