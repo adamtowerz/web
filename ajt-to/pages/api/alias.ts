@@ -1,26 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { getInternalAliases, getExternalAliases, addAlias } from "../../api";
+import { getAliases, addAlias } from "../../api/alias";
 
-interface ApiRequest extends NextApiRequest {
-  auth?: boolean;
-}
-
-// not really middleware as it is invoked manually
-function authMiddleware(req: ApiRequest, res: NextApiResponse) {
-  if (req.headers.authorization) {
-    if (req.headers.authorization === `Basic ${process.env.MAGIC_PASSWORD}`) {
-      req.auth = true;
-    }
-  }
-}
+import { ApiRequest, authMiddleware } from "../../api/auth";
 
 async function getAliasHandler(req: ApiRequest, res: NextApiResponse) {
-  const aliases = req.auth
-    ? await getInternalAliases()
-    : await getExternalAliases();
-  res.status(200).json({ aliases });
+  res.status(200).json({ aliases: await getAliases(req) });
 }
 
 async function addAliasHandler(req: ApiRequest, res: NextApiResponse) {

@@ -45,7 +45,7 @@ export default function Home() {
             src="/honors/home.png"
             layout="fill"
             objectFit="cover"
-            quality={100}
+            quality={60}
           />
         </div>
       </div>

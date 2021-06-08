@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from "next";
-import { getLinkForAlias } from "../api";
+import { getLinkForAlias } from "../api/alias";
 import Page404 from "./404";
 
 const RedirectURL = () => {
@@ -14,7 +14,6 @@ export const getServerSideProps = async (
   const { res } = context;
   const alias = context.query.alias as string;
   const link = await getLinkForAlias(alias);
-  console.log(link);
   if (link) {
     res.writeHead(301, { location: link });
     res.end();

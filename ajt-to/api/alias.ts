@@ -1,4 +1,5 @@
 import DB, { AliasRecord } from "../db";
+import { isLoggedIn, ApiRequest } from "./auth";
 
 const MAX_CACHE_STALENESS = 1000 * 60 * 5; // 5min in ms
 
@@ -58,11 +59,24 @@ export async function addAlias(
   await Promise.all([updateInternalCache(true), updateExternalCache(true)]);
 }
 
-export async function getInternalAliases() {
+async function getInternalAliases() {
   await updateInternalCache();
 
   return internalCache;
 }
+
+async function getExternalAliases() {
+  await updateExternalCache();
+
+  return externalCache;
+}
+
+export function getAliases(req: ApiRequest): Promise<AliasRecord[]> {
+  return isLoggedIn(req)
+    ? getInternalAliases()
+    : getExternalAliases();
+}
+
 
 export async function getLinkForAlias(
   alias: string
@@ -72,8 +86,4 @@ export async function getLinkForAlias(
   return externalCache.find((record) => record.alias === alias)?.link;
 }
 
-export async function getExternalAliases() {
-  await updateExternalCache();
 
-  return externalCache;
-}

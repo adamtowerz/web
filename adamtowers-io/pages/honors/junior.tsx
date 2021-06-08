@@ -84,7 +84,7 @@ export default function Junior() {
               these talented and inspiring students hack away at their ideas.
               Many of them were <i>in it</i>, and playing a role in that
               continuously makes me proud.
-            </span>
+            </span>{" "}
             It was also super rewarding to see the investment I'd made in
             checkin technology work so well, I'd written code so we could do QR
             code based checkin and we managed to checkin 700+ hackers in an

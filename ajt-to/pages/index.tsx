@@ -6,53 +6,22 @@ import React, {
   createContext,
   ReactNode,
 } from "react";
+import { GetServerSideProps } from "next";
 import classNames from "classnames";
 import Head from "next/head";
+
+import { ApiRequest, isLoggedIn } from "../api/auth";
+import { getAliases } from "../api/alias";
+
 import styles from "../styles/Home.module.scss";
 import { Modal } from "../components/Modal";
 import { Button } from "../components/Button";
+import useEffectExceptOnMount from "../compositions/useEffectExceptOnMount";
 
 const AUTH_ENDPOINT = "/api/auth";
+const LOGIN_ENDPOINT = `${AUTH_ENDPOINT}/login`;
+const LOGOUT_ENDPOINT = `${AUTH_ENDPOINT}/logout`;
 const ALIAS_ENDPOINT = "/api/alias";
-const LOCAL_TOKEN_KEY = "LOCAL_TOKEN_KEY";
-const LOCAL_ALIASES_KEY = "LOCAL_ALIASES_KEY";
-
-let localLoginTokenCache = undefined;
-function getLocalLogin(): string | null {
-  if (localLoginTokenCache !== undefined) {
-    return localLoginTokenCache;
-  }
-
-  localLoginTokenCache = localStorage.getItem(LOCAL_TOKEN_KEY);
-  if (localLoginTokenCache === "null") {
-    localLoginTokenCache = null; // lmfao, thanks JavaScript
-  }
-  return localLoginTokenCache;
-}
-
-function setLocalLogin(token: string) {
-  localStorage.setItem(LOCAL_TOKEN_KEY, token);
-  localLoginTokenCache = token;
-}
-
-let localAliasCache = undefined;
-function getLocalAliases(): AliasData[] | null {
-  if (localAliasCache !== undefined) {
-    return localAliasCache;
-  }
-
-  if (!process.browser) {
-    return undefined;
-  }
-
-  localAliasCache = JSON.parse(localStorage.getItem(LOCAL_ALIASES_KEY));
-  return localAliasCache;
-}
-
-function setLocalAliases(aliases: AliasData[]) {
-  localStorage.setItem(LOCAL_TOKEN_KEY, JSON.stringify(aliases));
-  localAliasCache = aliases;
-}
 
 type AliasData = {
   label?: string;
@@ -90,15 +59,11 @@ function getTabCompleteText(query: string, options: any) {
   }
 }
 
-// Context value is auth token is exists and valid, otherwise null
-const TokenContext = createContext(null);
-
 enum AuthState {
   LoggedOut,
   LoggedIn,
-  Resolving,
 }
-const AuthContext = createContext<AuthState>(AuthState.Resolving);
+const AuthContext = createContext<AuthState>(AuthState.LoggedOut);
 
 // Context value is [true, func] if `NewAliasModal` should be rendered, [false, func] otherwise.
 // Invoking func sets bool to false.
@@ -123,43 +88,41 @@ const AliasesContext = createContext<AliasContext>({
 });
 
 // Fetches link data and populates the `AliasesContext`
-function AliasesContextProvider({ children }: { children: ReactNode }) {
-  const [linksData, setLinksData] = useState<AliasData[]>(getLocalAliases());
+function AliasesContextProvider({
+  initialAliases,
+  children,
+}: {
+  initialAliases: AliasData[];
+  children: ReactNode;
+}) {
+  const [aliases, setAliases] = useState<AliasData[]>(initialAliases);
   const [loading, setLoading] = useState(false);
-  const token = useContext(TokenContext);
   const authState = useContext(AuthContext);
 
   const fetchLinkData = async () => {
-    if (authState === AuthState.Resolving) return;
-
     setLoading(true);
-    const headers = token
-      ? {
-          Authorization: `Basic ${token}`,
-        }
-      : {};
-    const res = await fetch(ALIAS_ENDPOINT, {
-      method: "GET",
-      headers,
-    });
-
-    if (res.ok) {
-      const links = (await res.json()).aliases;
-      setLinksData(links);
-      setLocalAliases(links);
-    } else {
+    try {
+      const res = await fetch(ALIAS_ENDPOINT, {
+        method: "GET",
+      });
+      const body = await res.json();
+      const links = body.aliases;
+      setAliases(links);
+    } catch (e) {
       console.error("Failed to fetch link data");
+      alert("some bad thing happened, sorry :(");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  useEffect(() => {
+  useEffectExceptOnMount(() => {
     fetchLinkData();
   }, [authState]);
 
   const aliasContext = {
     aliasesLoading: loading,
-    aliases: linksData,
+    aliases,
     fetchAliases: fetchLinkData,
   };
 
@@ -449,7 +412,7 @@ function LoginButton({ onLogin }: LoginButtonProps) {
 
     setLoading(true);
 
-    const auth = await fetch(`${AUTH_ENDPOINT}`, {
+    const auth = await fetch(`${LOGIN_ENDPOINT}`, {
       method: "POST",
       body: JSON.stringify({
         token: password,
@@ -500,36 +463,52 @@ interface LogoutButtonProps {
   onLogout: () => void;
 }
 function LogoutButton({ onLogout }: LogoutButtonProps) {
+  async function logout() {
+    try {
+      await fetch(`${LOGOUT_ENDPOINT}`, {
+        method: "POST",
+      });
+      onLogout();
+    } catch (e) {
+      alert("oopsie, failed to log you out.");
+    }
+  }
+
   return (
-    <Button type="button" onClick={onLogout}>
+    <Button type="button" onClick={logout}>
       Logout
     </Button>
   );
 }
 
-export default function Home() {
-  const [authState, setAuthState] = useState<AuthState>(AuthState.Resolving);
-  const [token, setToken] = useState<string | null>(null);
-  const isLoggedIn = authState === AuthState.LoggedIn;
+type HomePageProps = {
+  isLoggedIn: boolean;
+  aliases: AliasData[];
+};
+
+export const getServerSideProps: GetServerSideProps<HomePageProps> = async (
+  context
+) => {
+  return {
+    props: {
+      isLoggedIn: isLoggedIn(context.req as ApiRequest),
+      aliases: await getAliases(context.req as ApiRequest),
+    },
+  };
+};
+
+export default function Home({ isLoggedIn, aliases }: HomePageProps) {
+  const [authState, setAuthState] = useState<AuthState>(
+    isLoggedIn ? AuthState.LoggedIn : AuthState.LoggedOut
+  );
 
   const [newAliasModalOpen, setNewAliasModalOpen] = useState(false);
 
-  useEffect(() => {
-    const token = getLocalLogin();
-    setToken(token);
-    setAuthState(token !== null ? AuthState.LoggedIn : AuthState.LoggedOut);
-  }, []);
-
-  function onLogin(token) {
-    setLocalLogin(token);
-    setToken(token);
+  function onLogin() {
     setAuthState(AuthState.LoggedIn);
   }
 
   function onLogout() {
-    setLocalLogin(null);
-    setLocalAliases(null);
-    setToken(null);
     setAuthState(AuthState.LoggedOut);
   }
 
@@ -541,30 +520,28 @@ export default function Home() {
       </Head>
 
       <AuthContext.Provider value={authState}>
-        <TokenContext.Provider value={token}>
-          <AliasesContextProvider>
-            <NewAliasModalContext.Provider
-              value={[newAliasModalOpen, setNewAliasModalOpen]}
-            >
-              <main className={styles.main}>
-                <div className={styles["cli-bar-container"]}>
-                  <CliBar />
-                </div>
-              </main>
-            </NewAliasModalContext.Provider>
-            <NewAliasModal
-              open={newAliasModalOpen}
-              onClose={() => setNewAliasModalOpen(false)}
-            />
-          </AliasesContextProvider>
-        </TokenContext.Provider>
+        <AliasesContextProvider initialAliases={aliases}>
+          <NewAliasModalContext.Provider
+            value={[newAliasModalOpen, setNewAliasModalOpen]}
+          >
+            <main className={styles.main}>
+              <div className={styles["cli-bar-container"]}>
+                <CliBar />
+              </div>
+            </main>
+          </NewAliasModalContext.Provider>
+          <NewAliasModal
+            open={newAliasModalOpen}
+            onClose={() => setNewAliasModalOpen(false)}
+          />
+        </AliasesContextProvider>
       </AuthContext.Provider>
 
       <footer className={styles.footer}>
         <span>
           Made by <a href="https://twitter.com/adamtowerz">Adam</a>
         </span>{" "}
-        {isLoggedIn ? (
+        {authState === AuthState.LoggedIn ? (
           <LogoutButton onLogout={onLogout} />
         ) : (
           <LoginButton onLogin={onLogin} />
