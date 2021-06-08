@@ -17,6 +17,16 @@ export function authMiddleware(req: ApiRequest, res: NextApiResponse) {
     req.auth = isLoggedIn(req)
 }
 
+export function enforceAuth(handler: (req: ApiRequest, res: NextApiResponse) => void) {
+    return (req: ApiRequest, res: NextApiResponse) => {
+        if (req.auth) {
+            handler(req, res);
+        } else {
+            res.status(403).send(null)
+        }
+    }
+}
+
 export function handleLoginRequest(req: NextApiRequest, res: NextApiResponse) {
     const token = JSON.parse(req.body).token;
 

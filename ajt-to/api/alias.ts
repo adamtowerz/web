@@ -86,4 +86,8 @@ export async function getLinkForAlias(
   return externalCache.find((record) => record.alias === alias)?.link;
 }
 
+export async function deleteAlias(alias: AliasRecord["alias"]) {
+  await DB<AliasRecord>("aliases").where({ alias }).delete();
+}
+
 

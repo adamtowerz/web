@@ -147,6 +147,26 @@ function CliBarOption({
   active,
   onFocus,
 }: CliBarOptionProps) {
+  const [removingAlias, setRemovingAlias] = useState(false);
+  const authState = useContext(AuthContext);
+  const fetchLinksData = useContext(AliasesContext).fetchAliases;
+
+  async function removeAlias() {
+    setRemovingAlias(true);
+    try {
+      await fetch(ALIAS_ENDPOINT, {
+        method: "DELETE",
+        body: JSON.stringify({
+          alias,
+        }),
+      });
+      fetchLinksData();
+    } catch (e) {
+      alert("error, sadge");
+    } finally {
+      setRemovingAlias(false);
+    }
+  }
   return (
     <div
       onMouseEnter={onFocus}
@@ -161,6 +181,17 @@ function CliBarOption({
           {label || cleanLink(link)}
         </span>
       </a>
+      {authState === AuthState.LoggedIn && (
+        <Button
+          type="button"
+          theme="link"
+          className={styles["option-delete"]}
+          loading={removingAlias}
+          onClick={removeAlias}
+        >
+          x
+        </Button>
+      )}
     </div>
   );
 }

@@ -1,9 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { getAliases, addAlias } from "../../api/alias";
+import { getAliases, addAlias, deleteAlias } from "../../api/alias";
 
-import { ApiRequest, authMiddleware } from "../../api/auth";
+import { ApiRequest, authMiddleware, enforceAuth } from "../../api/auth";
 
 async function getAliasHandler(req: ApiRequest, res: NextApiResponse) {
   res.status(200).json({ aliases: await getAliases(req) });
@@ -33,12 +33,31 @@ async function addAliasHandler(req: ApiRequest, res: NextApiResponse) {
   res.status(200).send({ success: true });
 }
 
+async function deleteAliasHandler(req: ApiRequest, res: NextApiResponse) {
+  const {
+    alias = null,
+  } = JSON.parse(req.body);
+  if (
+    !alias ||
+    typeof alias !== "string"
+  ) {
+    res
+      .status(400)
+      .send({ error: "Malformed alias, link, label, or internal flag" });
+  }
+
+  await deleteAlias(alias);
+  res.status(200).send({ success: true });
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   authMiddleware(req, res);
 
   if (req.method === "GET") {
     await getAliasHandler(req, res);
   } else if (req.method === "POST") {
-    await addAliasHandler(req, res);
+    await enforceAuth(addAliasHandler)(req, res);
+  } else if (req.method === "DELETE") {
+    await enforceAuth(deleteAliasHandler)(req, res);
   }
 };
