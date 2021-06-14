@@ -85,9 +85,11 @@ p {
 }
 
 article {
+  $article-vmargin: 0.65rem;
+
   margin-bottom: 2rem;
   p {
-    margin: 0.65rem 0;
+    margin: $article-vmargin 0;
 
     &:first-child {
       margin-top: 0;
@@ -95,6 +97,18 @@ article {
 
     &:last-child {
       margin-bottom: 0;
+    }
+  }
+
+  * > ul {
+    margin-top: $article-vmargin;
+  }
+
+  * > a {
+    &::after {
+      content: "↗";
+      font-size: 1.25em;
+      line-height: 1em;
     }
   }
 
