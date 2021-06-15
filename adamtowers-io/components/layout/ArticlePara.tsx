@@ -8,7 +8,7 @@ type ArticleParaProps = {
   pad?: boolean;
 };
 
-const ArticleImage = ({ center, border, children, pad }: ArticleParaProps) => {
+const ArticlePara = ({ center, border, children, pad }: ArticleParaProps) => {
   return (
     <p
       className={classNames(styles.para, {
@@ -22,4 +22,4 @@ const ArticleImage = ({ center, border, children, pad }: ArticleParaProps) => {
   );
 };
 
-export default ArticleImage;
+export default ArticlePara;

@@ -1,0 +1,13 @@
+.footnote {
+  display: flex;
+  flex-direction: row;
+
+  p {
+    margin-top: 0;
+  }
+
+  .symbol {
+    color: var(--text-color);
+    margin-right: 1em;
+  }
+}

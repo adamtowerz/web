@@ -104,7 +104,7 @@ article {
     margin-top: $article-vmargin;
   }
 
-  * > a {
+  *:not(sup) > a {
     &::after {
       content: "↗";
       font-size: 1.25em;
@@ -171,6 +171,10 @@ footer > hr {
 
 .d-flex {
   display: flex;
+}
+
+.d-block {
+  display: block;
 }
 
 .align-center {
