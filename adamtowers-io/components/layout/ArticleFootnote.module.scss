@@ -1,6 +1,11 @@
 .footnote {
   display: flex;
   flex-direction: row;
+  margin-top: 1rem;
+
+  &:first-child {
+    margin-top: 0rem;
+  }
 
   p {
     margin-top: 0;
@@ -9,5 +14,7 @@
   .symbol {
     color: var(--text-color);
     margin-right: 1em;
+    line-height: 1em;
+    top: 0;
   }
 }

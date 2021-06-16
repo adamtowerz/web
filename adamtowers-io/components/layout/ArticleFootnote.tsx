@@ -15,12 +15,16 @@ const ArticleFootnote = ({ symbol, children }: ArticleFootnoteProps) => {
   return (
     <>
       <sup>
-        <a href={`#${symbol}`}>{symbol}</a>
+        <a id={symbol} href={`#${symbol}-note`}>
+          {symbol}
+        </a>
       </sup>
 
       {ReactDOM.createPortal(
-        <div id={symbol} className={styles.footnote}>
-          <div className={styles.symbol}>{symbol}</div>
+        <div id={`${symbol}-note`} className={styles.footnote}>
+          <sup className={styles.symbol}>
+            <a href={`#${symbol}`}>{symbol}</a>
+          </sup>
           <p>{children}</p>
         </div>,
         el
