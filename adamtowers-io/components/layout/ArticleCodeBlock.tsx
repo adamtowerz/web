@@ -4,19 +4,13 @@ import styles from "./ArticleCodeBlock.module.scss";
 type ArticleCodeBlockProps = {
   children: React.ReactNode;
   block?: boolean;
-  margin?: boolean;
 };
 
-const ArticleCodeBlock = ({
-  block,
-  margin,
-  children,
-}: ArticleCodeBlockProps) => {
+const ArticleCodeBlock = ({ block, children }: ArticleCodeBlockProps) => {
   return (
     <code
-      className={classNames({
-        "d-block": block,
-        [styles.margin]: margin,
+      className={classNames(styles.codeBlock, {
+        [styles.block]: block,
       })}
     >
       {children}

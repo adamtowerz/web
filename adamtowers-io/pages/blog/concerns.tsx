@@ -33,32 +33,32 @@ export default function ConcernsPost() {
           </section>
 
           <h2>Trail guide</h2>
+          <ArticlePara>
+            'Concerns' relate to the roles pieces of a system play and how these
+            pieces come together to accomplish their shared goal. These pieces
+            are called{" "}
+            <a
+              href="https://en.wikipedia.org/wiki/Modular_programming"
+              target="_blank"
+            >
+              modules
+            </a>{" "}
+            and they are units of code that do a job. This can be a function, a
+            class, a file, a server in the case of a distributed system, or any
+            other level of hierachy within your system. To discover what
+            'concerns' are, what separating them means, and why this is
+            important, we'll step into the shoes of a module and think about our
+            place in the system.
+          </ArticlePara>
           <section>
             <h3>Defining 'concerns'</h3>
             <ArticlePara>
-              "Concerns" relate to the roles pieces of a system play and how
-              these pieces compose together to accomplish their shared goal.
-              Therefor to think about concerns we'll role-play as a part of a
-              big and complicated system. This part could be a function, a file,
-              a{" "}
-              <a
-                href="https://en.wikipedia.org/wiki/Modular_programming"
-                target="_blank"
-              >
-                module
-              </a>
-              , a server in the case of a distributed system, or any other level
-              in the hierarchy of your situation. For the purpose of this piece
-              we'll use "module" to refer to any of these levels.
-            </ArticlePara>
-            <ArticlePara>
-              Think about every function you call, module you depend on, or
-              system you message. Then think about what happens when those
-              things change. What if the function you call changes its behavior?
-              Changes its signature? Or ceases to exist? What if the module you
-              depend on or the system you message change similarly? Probably
-              you're going to break. And also probably: they won't consult you
-              before doing that.
+              Think about every function this module invokes, module it depends
+              on, and service it messages. Then think about what happens when
+              those things change. What if a function changes its behavior?
+              Changes its signature? Or ceases to exist? What if a module it
+              depends on or the service it messages change similarly? Probably
+              its going to break.
             </ArticlePara>
             <ArticlePara>
               Initially, let's say a concern is{" "}
@@ -84,8 +84,8 @@ export default function ConcernsPost() {
             </ArticlePara>
             <ArticlePara>
               "Code", however, is too strict a definition. In truth, we're not
-              always concerned about the literal implementation of an idea as
-              much as the concept itself. There are multiple levels:
+              always concerned about the literal implementation itself as much
+              as the concept it encodes. There are multiple levels of concerns:
             </ArticlePara>
             <ul>
               <li>
@@ -93,12 +93,12 @@ export default function ConcernsPost() {
                 eg: a null pointer exception that needs to be patched
               </li>
               <li>
-                Medium: changes in the code's abstractions <br />
+                Medium: changes in code's abstractions <br />
                 eg: a function name changes and all clients need to be
                 refactored
               </li>
               <li>
-                Hard: changes in concepts implemented by the code <br />
+                Hard: changes in concepts implemented by code <br />
                 eg: the authentication paradigm changes and all clients must
                 understand and implement the new model
               </li>
@@ -117,10 +117,10 @@ export default function ConcernsPost() {
               the code level, ie the import of a package or the invocation of a
               function. "Comprehension" is at a higher level: what facts does
               our module require to be true to operate as intended? There are
-              likely many facts that are not, and often cannot, be enforced by
-              code. Recognition of these is important for identifying dangerous
-              latent concerns that are potentially the most important to
-              separate.
+              likely many facts that are not, and often cannot, be encoded or
+              enforced by code. Recognition of these is important for
+              identifying dangerous latent concerns that are potentially
+              important to separate.
             </ArticlePara>
           </section>
           <section>
@@ -154,38 +154,45 @@ export default function ConcernsPost() {
             <h3>Defining "separation"</h3>
             <ArticlePara>
               From our perspective as an individual module, we want to reduce
-              the concerns we have (or at least their magnitude), but at a
-              global level they won't go away because the system still requires
-              that behavior. Instead, they'll be present in other modules.
-              Because they don't go away entirely it's called "separation of
-              concerns" instead of "reduction of concerns".
+              the concerns we have (or at least their magnitude). However, at a
+              global level the system still requires that behavior so we can't
+              simply remove the concerns and carry on with our day. To solve
+              both of these problems we move the concerns to other modules,
+              separating them from our module.
             </ArticlePara>
             <ArticlePara center border pad>
-              separation is <b>"reducing the concerns of a module"</b>.
+              Separation of concerns is{" "}
+              <b>
+                "reducing the concerns of a module by moving them to others"
+              </b>
+              .
             </ArticlePara>
           </section>
           <section>
             <h3>Why should I separate concerns?</h3>
             <ArticlePara>
-              Good code{" "}
+              Theoretically, no problem can be solved by seperating the concerns
+              of modules that could not be solved by one giant ball of{" "}
+              <s>spaghetti</s> code. In practice, however, without seperating
+              modules it quickly becomes nigh on impossible to write good code
               <ArticleFootnote symbol="1">
                 Many people have many thoughts on what defines "good code", this
                 definition likely displeases them but its enough for now.
-              </ArticleFootnote>{" "}
-              is easy to write correctly, easy to understand, easy to change,
-              and easy to test. Separating our concerns enables us to make
-              progress towards each of those goals.
+              </ArticleFootnote>
+              .
+            </ArticlePara>
+            <ArticlePara>
+              Good code is easy to understand, easy to change, and easy to test.
+              Separating our concerns enables us to make progress towards each
+              of those goals.
             </ArticlePara>
             <ul>
-              <li>
-                <b>Easy to write correctly:</b> With less concerns, the scope of
-                a module is smaller and it is easier to get it right.
-              </li>
               <li>
                 <b>Easy to understand:</b> Understanding the concerns of code is
                 a prerequisite to understanding the code. You can't understand
                 if code is correct without understanding the concepts it
-                operates on. Less concerns means simpler code.
+                operates on. Less concerns means simpler code which easier to
+                understand.
               </li>
               <li>
                 <b>Easy to change:</b> Code needs to be understood before it can
@@ -196,7 +203,7 @@ export default function ConcernsPost() {
                 concerns there is less to test. Also, concerns of a lower
                 magnitude tend to be easier to test correctly: it is generally
                 easier to mock a function call than an API call and it is
-                definitley easier to test either of those than the complete
+                definitely easier to test either of those than the complete
                 behavior encapsulated by a function or API.
               </li>
             </ul>
@@ -204,52 +211,6 @@ export default function ConcernsPost() {
           <p style={{ color: "red" }}>
             nothing below this point has been changed
           </p>
-          <section>
-            <h3>So I should separate EVERYTHING?</h3>
-            <ArticlePara>
-              Comprehending nothing about the world outside yourself seems to be
-              a terrible goal as there are only two possible outcomes of such
-              absolute pursuits:
-              <ul>
-                <li>
-                  an enormous spaghetti monolith that contains absolutely
-                  everything so it needs not know about anything outside itself
-                </li>
-                <li>
-                  a set of tiny pure lil' modules who each know little and
-                  because they cannot communicate (as to talk would require
-                  comprehension of their shared existence) they accomplish very
-                  little
-                </li>
-              </ul>
-            </ArticlePara>
-            <ArticlePara>
-              Both of these options present important principles to "separating
-              concerns". The former contends that if you separate nothing you
-              can accomplish everything. This is true, but inevitably the debt
-              of your own construction catches up with you when the spaghetti
-              becomes too dense to untangle. The latter contends that if you
-              separate everything you accomplish nothing, which is strictly
-              worse than accomplishing something at the cost of your engineers'
-              happiness.
-            </ArticlePara>
-            <ArticlePara>
-              Thankfully we're not chasing absolute separation of every concept,
-              instead separation of concerns is about minimizing where
-              reasonable the number of concepts a given unit of code, a module,
-              has to comprehend. We can even go a step further and instead of
-              reasoning about code that understands concepts we can instead
-              reason about concepts that understand concepts (eg: the login
-              system understands the authorization and authentication concepts).
-            </ArticlePara>
-            <ArticlePara>
-              This rule laid out above cheats utility with the ambiguous
-              modifier "where reasonable". Lets delve into how to evaluate
-              whether concerns should be separated. To do that, let's first take
-              a slight detour into a few types of concerns that will be helpful
-              in evaluating potential oppurtunities for separation.
-            </ArticlePara>
-          </section>
           <section>
             <h2>Separating concerns: an example</h2>
             <ArticlePara>
@@ -304,30 +265,28 @@ export default function ConcernsPost() {
               of the whole system. This is the core idea of separating concerns.
             </ArticlePara>
           </section>
-          <h2 id="anthology">In no particular order:</h2>
           <section>
-            <h3>Concerns all the way down</h3>
+            <h3>Identifying concerns to separate</h3>
+          </section>
+          <h2 id="anthology">Additional thoughts:</h2>
+          <section>
+            <h3>Declarative programming</h3>
             <ArticlePara>
-              In the above example we observed two instances of separated
-              concerns that operate at very different levels of abstraction. The
-              first was at the systems level, by using an analytics service our
-              new feature did not have to comprehend our analytics stack. The
-              second was at the callsite, instead of calling our service via an
-              API we abstracted that behavior into a local function.
+              Although separation of concerns is predominantly applied at the
+              service level, I think there's an interesting point to be made at
+              the syntax level.
             </ArticlePara>
             <ArticlePara>
-              A reasonable question at this point is "how deep does this go?".
-              Unhelpfully, I'd offer you the answer: "all the way". You can
-              think about separating the concerns of systems and modules like we
-              did above, and you can also consider the concerns of indvidual
-              lines of code. Consider this example:
-              <ArticleCodeBlock block margin>
+              Consider this example:
+              <ArticleCodeBlock block>
                 {`
               for (let i = 0; i < lst.length; i++) console.log(lst[i]);
               `}
               </ArticleCodeBlock>
-              In order to print out this list we've introduced a new concern: a
-              counter called <code>i</code>. I'd argue that replacing this{" "}
+              In order to print the list we've introduced a new concern: a
+              counter called <code>i</code>. In order to understand what this
+              line does we need to comprehend the application of this counter to
+              iterate through the loop. I'd argue that replacing this{" "}
               <a
                 href="https://en.wikipedia.org/wiki/Imperative_programming"
                 target="_blank"
@@ -342,19 +301,17 @@ export default function ConcernsPost() {
                 declarative
               </a>{" "}
               one like the next example is a separation of concerns.
-              <ArticleCodeBlock block margin>
+              <ArticleCodeBlock block>
                 {`
               lst.forEach(el => console.log(el));
               `}
               </ArticleCodeBlock>
-              Behind the scenes, inside the implementation of{" "}
+              Behind the scenes, inside the standard library implementation of{" "}
               <code>forEach</code>, is a counter (maybe even also called{" "}
-              <code>i</code>) but its not visible to us and no one can mess with
-              it by accident.
-            </ArticlePara>
-            <ArticlePara>
-              Concerns exist at every level and writing code that minimzes them
-              by removing or obscuring them is generally a good thing.
+              <code>i</code>) but its not visible to us so it has been separated
+              from our code. Without the additional concern that requires extra
+              comprehension the code is simpler to read and the flow is easier
+              to follow.
             </ArticlePara>
           </section>
           <section>
