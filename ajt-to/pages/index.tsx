@@ -344,10 +344,9 @@ function CliBar() {
     const newOptions = Object.entries(linkMap)
       .filter(([key]) => key.toLowerCase().startsWith(query.toLowerCase()))
       .sort(
-        ([, { priority: aPrio = 1 }], [, { priority: bPrio = 1 }]) =>
-          aPrio - bPrio
+        ([, { priority: aPrio }], [, { priority: bPrio }]) =>
+          (aPrio ?? 1000) - (bPrio ?? 1000)
       )
-      .reverse()
       .slice(0, 6);
 
     setOptions(newOptions);

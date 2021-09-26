@@ -27,6 +27,7 @@ async function addAliasHandler(req: ApiRequest, res: NextApiResponse) {
     res
       .status(400)
       .send({ error: "Malformed alias, link, label, or internal flag" });
+    return;
   }
 
   await addAlias(alias, link, { label, internal });
@@ -44,6 +45,7 @@ async function deleteAliasHandler(req: ApiRequest, res: NextApiResponse) {
     res
       .status(400)
       .send({ error: "Malformed alias, link, label, or internal flag" });
+    return;
   }
 
   await deleteAlias(alias);
@@ -54,10 +56,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   authMiddleware(req, res);
 
   if (req.method === "GET") {
-    await getAliasHandler(req, res);
+    return getAliasHandler(req, res);
   } else if (req.method === "POST") {
-    await enforceAuth(addAliasHandler)(req, res);
+    return await (enforceAuth(addAliasHandler)(req, res));
   } else if (req.method === "DELETE") {
-    await enforceAuth(deleteAliasHandler)(req, res);
+    return await (enforceAuth(deleteAliasHandler)(req, res));
   }
 };

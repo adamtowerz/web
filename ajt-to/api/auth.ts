@@ -17,10 +17,10 @@ export function authMiddleware(req: ApiRequest, res: NextApiResponse) {
     req.auth = isLoggedIn(req)
 }
 
-export function enforceAuth(handler: (req: ApiRequest, res: NextApiResponse) => void) {
-    return (req: ApiRequest, res: NextApiResponse) => {
+export function enforceAuth(handler: (req: ApiRequest, res: NextApiResponse) => Promise<void>) {
+    return async (req: ApiRequest, res: NextApiResponse) => {
         if (req.auth) {
-            handler(req, res);
+            await handler(req, res);
         } else {
             res.status(403).send(null)
         }
