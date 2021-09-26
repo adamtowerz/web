@@ -1,6 +1,14 @@
-$border: 1px solid black;
-$color-accent: aquamarine;
-$font-family: monospace;
+@import "./Vars.scss";
+
+:root {
+  font-size: 18px;
+}
+
+// @media only screen and (max-width: 768px) {
+//   :root {
+//     font-size: 18px;
+//   }
+// }
 
 .red {
   color: red;
@@ -33,19 +41,19 @@ button {
 }
 
 input {
-  font-size: large;
+  font-size: $fs-text-large;
   background-color: white;
   border: $border;
 }
 
 button {
-  font-size: large;
+  font-size: $fs-text-large;
   background-color: $color-accent;
   border: $border;
   cursor: pointer;
 
   &.link {
-    font-size: medium;
+    font-size: $fs-text-medium;
     background-color: transparent;
     border: none;
     text-decoration: underline;

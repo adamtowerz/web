@@ -326,10 +326,24 @@ function CliBarOptions({ options, focusIndex = 0, setFocusIndex }) {
   );
 }
 
+const MAX_SUGGESTIONS = 6;
+
 function CliBar() {
   const [query, setQuery] = useState("");
-  const [focusIndex, setFocusIndex] = useState(0);
+  const [focusIndex, unsafeSetFocusIndex] = useState(0);
   const [options, setOptions] = useState([]);
+
+  function setFocusIndex(newIndex: number) {
+    if (newIndex === -1) {
+      newIndex = options.length - 1;
+    }
+
+    if (newIndex > options.length || newIndex < 0) {
+      unsafeSetFocusIndex(0);
+    } else {
+      unsafeSetFocusIndex(newIndex);
+    }
+  }
 
   const inputEl = useRef(null);
   const authState = useContext(AuthContext);
@@ -347,7 +361,7 @@ function CliBar() {
         ([, { priority: aPrio }], [, { priority: bPrio }]) =>
           (aPrio ?? 1000) - (bPrio ?? 1000)
       )
-      .slice(0, 6);
+      .slice(0, MAX_SUGGESTIONS);
 
     setOptions(newOptions);
   }, [query, aliasesContext.aliases]);
