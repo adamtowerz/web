@@ -86,10 +86,7 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
     gridColumnGap: "0px",
   };
 
-  function constructDayColContainerStyles(
-    date: Date,
-    idx: number
-  ): CSSProperties {
+  function constructDayColContainerStyles(idx: number): CSSProperties {
     return {
       gridRowStart: 1,
       gridRowEnd: (24 - 7) * 4 + 2,
@@ -110,12 +107,6 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
       gridColumnEnd: dateDelta + 1,
     };
   }
-
-  const dates: Date[] = range(dateDelta).map((delta) => {
-    const date = new Date(startDate);
-    date.setDate(new Date(startDate).getDate() + delta);
-    return date;
-  });
 
   const drawableEvents = events.filter((event) => {
     return (
@@ -159,31 +150,36 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
             ></div>
           ))}
 
-          {dates.map((date, idx) => (
+          {range(dateDelta).map((idx) => (
             <div
               key={`col-${idx}`}
               className={styles.dayCol}
-              style={constructDayColContainerStyles(date, idx)}
+              style={constructDayColContainerStyles(idx)}
             ></div>
           ))}
 
-          {dates.map((date, idx) => (
-            <div
-              key={`desc-${idx}`}
-              className={classNames(styles.dayDesc, "border-bottom")}
-              style={constructDayDescStyles(date, idx)}
-            >
-              <div className={styles.dayDescMonth}>{`${
-                MONTHS[date.getMonth()]
-              }. ${date.getDate()}`}</div>
-              <div className={styles.dayDescDay}>{DAYS[date.getDay()]}</div>
-            </div>
-          ))}
+          {range(dateDelta).map((delta, idx) => {
+            const date = new Date(startDate);
+            date.setDate(new Date(startDate).getDate() + delta);
+
+            return (
+              <div
+                key={`desc-${idx}`}
+                className={classNames(styles.dayDesc, "border-bottom")}
+                style={constructDayDescStyles(date, idx)}
+              >
+                <div className={styles.dayDescMonth}>{`${
+                  MONTHS[date.getMonth()]
+                }. ${date.getDate()}`}</div>
+                <div className={styles.dayDescDay}>{DAYS[date.getDay()]}</div>
+              </div>
+            );
+          })}
 
           {drawableEvents.map((event, idx) => (
             <div
               key={event.startTime}
-              className={styles.event}
+              className={classNames(styles.event, "hashed", "border")}
               style={constructEventStyles(event)}
               onClick={() => console.log(event)}
             ></div>

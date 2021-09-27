@@ -58,6 +58,16 @@
   border-bottom: var(--brand-border);
 }
 
+.hashed {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--text-color),
+    var(--text-color) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+}
+
 html,
 body {
   height: 100%;

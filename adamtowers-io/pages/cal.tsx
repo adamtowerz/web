@@ -37,6 +37,7 @@ export default function Cal({ events }: Props) {
         endDate={endDate.toDateString()}
         events={mappedEvents}
       />
+      <div>{new Date().getTimezoneOffset()}</div>
     </SingleColumn>
   );
 }
