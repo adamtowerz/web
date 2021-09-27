@@ -182,7 +182,7 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
 
           {drawableEvents.map((event, idx) => (
             <div
-              key={idx}
+              key={event.startTime}
               className={styles.event}
               style={constructEventStyles(event)}
               onClick={() => console.log(event)}

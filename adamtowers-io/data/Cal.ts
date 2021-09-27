@@ -16,6 +16,7 @@ export async function getEvents(): Promise<GoogleCalendar.Schema$Event[]> {
 
     const startDate = new Date();
     // add some padding so client in any tz always has today full
+    startDate.setHours(0, 0, 0, 0);
     startDate.setDate(startDate.getDate() - 1);
     const timeMin = startDate.toISOString();
     const endDate = new Date();
