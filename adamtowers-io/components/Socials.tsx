@@ -1,4 +1,5 @@
 import styles from "./Socials.module.css";
+import Link from "next/link";
 
 const Socials = () => (
   <ul className={styles.container}>
@@ -37,6 +38,13 @@ const Socials = () => (
       >
         <i className="fa fa-envelope"></i>
       </a>
+    </li>
+    <li className={styles.li}>
+      <Link href="cal">
+        <a>
+          <i className="fa fa-calendar-day"></i>
+        </a>
+      </Link>
     </li>
   </ul>
 );
