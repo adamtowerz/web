@@ -1,10 +1,14 @@
 import { GetStaticProps } from "next";
+import dynamic from "next/dynamic";
 import type { calendar_v3 as GoogleCalendar } from "@googleapis/calendar";
 
 import { getEvents } from "data/Cal";
 
 import SingleColumn from "@/components/layout/SingleColumn";
-import Calendar from "@/components/cal/Calendar";
+
+const Calendar = dynamic(() => import("@/components/cal/Calendar"), {
+  ssr: false,
+});
 
 export const getStaticProps: GetStaticProps = async () => {
   const events = await getEvents();
