@@ -17,6 +17,7 @@
   --text-color: var(--dark-grey);
   --primary-font: "Montserrat", sans-serif;
   --brand-font: "Source+Sans+Pro", sans-serif;
+  --brand-border: 1px solid var(--text-color);
 
   font-family: var(--primary-font);
   color: var(--text-color);
@@ -47,6 +48,14 @@
 
 .color-primary {
   color: var(--primary);
+}
+
+.border {
+  border: var(--brand-border);
+}
+
+.border-bottom {
+  border-bottom: var(--brand-border);
 }
 
 html,
