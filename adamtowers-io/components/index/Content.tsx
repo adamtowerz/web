@@ -1,4 +1,5 @@
 import Popover from "./Popover";
+import Link from "next/link";
 
 const Content = () => {
   return (
@@ -286,7 +287,8 @@ const Content = () => {
 
       <p>
         I’m always happy to chat, feel free to email me at{" "}
-        <a href="mailto:adam@towers.email">adam@towers.email</a>. Tap an
+        <a href="mailto:adam@towers.email">adam@towers.email</a>. You can find
+        the silhouette of my calendar <Link href="/cal">here</Link>. Tap an
         underlined section to learn more.
       </p>
     </>

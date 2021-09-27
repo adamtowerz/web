@@ -25,10 +25,15 @@ export default function Cal({ events }: Props) {
   const endDate = new Date();
   endDate.setDate(endDate.getDate() + 21);
 
-  const mappedEvents = events.map((event) => ({
-    startTime: event.start.dateTime,
-    endTime: event.end.dateTime,
-  }));
+  const mappedEvents = [];
+  events.forEach((event) => {
+    if (event?.start?.dateTime && event?.end?.dateTime) {
+      mappedEvents.push({
+        startTime: event.start.dateTime,
+        endTime: event.end.dateTime,
+      });
+    }
+  });
 
   return (
     <SingleColumn header footer>
@@ -37,7 +42,6 @@ export default function Cal({ events }: Props) {
         endDate={endDate.toDateString()}
         events={mappedEvents}
       />
-      <div>{new Date().getTimezoneOffset()}</div>
     </SingleColumn>
   );
 }

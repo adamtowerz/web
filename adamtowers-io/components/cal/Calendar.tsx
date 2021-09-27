@@ -160,7 +160,7 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
 
           {range(dateDelta).map((delta, idx) => {
             const date = new Date(startDate);
-            date.setDate(new Date(startDate).getDate() + delta);
+            date.setDate(date.getDate() + delta);
 
             return (
               <div
@@ -176,7 +176,7 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
             );
           })}
 
-          {drawableEvents.map((event, idx) => (
+          {drawableEvents.map((event) => (
             <div
               key={event.startTime}
               className={classNames(styles.event, "hashed", "border")}
