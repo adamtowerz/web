@@ -52,4 +52,8 @@ export default async function handler(
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify({ post: post }));
   }
+
+  return {
+    revalidate: 10 * 60,
+  }
 }
