@@ -13,6 +13,7 @@
   footer {
     padding-bottom: 4rem;
     color: var(--text-color);
+    font-family: var(--brand-font);
   }
 }
 
@@ -23,4 +24,5 @@
 .titlebox > h1 {
   margin-bottom: 0;
   white-space: nowrap;
+  font-size: 4rem;
 }

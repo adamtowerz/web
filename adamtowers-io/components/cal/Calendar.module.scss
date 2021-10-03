@@ -48,9 +48,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  font-size: 15px;
+  margin-right: -1px; // no double border
 }
 
 .event {
   z-index: 3;
-  width: calc(100% + 1px); // for border width
+  width: calc(100% + 1px); // for border
+  height: calc(100% + 1px); // for border
 }

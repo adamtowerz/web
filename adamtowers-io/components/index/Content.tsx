@@ -5,9 +5,7 @@ const Content = () => {
   return (
     <>
       <p>
-        <b>I code, love mountain sports, and will beat you at Mario Kart.</b>
-        <br />
-        <i>(that might also be my tinder bio...)</i>
+        <b>I code, love mountain sports, and am really good at Mario Kart.</b>
       </p>
 
       <p>
@@ -288,7 +286,7 @@ const Content = () => {
       <p>
         I’m always happy to chat, feel free to email me at{" "}
         <a href="mailto:adam@towers.email">adam@towers.email</a>. You can find
-        the silhouette of my calendar <Link href="/cal">here</Link>. Tap an
+        the silhouette of my calendar <Link href="cal">here</Link>. Tap an
         underlined section to learn more.
       </p>
     </>

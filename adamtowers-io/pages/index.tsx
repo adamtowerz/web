@@ -39,11 +39,11 @@ export default function Home({ currentFeed, historyFeed, banner }: Props) {
       <SingleColumn header footer>
         <Content />
         <hr />
-        <section>
+        {/* <section>
           <h2>What I'm up to</h2>
           <Feed feed={currentFeed} />
         </section>
-        <hr />
+        <hr /> */}
         <section>
           <h2>What I've been up to</h2>
           <Feed feed={historyFeed} />
