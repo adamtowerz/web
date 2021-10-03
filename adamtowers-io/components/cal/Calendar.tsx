@@ -109,10 +109,15 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
   }
 
   const drawableEvents = events.filter((event) => {
-    return (
+    const dayDelta = getDayDelta(startDate, event.startTime);
+
+    const isInRange = dayDelta >= 0 && dayDelta <= dateDelta;
+
+    const isSingleDayEvent =
       new Date(event.startTime).toDateString() ===
-      new Date(event.endTime).toDateString()
-    );
+      new Date(event.endTime).toDateString();
+
+    return isSingleDayEvent && isInRange;
   });
 
   function constructEventStyles(event: Event): CSSProperties {
