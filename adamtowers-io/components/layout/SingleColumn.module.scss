@@ -24,5 +24,10 @@
 .titlebox > h1 {
   margin-bottom: 0;
   white-space: nowrap;
-  font-size: 4rem;
+
+  @media (min-aspect-ratio: 8/6) {
+    & {
+      font-size: 4rem;
+    }
+  }
 }
