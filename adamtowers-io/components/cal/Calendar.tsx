@@ -3,6 +3,8 @@ import range from "lodash/range";
 
 import styles from "./Calendar.module.scss";
 import classNames from "classnames";
+import { YYYYMMDD } from "@/utils/YYYYMMDD";
+import { Dayjs } from "dayjs";
 
 const MS_PER_DAY = 1_000 * 60 * 60 * 24;
 const DAYS = [
@@ -30,6 +32,13 @@ const MONTHS = [
 ];
 
 const HOUR_STRINGS = [
+  "12:00AM",
+  "01:00AM",
+  "02:00AM",
+  "03:00AM",
+  "04:00AM",
+  "05:00AM",
+  "06:00AM",
   "07:00AM",
   "08:00AM",
   "09:00AM",
@@ -49,38 +58,32 @@ const HOUR_STRINGS = [
   "11:00PM",
 ];
 
-type Event = {
-  startTime: string;
-  endTime: string;
+export type Event = {
+  startTime: Dayjs;
+  endTime: Dayjs;
+  id: string;
 };
 
 type Props = {
-  startDate: string;
-  endDate: string;
+  startDate: YYYYMMDD;
+  endDate: YYYYMMDD;
   events: Event[];
 };
 
-function getDayDelta(start: string, end: string) {
-  const startDate = new Date(start);
-  startDate.setHours(0, 0, 0, 0);
-  const endDate = new Date(end);
-  endDate.setHours(0, 0, 0, 0);
-
-  return Math.ceil((endDate.getTime() - startDate.getTime()) / MS_PER_DAY);
+function getDayDelta(start: Dayjs, end: Dayjs) {
+  return Math.floor(end.diff(start) / MS_PER_DAY);
 }
 
-function msSinceDayStarted(ts: string): number {
-  const date = new Date(ts);
-  const startOfDay = new Date(ts);
-  startOfDay.setHours(0, 0, 0, 0);
-  return date.getTime() - startOfDay.getTime();
+function msSinceDayStarted(datetime: Dayjs): number {
+  const startOfDay = new YYYYMMDD(datetime).toDayJs();
+  return datetime.diff(startOfDay);
 }
 
 const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
-  const dateDelta = getDayDelta(startDate, endDate);
+  const dateDelta = getDayDelta(startDate.toDayJs(), endDate.toDayJs()) + 1;
   const CalendarContainerStyles: CSSProperties = {
     display: "grid",
-    gridTemplateRows: `60px repeat(${(24 - 7) * 4}, 5px)`, // 1 header + 24 hours
+    gridTemplateRows: `60px repeat(${24 * 4}, 5px)`, // 1 header + 24 hours
     gridRowGap: "0px",
     gridTemplateColumns: `repeat(${dateDelta}, 100px)`,
     gridColumnGap: "0px",
@@ -89,12 +92,12 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
   function constructDayColContainerStyles(idx: number): CSSProperties {
     return {
       gridRowStart: 1,
-      gridRowEnd: (24 - 7) * 4 + 2,
+      gridRowEnd: 24 * 4 + 2,
       gridColumn: `${idx + 1}`,
     };
   }
 
-  function constructDayDescStyles(date: Date, idx: number): CSSProperties {
+  function constructDayDescStyles(date: Dayjs, idx: number): CSSProperties {
     return {
       gridColumn: `${idx + 1}`,
     };
@@ -109,37 +112,31 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
   }
 
   const drawableEvents = events.filter((event) => {
-    const dayDelta = getDayDelta(startDate, event.startTime);
-
-    const isInRange = dayDelta >= 0 && dayDelta <= dateDelta;
-
-    const isSingleDayEvent =
-      new Date(event.startTime).toDateString() ===
-      new Date(event.endTime).toDateString();
-
+    const isInRange =
+      startDate.isOnOrBefore(event.startTime) &&
+      endDate.isOnOrAfter(event.endTime);
+    const isSingleDayEvent = new YYYYMMDD(event.startTime).isSameDay(
+      event.endTime
+    );
     return isSingleDayEvent && isInRange;
   });
 
   function constructEventStyles(event: Event): CSSProperties {
-    const dayDelta = getDayDelta(startDate, event.startTime);
+    const dayDelta = getDayDelta(startDate.toDayJs(), event.startTime);
 
     return {
       gridColumn: dayDelta + 1,
       gridRowStart:
-        Math.floor(msSinceDayStarted(event.startTime) / 1000 / 60 / 15) -
-        7 * 4 +
-        2,
+        Math.floor(msSinceDayStarted(event.startTime) / 1000 / 60 / 15) + 2,
       gridRowEnd:
-        Math.ceil(msSinceDayStarted(event.endTime) / 1000 / 60 / 15) -
-        7 * 4 +
-        2,
+        Math.ceil(msSinceDayStarted(event.endTime) / 1000 / 60 / 15) + 2,
     };
   }
 
   return (
     <div className={classNames(styles.container, "border")}>
       <div className={styles.yLabelsContainer}>
-        {range(17).map((idx) => (
+        {range(24).map((idx) => (
           <div key={idx} className={styles.hourRowLabel}>
             {HOUR_STRINGS[idx]}
           </div>
@@ -147,7 +144,7 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
       </div>
       <div className={styles.daysContainer}>
         <div style={CalendarContainerStyles}>
-          {range(17).map((idx) => (
+          {range(24).map((idx) => (
             <div
               key={idx}
               className={styles.hourRow}
@@ -164,9 +161,7 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
           ))}
 
           {range(dateDelta).map((delta, idx) => {
-            const date = new Date(startDate);
-            date.setDate(date.getDate() + delta);
-
+            const date = startDate.toDayJs().add(delta, "day");
             return (
               <div
                 key={`desc-${idx}`}
@@ -174,16 +169,16 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
                 style={constructDayDescStyles(date, idx)}
               >
                 <div className={styles.dayDescMonth}>{`${
-                  MONTHS[date.getMonth()]
-                }. ${date.getDate()}`}</div>
-                <div className={styles.dayDescDay}>{DAYS[date.getDay()]}</div>
+                  MONTHS[date.month()]
+                }. ${date.date()}`}</div>
+                <div className={styles.dayDescDay}>{DAYS[date.day()]}</div>
               </div>
             );
           })}
 
-          {drawableEvents.map((event) => (
+          {drawableEvents.map((event, idx) => (
             <div
-              key={event.startTime}
+              key={event.id || idx}
               className={classNames(styles.event, "hashed", "border")}
               style={constructEventStyles(event)}
               onClick={() => console.log(event)}

@@ -11,6 +11,7 @@
     "@googleapis/calendar": "^0.2.0",
     "@types/classnames": "^2.2.11",
     "airtable": "^0.10.1",
+    "dayjs": "^1.10.7",
     "lodash": "^4.17.21",
     "next": "10.0.3",
     "next-mdx-remote": "^1.0.1",

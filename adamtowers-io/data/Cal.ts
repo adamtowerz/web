@@ -1,6 +1,6 @@
 import { calendar_v3 as GoogleCalendar } from "@googleapis/calendar";
 
-const CALENDARS = ["adam.towers77@gmail.com", "adam@towers.email"];
+const CALENDARS = ["adam.towers77@gmail.com", "adam@towers.email", "adam@productiv.com"];
 
 let googleCal: GoogleCalendar.Calendar | null = null;
 function initGoogleCalApi() {
