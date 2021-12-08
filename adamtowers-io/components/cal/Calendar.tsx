@@ -87,7 +87,7 @@ function getLocation(date: Dayjs) {
   }
 
   if (dateString >= '2021-12-14' && dateString <= '2021-12-16') {
-    return 'San Francisco'
+    return 'San Fran..'
   }
 
   if (dateString >= '2021-12-11' && dateString <= '2021-12-29') {
