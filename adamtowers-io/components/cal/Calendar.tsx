@@ -79,6 +79,24 @@ function msSinceDayStarted(datetime: Dayjs): number {
   return datetime.diff(startOfDay);
 }
 
+function getLocation(date: Dayjs) {
+  const dateString = date.format('YYYY-MM-DD');
+
+  if (dateString >= '2021-12-11' && dateString <= '2021-12-13') {
+    return 'L.A.'
+  }
+
+  if (dateString >= '2021-12-14' && dateString <= '2021-12-16') {
+    return 'San Francisco'
+  }
+
+  if (dateString >= '2021-12-11' && dateString <= '2021-12-29') {
+    return 'San Jose'
+  }
+
+  return 'Seattle'
+}
+
 const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
   const dateDelta = getDayDelta(startDate.toDayJs(), endDate.toDayJs()) + 1;
   const CalendarContainerStyles: CSSProperties = {
@@ -168,10 +186,8 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
                 className={classNames(styles.dayDesc, "border-bottom")}
                 style={constructDayDescStyles(date, idx)}
               >
-                <div className={styles.dayDescMonth}>{`${
-                  MONTHS[date.month()]
-                }. ${date.date()}`}</div>
-                <div className={styles.dayDescDay}>{DAYS[date.day()]}</div>
+                <div className={styles.dayDescDay}>{date.month() + 1}/{date.date()}, {date.format('ddd')}.</div>
+                <div className={styles.dayDescDay}>{getLocation(date)}</div>
               </div>
             );
           })}
