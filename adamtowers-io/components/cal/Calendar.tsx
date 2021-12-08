@@ -82,7 +82,7 @@ function msSinceDayStarted(datetime: Dayjs): number {
 function getLocation(date: Dayjs) {
   const dateString = date.format('YYYY-MM-DD');
 
-  if (dateString >= '2021-12-11' && dateString <= '2021-12-13') {
+  if (dateString >= '2021-12-10' && dateString <= '2021-12-12') {
     return 'L.A.'
   }
 
@@ -155,7 +155,7 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
       gridRowEnd:
         Math.ceil(msSinceDayStarted(event.endTime) / 1000 / 60 / 15) + 2,
         ...(isChristmas(event.startTime) && {
-          background: 'repeating-linear-gradient(45deg, var(--text-color), var(--text-color) 8px, red 8px, red 16px)'
+          background: 'repeating-linear-gradient(45deg, white, white 8px, red 8px, red 16px)'
         })
     };
   }
