@@ -97,6 +97,12 @@ function getLocation(date: Dayjs) {
   return 'Seattle'
 }
 
+function isChristmas(day: Dayjs) {
+  const dateString = day.format('YYYY-MM-DD');
+
+  return dateString >= '2021-12-24' && dateString <= '2021-12-27'
+}
+
 const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
   const dateDelta = getDayDelta(startDate.toDayJs(), endDate.toDayJs()) + 1;
   const CalendarContainerStyles: CSSProperties = {
@@ -148,6 +154,9 @@ const Calendar: React.FC<Props> = ({ startDate, endDate, events }) => {
         Math.floor(msSinceDayStarted(event.startTime) / 1000 / 60 / 15) + 2,
       gridRowEnd:
         Math.ceil(msSinceDayStarted(event.endTime) / 1000 / 60 / 15) + 2,
+        ...(isChristmas(event.startTime) && {
+          background: 'repeating-linear-gradient(45deg, var(--text-color), var(--text-color) 8px, red 8px, red 16px)'
+        })
     };
   }
 
