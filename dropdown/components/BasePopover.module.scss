@@ -1,0 +1,18 @@
+.container {
+    display: block;
+    position: relative;
+
+    &.inline {
+        display: inline;
+    }
+}
+
+.popoverContainer {
+    position: absolute;
+    z-index: 20;
+
+    &.top {
+        left: 50%;
+        transform: translate(-50%, -100%);
+    }
+}

@@ -1,0 +1,46 @@
+@import "./Vars.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+
+  p {
+    color: grey;
+  
+    a {
+      color: black;
+    }
+  }
+}
+
+.footer {
+  color: grey;
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 8px;
+
+  a {
+    color: black;
+  }
+
+  button {
+    color: black;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    font-family: monospace;
+    font-size: $fs-text-medium;
+  }
+}

@@ -1,0 +1,36 @@
+@import "../styles/Vars.scss";
+
+.container {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+
+  background-color: white;
+  padding: 8px;
+  border-radius: 8px 0 0px 8px;
+  border: 1px solid black;
+
+  transform: translateX(75%);
+  transition: transform 100ms ease-out;
+  &:hover {
+    transform: translateX(0);
+  }
+}
+
+.actionMenu {
+  display: flex;
+  align-items: center;
+
+  :global .btn {
+    border-radius: 6px;
+  }
+}
+
+.logo {
+  font-size: $fs-text-large;
+  padding: 4px;
+  margin-right: 8px;
+}

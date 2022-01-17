@@ -1,0 +1,76 @@
+@import "./Vars.scss";
+
+:root {
+  font-size: 18px;
+}
+
+// @media only screen and (max-width: 768px) {
+//   :root {
+//     font-size: 18px;
+//   }
+// }
+
+.red {
+  color: red;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 0;
+}
+
+input,
+.btn {
+  font-family: $font-family;
+  padding: 4px 8px;
+  outline-color: $color-accent;
+
+  &:not(:last-child) {
+    margin-right: 8px;
+  }
+
+  &:focus {
+    outline: 2px solid aquamarine;
+  }
+}
+
+input {
+  font-size: $fs-text-large;
+  background-color: white;
+  border: $border;
+}
+
+.btn {
+  font-size: $fs-text-large;
+  background-color: $color-accent;
+  border: $border;
+  cursor: pointer;
+
+  &.link {
+    font-size: $fs-text-medium;
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+  }
+
+  &:hover:not(.disabled),
+  &:hover:not(.loading) {
+    filter: contrast(1.5);
+  }
+
+  &.disabled,
+  &.loading {
+    filter: contrast(0.7) !important;
+    cursor: default;
+  }
+}
+
+hr {
+  border-top: 1px solid black;
+}

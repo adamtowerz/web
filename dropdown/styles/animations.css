@@ -1,0 +1,23 @@
+.slide-down-enter {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+.slide-down-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 200ms ease-out, opacity 200ms ease-out;
+}
+.slide-down-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+.slide-down-exit-active {
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 200ms ease-out, opacity 200ms ease-out;
+}
+
+.slide-down-exit-done {
+  opacity: 0;
+  transform: translateY(-100%);
+}

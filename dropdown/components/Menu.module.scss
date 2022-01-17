@@ -1,0 +1,34 @@
+@import '../styles/Vars.scss';
+
+.menuContainer {
+  padding: 0;
+  min-width: 128px;
+}
+
+.menuItemBtn {
+  width: 100%;
+  margin: 0 !important;
+  padding: 4px;
+  border: none;
+  position: relative;
+
+  border: 1px solid black;
+  background-color: white;
+
+  text-align: left;
+  font-size: $fs-text-md-sm;
+
+  &:hover {
+    filter: contrast(1) !important;
+  }
+
+  &:focus,
+  &:hover:focus {
+    background-color: $color-accent;
+    filter: contrast(1.5) !important;
+  }
+
+  &:focus {
+    z-index: 2;
+  }
+}

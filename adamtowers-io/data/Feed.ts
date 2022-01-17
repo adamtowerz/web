@@ -10,21 +10,26 @@ import {
 } from "../types";
 
 async function getEmployments(airtable: Airtable): Promise<Employment[]> {
-  const records = await airtable
-    .base("appga5u4QI2sqDov4")("Employment")
-    .select({
-      fields: [
-        "title",
-        "tag_line",
-        "desc",
-        "end_date",
-        "time_desc",
-        "image",
-        "link",
-        "link_label",
-      ],
-    })
-    .all();
+  let records = [];
+  try {
+    records = await airtable
+      .base("appga5u4QI2sqDov4")("Employment")
+      .select({
+        fields: [
+          "title",
+          "tag_line",
+          "desc",
+          "end_date",
+          "time_desc",
+          "image",
+          "link",
+          "link_label",
+        ],
+      })
+      .all();
+  } catch (e) {
+    console.warn(e);
+  }
 
   return await Promise.all(
     records.map(async (feedItem) => {
@@ -56,21 +61,26 @@ async function getEmployments(airtable: Airtable): Promise<Employment[]> {
 }
 
 async function getProjects(airtable: Airtable): Promise<Project[]> {
-  const records = await airtable
-    .base("appga5u4QI2sqDov4")("Project")
-    .select({
-      fields: [
-        "title",
-        "tag_line",
-        "desc",
-        "end_date",
-        "time_desc",
-        "image",
-        "link",
-        "link_label",
-      ],
-    })
-    .all();
+  let records = [];
+  try {
+    records = await airtable
+      .base("appga5u4QI2sqDov4")("Project")
+      .select({
+        fields: [
+          "title",
+          "tag_line",
+          "desc",
+          "end_date",
+          "time_desc",
+          "image",
+          "link",
+          "link_label",
+        ],
+      })
+      .all();
+  } catch (e) {
+    console.warn(e);
+  }
 
   return await Promise.all(
     records.map(async (feedItem) => {
@@ -102,21 +112,26 @@ async function getProjects(airtable: Airtable): Promise<Project[]> {
 }
 
 async function getAchievements(airtable: Airtable): Promise<Achievement[]> {
-  const records = await airtable
-    .base("appga5u4QI2sqDov4")("Achievement")
-    .select({
-      fields: [
-        "title",
-        "tag_line",
-        "desc",
-        "date",
-        "time_desc",
-        "image",
-        "link",
-        "link_label",
-      ],
-    })
-    .all();
+  let records = [];
+  try {
+    records = await airtable
+      .base("appga5u4QI2sqDov4")("Achievement")
+      .select({
+        fields: [
+          "title",
+          "tag_line",
+          "desc",
+          "date",
+          "time_desc",
+          "image",
+          "link",
+          "link_label",
+        ],
+      })
+      .all();
+  } catch (e) {
+    console.warn(e);
+  }
 
   return await Promise.all(
     records.map(async (feedItem) => {
@@ -148,12 +163,17 @@ async function getAchievements(airtable: Airtable): Promise<Achievement[]> {
 }
 
 async function getMoments(airtable: Airtable): Promise<Moment[]> {
-  const records = await airtable
-    .base("appga5u4QI2sqDov4")("Moment")
-    .select({
-      fields: ["title", "tag_line", "date", "time_desc"],
-    })
-    .all();
+  let records = [];
+  try {
+    records = await airtable
+      .base("appga5u4QI2sqDov4")("Moment")
+      .select({
+        fields: ["title", "tag_line", "date", "time_desc"],
+      })
+      .all();
+  } catch (e) {
+    console.warn(e);
+  }
 
   return await Promise.all(
     records.map(async (feedItem) => {
@@ -172,9 +192,7 @@ async function getMoments(airtable: Airtable): Promise<Moment[]> {
   );
 }
 
-export default async function getFeed(
-  airtable: Airtable
-): Promise<{
+export default async function getFeed(airtable: Airtable): Promise<{
   historyFeed: FeedItem[];
   currentFeed: FeedItem[];
 }> {

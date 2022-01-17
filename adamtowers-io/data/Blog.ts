@@ -18,12 +18,17 @@ export async function getAllPosts(
   airtable: Airtable,
   showPrivate: boolean = false
 ): Promise<BlogPostMeta[]> {
-  const records = await airtable
-    .base("appga5u4QI2sqDov4")("Blog")
-    .select({
-      fields: ["slug", "status", "title", "date_release", "date_edit"],
-    })
-    .all();
+  let records = [];
+  try {
+    records = await airtable
+      .base("appga5u4QI2sqDov4")("Blog")
+      .select({
+        fields: ["slug", "status", "title", "date_release", "date_edit"],
+      })
+      .all();
+  } catch (e) {
+    console.error(e);
+  }
 
   const posts: BlogPostMeta[] = records.map((record) => {
     const post: BlogPostMeta = {

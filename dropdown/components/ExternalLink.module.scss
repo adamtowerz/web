@@ -1,0 +1,65 @@
+@import "../styles/Vars.scss";
+
+.container {
+  display: inline-block;
+  position: relative;
+}
+
+.label {
+  position: relative;
+  z-index: 2;
+}
+
+.actionBtn {
+  background-color: transparent;
+  border-radius: 2px;
+  border: none;
+  font-size: 14px;
+  line-height: 14px;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  cursor: pointer;
+
+  &:not(:last-child) {
+    margin: 0;
+  }
+
+  &:hover {
+    background-color: $color-accent;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+
+  margin-left: 2px;
+}
+
+.popover {
+  background: white;
+  padding: 2px;
+  border-radius: 4px;
+  border: 1px solid black;
+
+  position: absolute;
+  left: calc(-3px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  a {
+    color: $color-accent;
+    filter: contrast(1.5);
+  }
+}
+
+.popoverLabel {
+  opacity: 0;
+  user-select: none;
+}

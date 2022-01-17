@@ -1,0 +1,37 @@
+.dropdownContainer {
+  position: relative;
+}
+
+.dropdownContainerClip {
+    clip-path: inset(-10px -10000px -10000px -10000px);
+    position: relative;
+    top: -10px; // enough for outline to show
+    z-index: 10;
+}
+
+.dropdownTarget > .dropdownTargetChevron {
+    display: inline-block;
+    transition: transform ease-in-out 100ms;
+    transform: rotate(0deg);
+}
+
+.dropdownTarget.open > .dropdownTargetChevron {
+    transform: rotate(180deg);
+}
+
+
+.dropdownDefaultTarget {
+  margin: 0 !important;
+  min-width: 128px;
+  position: relative;
+
+  &:focus {
+      z-index: 11;
+  }
+}
+
+.dropdownMenu {
+  position: absolute;
+  left: 0;
+  top: calc(100% - 1px + 10px);
+}
