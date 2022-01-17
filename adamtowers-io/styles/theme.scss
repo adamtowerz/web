@@ -10,9 +10,6 @@
   --light-primary: #128cf7;
   --dark-primary: #79addc;
   --primary: var(--light-primary);
-  --light-primary-accent: #12f7cc;
-  --dark-primary-accent: #4ce0d2;
-  --primary-accent: var(--light-primary-accent);
 
   --text-color: var(--dark-grey);
   --primary-font: "Nunito Sans", sans-serif;
@@ -36,7 +33,6 @@
     --background-color-dark: #262c37;
     --text-color: white;
     --primary: #3c3c3c;
-    --primary-accent: black;
   }
 }
 
@@ -146,7 +142,7 @@ a {
 }
 
 a:hover {
-  color: var(--light-primary-accent);
+  color: var(--light-primary);
 }
 
 ul {
