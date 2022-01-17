@@ -9,8 +9,7 @@ const Content = () => {
       </p>
 
       <p>
-        I'm a senior at the University of Washington, Seattle, studying computer
-        science and entrepreneurship. Over the last 3 years of college I’ve
+        I'm a recent computer science graduate from the University of Washington, Seattle. While at university, I
         founded{" "}
         <Popover
           popoverContent={
@@ -146,9 +145,9 @@ const Content = () => {
                 >
                   interdisciplinary honors program
                 </a>{" "}
-                has replaced my general education requirements with smaller
-                interdisciplinary courses. I've appreciated the honors program
-                as it has pushed me to take classes that are outside of my
+                replaced my general education requirements with smaller
+                interdisciplinary courses. I appreciated the honors program
+                as it pushed me to take classes that are outside of my
                 "strike zone" and that have highly passionate and engaged
                 professors.
               </p>
@@ -161,8 +160,8 @@ const Content = () => {
         >
           interdisciplinary honors program
         </Popover>
-        . My time at university is going by quickly, but I strongly believe I am
-        making the most of it.
+        . My time at university went by quickly, but I strongly believe I
+        made the most of it.
       </p>
 
       <p>
