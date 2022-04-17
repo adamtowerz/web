@@ -5,7 +5,7 @@
   --dark-grey: #222;
   --light-grey: #d8d8d8;
 
-  --background-color: #96c1e6;
+  --background-color: white;
   --background-color-dark: #527ea4;
   --light-primary: #128cf7;
   --dark-primary: #79addc;
@@ -36,11 +36,11 @@
   }
 }
 
-// @media (max-aspect-ratio: 8/6) {
-//   :root {
-//     font-size: 14px;
-//   }
-// }
+@media (max-aspect-ratio: 8/6) {
+  :root {
+    font-size: 14px;
+  }
+}
 
 .color-primary {
   color: var(--primary);

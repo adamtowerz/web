@@ -8,7 +8,7 @@ const Content = () => {
         <b>I code, love mountain sports, and am really good at Mario Kart.</b>
       </p>
 
-      <p>
+      {/* <p>
         I'm a recent computer science graduate from the University of Washington, Seattle. While at university, I
         founded{" "}
         <Popover
@@ -287,7 +287,7 @@ const Content = () => {
         <a href="mailto:adam@towers.email">adam@towers.email</a>. You can find
         the silhouette of my calendar <Link href="cal">here</Link>. Tap an
         underlined section to learn more.
-      </p>
+      </p> */}
     </>
   );
 };

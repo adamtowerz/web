@@ -37,7 +37,7 @@ export default function Home({ currentFeed, historyFeed, banner }: Props) {
     <>
       {banner && <Banner {...banner} className={styles.banner} />}
       <SingleColumn header footer>
-        <Content />
+        {/* <Content /> */}
         <hr />
         {/* <section>
           <h2>What I'm up to</h2>

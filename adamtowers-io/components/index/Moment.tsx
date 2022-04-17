@@ -11,7 +11,6 @@ const Moment = ({ title, tag_line, time_desc }: MomentRecord) => {
           {time_desc} - {tag_line}
         </p>
       </div>
-      <div role="presentation" className={styles.line} />
     </div>
   );
 };
