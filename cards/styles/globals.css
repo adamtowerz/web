@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* The animation code */
+@keyframes openCover {
+  0% {
+    transform: rotate3d(1, 0, 0, 0deg) translateZ(3px);
+  }
+  100% {
+    transform: rotate3d(1, 0, 0, 180deg) translateZ(3px);
+  }
+}
+
+/* The animation code */
+@keyframes upAndOut {
+  0% {
+    transform: translateY(0);
+  }
+  49% {
+    transform: translateY(-115%);
+  }
+  50% {
+    transform: translateY(-115%) translateZ(4px);
+  }
+  100% {
+    transform: translateY(0) translateZ(4px) scale(1.2, 1.2);
+  }
+}
