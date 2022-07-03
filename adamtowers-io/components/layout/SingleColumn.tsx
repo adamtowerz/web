@@ -6,8 +6,7 @@ import Socials from "../Socials";
 import styles from "./SingleColumn.module.scss";
 
 type Props = {
-  header?: boolean;
-  headerNode?: ReactNode;
+  header?: true | ReactNode;
   footer?: boolean;
   title?: string;
 };
@@ -27,14 +26,15 @@ const SingleColumn: React.FC<Props> = ({
   header,
   footer,
   children,
-  headerNode,
   title = DEFAULT_PAGE_TITLE,
 }) => {
   let headerForRender = null;
-  if (headerNode) {
-    headerForRender = headerNode;
-  } else if (header) {
-    headerForRender = DEFAULT_HEADER;
+  if (header) {
+    if (header === true) {
+      headerForRender = DEFAULT_HEADER;
+    } else {
+      headerForRender = header;
+    }
   }
 
   return (
@@ -55,7 +55,6 @@ const SingleColumn: React.FC<Props> = ({
         <footer>
           <hr />
           <Link href="/">Adam Towers</Link>
-          <Socials />
         </footer>
       )}
     </div>

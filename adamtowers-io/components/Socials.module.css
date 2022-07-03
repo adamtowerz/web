@@ -1,12 +1,12 @@
 .container {
   list-style: none;
-  margin: 1rem 0;
+  margin: 0.5em 0;
   padding-left: 0;
   display: flex;
 }
 
 .li {
-  margin: 0 0.5rem;
+  margin: 0 0.25em;
 }
 
 .li:first-child {

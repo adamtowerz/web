@@ -148,9 +148,7 @@ function Card() {
             fontFamily: "serif",
             transform: "translateZ(0.1px)",
             ...paperStyle,
-            ...(!isPaperOut && {
-              cursor: "pointer",
-            }),
+            cursor: "pointer",
           }}
         >
           <h1>Hello, world.</h1>
@@ -176,15 +174,17 @@ function Card() {
 
         <div
           className="w-full h-full relative"
-          onClick={toggleCover}
+          onClick={() => !isPaperOut && toggleCover()}
           style={{
-            cursor: "pointer",
             transform: "translateZ(3px)",
             transformOrigin: "top",
             transformStyle: "preserve-3d",
             ...coverStyle,
-            ...(!(isCoverOpen || isPaperOut) && {
+            ...(!isCoverOpen && {
               filter: "drop-shadow(-1px 30px 30px rgba(50, 50, 0, 0.8))",
+            }),
+            ...(!isPaperOut && {
+              cursor: "pointer",
             }),
           }}
         >

@@ -5,3 +5,19 @@
   margin: 1rem;
   margin-bottom: 0;
 }
+
+.titlebox {
+  margin-left: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 82vh;
+
+  font-size: 5vw;
+
+  h1 {
+    font-weight: normal;
+    font-size: 10vw;
+    margin-bottom: 0;
+  }
+}

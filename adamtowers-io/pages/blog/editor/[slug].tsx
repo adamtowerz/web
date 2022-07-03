@@ -64,7 +64,7 @@ export default function EditPost({ post }: Props) {
   return (
     <SingleColumn
       title="Blog Post Editor"
-      headerNode={
+      header={
         <header className={styles.header}>
           <h1>Edit Post</h1>
           <Button onClick={save} disable={!canSave}>

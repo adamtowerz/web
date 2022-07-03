@@ -10,6 +10,7 @@ import SingleColumn from "@/components/layout/SingleColumn";
 import Content from "@/components/index/Content";
 import Feed from "@/components/index/Feed";
 import Banner from "@/components/Banner";
+import Socials from "@/components/Socials";
 
 export const getStaticProps: GetStaticProps = async () => {
   const airtable = new Airtable({
@@ -32,11 +33,22 @@ type Props = {
   banner: BannerData | null;
 };
 
+function Header() {
+  return (
+    <header className={styles.titlebox}>
+      <h1>
+        Heya,<br/>I'm <u><i>Adam</i></u>
+      </h1>
+      <Socials />
+    </header>
+  );
+}
+
 export default function Home({ currentFeed, historyFeed, banner }: Props) {
   return (
     <>
       {banner && <Banner {...banner} className={styles.banner} />}
-      <SingleColumn header footer>
+      <SingleColumn header={<Header />} footer>
         {/* <Content /> */}
         <hr />
         {/* <section>
