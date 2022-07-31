@@ -13,11 +13,18 @@
   justify-content: center;
   min-height: 82vh;
 
-  font-size: 5vw;
+  font-size: 4rem;
 
   h1 {
     font-weight: normal;
-    font-size: 10vw;
+    font-size: 5rem;
+    line-height: 1.4;
     margin-bottom: 0;
+
+    i {
+      background-color: var(--light-primary);
+    }
   }
+
+  font-size: 32px;
 }

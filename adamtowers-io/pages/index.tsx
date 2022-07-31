@@ -37,7 +37,7 @@ function Header() {
   return (
     <header className={styles.titlebox}>
       <h1>
-        Heya,<br/>I'm <u><i>Adam</i></u>
+        Heya, I'm <i>Adam</i>
       </h1>
       <Socials />
     </header>
