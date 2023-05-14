@@ -3,6 +3,7 @@ import Article from "@/components/layout/Article";
 import ArticlePara from "@/components/layout/ArticlePara";
 import ArticleFootnote from "@/components/layout/ArticleFootnote";
 import ArticleCodeBlock from "@/components/layout/ArticleCodeBlock";
+import ArticleSection from "@/components/layout/ArticleSection";
 
 export default function ConcernsPost() {
   const title = `Concerns and why they should be separated`;
@@ -12,7 +13,6 @@ export default function ConcernsPost() {
       <Article footnotes>
         <>
           <h1>{title}</h1>
-
           <ArticlePara>
             published {published_desc}{" "}
             {/* {post.date_edit_desc && <>, last edited {post.date_edit_desc}</>} */}
@@ -20,111 +20,74 @@ export default function ConcernsPost() {
 
           <section>
             <ArticlePara>
-              I've heard the adage "separation of concerns" too many times to
-              have never found a trail guide to identifying concerns in the wild
-              and separating them when appropriate. So that's what I'll do here.
-            </ArticlePara>
-            <ArticlePara>
-              Following this introduction is an anthology of my thoughts
-              centered around how separation of concerns relates to other
-              fundamental principles of computer science.{" "}
-              <a href="#anthology">Click here to skip ahead.</a>
+              For how important "separation of concerns" is there are very few
+              resources that define it from first principles and explain how and
+              why to apply it. That's what I'll do here.
             </ArticlePara>
           </section>
 
-          <h2>Trail guide</h2>
-          <ArticlePara>
-            'Concerns' relate to the roles pieces of a system play and how these
-            pieces come together to accomplish their shared goal. These pieces
-            are called{" "}
-            <a
-              href="https://en.wikipedia.org/wiki/Modular_programming"
-              target="_blank"
-            >
-              modules
-            </a>{" "}
-            and they are units of code that do a job. This can be a function, a
-            class, a file, a server in the case of a distributed system, or any
-            other level of hierachy within your system. To discover what
-            'concerns' are, what separating them means, and why this is
-            important, we'll step into the shoes of a module and think about our
-            place in the system.
-          </ArticlePara>
           <section>
-            <h3>Defining 'concerns'</h3>
+            <h2>Starting at the start</h2>
             <ArticlePara>
-              Think about every function this module invokes, module it depends
-              on, and service it messages. Then think about what happens when
-              those things change. What if a function changes its behavior?
-              Changes its signature? Or ceases to exist? What if a module it
-              depends on or the service it messages change similarly? Probably
-              its going to break.
+              Separation of concerns is a technique for writing good code, but
+              what defines good code is not obvious. Let's start with defining
+              good code.
             </ArticlePara>
-            <ArticlePara>
-              Initially, let's say a concern is{" "}
-              <b>"for a module: code that breaks the module when it breaks"</b>.
-            </ArticlePara>
-            <ArticlePara>
-              In a world (this one) where every possible thing{" "}
-              <a
-                href="https://en.wikipedia.org/wiki/Murphy%27s_law"
-                target="_blank"
-              >
-                that can break will break
-              </a>
-              , everything is a 'concern'. The inherent fragility of code (or
-              rather the fragility of the humans that create it) means that the
-              only truly safe way to depend on code is to simply not depend on
-              it. And dependency is broad: invoking a function is dependence,
-              calling an API is dependence, reading a constant is dependence.
-            </ArticlePara>
-            <ArticlePara>
-              With that in mind, we'll adjust the definition: a concern is{" "}
-              <b>"code a module uses"</b>.
-            </ArticlePara>
-            <ArticlePara>
-              "Code", however, is too strict a definition. In truth, we're not
-              always concerned about the literal implementation itself as much
-              as the concept it encodes. There are multiple levels of concerns:
-            </ArticlePara>
-            <ul>
-              <li>
-                Easy: bug in code <br />
-                eg: a null pointer exception that needs to be patched
-              </li>
-              <li>
-                Medium: changes in code's abstractions <br />
-                eg: a function name changes and all clients need to be
-                refactored
-              </li>
-              <li>
-                Hard: changes in concepts implemented by code <br />
-                eg: the authentication paradigm changes and all clients must
-                understand and implement the new model
-              </li>
-            </ul>
-            <ArticlePara>
-              The most concerning case here is clearly the final one, which begs
-              a larger scope for what a concern is:
-            </ArticlePara>
+
             <ArticlePara center border pad>
-              a concern is <b>"a concept a module must comprehend"</b>.
+              <i>Good code</i> is{" "}
+              <b>
+                easy to understand, easy to use, easy to extend, easy to change,
+                and easy to test
+              </b>
+              .
+              <ArticleFootnote symbol="1">
+                Many people have many thoughts on what defines "good code", this
+                definition likely displeases them but its enough for now.
+              </ArticleFootnote>
+            </ArticlePara>
+
+            <ArticlePara>
+              Note that, in theory, good code can't solve harder problems than
+              bad code, its just easier to work with. In practice, however,
+              writing good code is a neccessary prerequisite for humans
+              attempting to solve complex problems because otherwise the
+              complexity will quickly overrun the author(s) &mdash; no matter
+              how bright they may be. Now onto the good stuff.
+            </ArticlePara>
+          </section>
+
+          <section>
+            <h2>
+              Defining <i>concern</i>
+            </h2>
+            <ArticlePara center border pad>
+              A <i>concern</i> is{" "}
+              <b>
+                a concept a{" "}
+                <a
+                  href="https://en.wikipedia.org/wiki/Modular_programming"
+                  target="_blank"
+                >
+                  module
+                </a>{" "}
+                must comprehend
+              </b>
             </ArticlePara>
             <ArticlePara>
-              This change from "dependence" to "comprehension" is a subtle one
-              but I think it offers a more easily applicable definition.
+              This use of "comprehension" instead of "dependence" is a subtle
+              one but I think it provides a more easily applicable definition.
               "Dependency" in software tends to refer to literal dependence at
               the code level, ie the import of a package or the invocation of a
-              function. "Comprehension" is at a higher level: what facts does
-              our module require to be true to operate as intended? There are
-              likely many facts that are not, and often cannot, be encoded or
-              enforced by code. Recognition of these is important for
-              identifying dangerous latent concerns that are potentially
-              important to separate.
+              function. "Comprehension" is at a higher level: what facts must
+              our module know to accomplish its goals? There are likely many
+              facts that are not, and often cannot, be encoded or enforced by
+              code. Recognition of these is important for identifying subtle
+              concerns that are potentially important to separate.
             </ArticlePara>
           </section>
           <section>
-            <h3>Types of concerns</h3>
+            <h2>Types of concerns</h2>
             <ArticlePara>
               Before diving into what it means to separate concerns, let's make
               this a bit more concrete. When thinking about software systems we
@@ -140,6 +103,10 @@ export default function ConcernsPost() {
                 Knowing how to call something remotely: API specs + location
               </li>
               <li>
+                Knowing properties of the environment: is this production? is{" "}
+                <code>process.env.X</code> arg set to <code>y</code>?
+              </li>
+              <li>
                 Knowing how something works (datastructures, runtime,
                 unspecified behavior)
               </li>
@@ -151,38 +118,107 @@ export default function ConcernsPost() {
             </ArticlePara>
           </section>
           <section>
-            <h3>Defining "separation"</h3>
+            <h2>
+              Defining <i>separation</i> (2)
+            </h2>
             <ArticlePara>
-              From our perspective as an individual module, we want to reduce
-              the concerns we have (or at least their magnitude). However, at a
-              global level the system still requires that behavior so we can't
-              simply remove the concerns and carry on with our day. To solve
-              both of these problems we move the concerns to other modules,
-              separating them from our module.
+              Consider the module <code>A</code> which comprehends concepts{" "}
+              <code>i,j,k,x,y,z</code> to accomplish goal <code>α</code>. Let's
+              assume all 6 concerns are fairly complex and nuanced, and are all
+              neccessary to achieve <code>α</code>. At this point <code>A</code>{" "}
+              is likely quite complex.
             </ArticlePara>
-            <ArticlePara center border pad>
-              Separation of concerns is{" "}
-              <b>
-                "reducing the concerns of a module by moving them to others"
-              </b>
-              .
+            <ArticlePara>
+              Starting with <code>i,j,k</code>, let's create the module{" "}
+              <code>B</code> to handle these responsibilities. To invoke{" "}
+              <code>B</code>, <code>A</code> must comprehend the interface of{" "}
+              <code>B</code> which we will name <code>b</code>. Now given{" "}
+              <code>B</code> and <code>b</code>, the complete concerns of{" "}
+              <code>A</code> are now <code>b,x,y,z</code>.
+            </ArticlePara>
+            <ArticlePara>
+              Then, lets do the same for <code>x,y,z</code> with a module{" "}
+              <code>C</code>. the complete concerns of <code>A</code> are now{" "}
+              <code>b,c</code>.
+            </ArticlePara>
+            <ArticlePara>
+              At this point it is important to that the set of all concerns
+              within our little system has actually increased. What was{" "}
+              <code>i,j,k,x,y,z</code> (6 total) is now{" "}
+              <code>i,j,k,x,y,z,b,c</code> (8 total). However, from the
+              perspective of <code>A</code> we have actually achieved something:
+              it only has 2 concerns (<code>b,c</code>) instead of its previous
+              6.
             </ArticlePara>
           </section>
           <section>
-            <h3>Why should I separate concerns?</h3>
+            <h2>
+              Defining <i>separation</i>
+            </h2>
             <ArticlePara>
-              Theoretically, no problem can be solved by seperating the concerns
-              of modules that could not be solved by one giant ball of{" "}
-              <s>spaghetti</s> code. In practice, however, without seperating
-              modules it quickly becomes nigh on impossible to write good code
-              <ArticleFootnote symbol="1">
-                Many people have many thoughts on what defines "good code", this
-                definition likely displeases them but its enough for now.
-              </ArticleFootnote>
-              .
+              From the perspective of an individual module, we want to reduce
+              the concerns we have (or at least their magnitude). However, at a
+              global level the system still requires that behavior so we can't
+              simply delete everything and carry on with our day. So we must
+              move the concerns to other modules, separating them from our
+              module. In this case, "it's not my problem" is the right answer.
+            </ArticlePara>
+            <ArticlePara center border pad>
+              <i>Separation of concerns</i> is{" "}
+              <b>reducing the concerns of a module by moving them to others</b>
             </ArticlePara>
             <ArticlePara>
-              Good code is easy to understand, easy to change, and easy to test.
+              Or, phrased using our definition from earlier:{" "}
+              <b>
+                "reducing the amount a module must comprehend by moving concepts
+                to other modules".
+              </b>
+            </ArticlePara>
+            <ArticlePara>
+              It is critical to note that moving code from <code>A</code> to{" "}
+              <code>B</code> does not inherently reduce the amount of concerns{" "}
+              <code>A</code> has, it only inherently reduces the amount of code
+              <ArticleFootnote symbol="2">
+                Reducing the amount of code is generally good, but not a goal of
+                its own. Using LoC (lines of code) as a metric to optimize will
+                yield incredibly bad (yet likely fascinating) code. For
+                evidence:{" "}
+                <a target="_blank" href="https://codegolf.stackexchange.com/">
+                  Stackoverflow's Code Golf community
+                </a>
+              </ArticleFootnote>
+              . It requires additional work to reduce the concerns. This work is
+              creating a new, simpler, interface for <code>B</code> using which{" "}
+              <code>A</code> can accomplish its origional goals without
+              understanding as much about other concepts as it did. It is
+              critical that this new interface is "lossy" (meaning that details
+              are hidden from the client) otherwise although the code has been
+              moved the concerns have not been.
+            </ArticlePara>
+            <h3>A formal definition</h3>
+            <ArticlePara>
+              Given the module <code>A</code> which comprehends concepts{" "}
+              <code>X,Y,Z</code> to accomplish goal <code>α</code>, construct
+              the module <code>B</code> such that <code>A</code> can use{" "}
+              <code>B</code> to accomplish <code>α</code> while comprehending
+              less than <code>X,Y,Z</code>.
+            </ArticlePara>
+
+            <ArticlePara>
+              This implies the existence of a function{" "}
+              <code>c: (concept) =&gt; number</code> which can measure the
+              "amount of comprehension" concepts are worth, this function is the
+              developer (you) applying the hierarchy above. This is good, if
+              this was fully formally provable we'd all be out of a job.
+            </ArticlePara>
+
+            <h3>With an example</h3>
+            <ArticlePara>TODO</ArticlePara>
+          </section>
+          <section>
+            <h2>Why does separating concerns yield good code?</h2>
+            <ArticlePara>Call back to good code</ArticlePara>
+            <ArticlePara>
               Separating our concerns enables us to make progress towards each
               of those goals.
             </ArticlePara>
@@ -208,9 +244,6 @@ export default function ConcernsPost() {
               </li>
             </ul>
           </section>
-          <p style={{ color: "red" }}>
-            nothing below this point has been changed
-          </p>
           <section>
             <h2>Separating concerns: an example</h2>
             <ArticlePara>
@@ -251,7 +284,7 @@ export default function ConcernsPost() {
               without understanding how it works. Our feature understands less
               details (less concerns) so the behavior has been 'abstracted' away
               from it.
-              <ArticleFootnote symbol="2">
+              <ArticleFootnote symbol="3">
                 I'd expect almost any concern that can be sufficiently seperated
                 from not one but many businesses to be a successful company
                 (even, and maybe especially, for non-technical concerns).
@@ -265,16 +298,13 @@ export default function ConcernsPost() {
               of the whole system. This is the core idea of separating concerns.
             </ArticlePara>
           </section>
-          <section>
-            <h3>Identifying concerns to separate</h3>
-          </section>
           <h2 id="anthology">Additional thoughts:</h2>
           <section>
             <h3>Declarative programming</h3>
             <ArticlePara>
               Although separation of concerns is predominantly applied at the
-              service level, I think there's an interesting point to be made at
-              the syntax level.
+              service or class level, I think there's an interesting point to be
+              made at the syntax level.
             </ArticlePara>
             <ArticlePara>
               Consider this example:
@@ -313,12 +343,6 @@ export default function ConcernsPost() {
               comprehension the code is simpler to read and the flow is easier
               to follow.
             </ArticlePara>
-          </section>
-          <section>
-            <h2>Rules of separation</h2>
-          </section>
-          <section>
-            <h2>Case Study: OSI Model</h2>
           </section>
         </>
       </Article>

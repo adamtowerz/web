@@ -253,7 +253,7 @@ h3 {
   padding-left: 0;
   padding-right: 0;
   padding-top: 0;
-  margin-bottom: 1.45rem;
+  margin-bottom: 0.75rem;
   color: inherit;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -270,7 +270,7 @@ h4 {
   padding-left: 0;
   padding-right: 0;
   padding-top: 0;
-  margin-bottom: 1.45rem;
+  margin-bottom: 0.45rem;
   color: inherit;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -599,6 +599,7 @@ tt:before,
 tt:after {
   letter-spacing: -0.2em;
   content: " ";
+  white-space: pre;
 }
 pre code:before,
 pre code:after,
