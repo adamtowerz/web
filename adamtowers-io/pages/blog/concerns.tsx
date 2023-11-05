@@ -4,13 +4,14 @@ import ArticlePara from "@/components/layout/ArticlePara";
 import ArticleFootnote from "@/components/layout/ArticleFootnote";
 import ArticleCodeBlock from "@/components/layout/ArticleCodeBlock";
 import ArticleSection from "@/components/layout/ArticleSection";
+import styles from "./blog.module.scss";
 
 export default function ConcernsPost() {
   const title = `Concerns and why they should be separated`;
   const published_desc = "xx/xx/xx";
   return (
     <SingleColumn title={title} footer>
-      <Article footnotes>
+      <Article footnotes className={styles.slug}>
         <>
           <h1>{title}</h1>
           <ArticlePara>

@@ -41,9 +41,7 @@ const Socials = () => (
     </li>
     <li className={styles.li}>
       <Link href="cal">
-        <a>
-          <i className="fa fa-calendar-day"></i>
-        </a>
+        <i className="fa fa-calendar-day"></i>
       </Link>
     </li>
   </ul>
