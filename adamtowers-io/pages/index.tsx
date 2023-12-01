@@ -2,7 +2,7 @@
 
 export default function Home() {
   return (
-    <div style={{ marginTop: '20px' }}>
+    <div style={{ marginTop: '20px', marginLeft: '4px', marginRight: '4px' }}>
       <h1 style={{ fontFamily: 'serif' }}>Heya, I'm Adam</h1>
       I like to code things, travel, play games with friends, and ski.
       <hr style={{ margin: '18px 4px' }} />
