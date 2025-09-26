@@ -96,48 +96,31 @@ const HeroImage = () => {
 
           @group(0) @binding(0) var<uniform> uniforms: Uniforms;
 
-          // Hash function for noise generation - returns vec2f for gradients
-          fn hash22(p: vec2f) -> vec2f {
-            var p3 = fract(vec3f(p.xyx) * vec3f(0.1031, 0.1030, 0.0973));
-            p3 += dot(p3, p3.yzx + 33.33);
-            return fract((p3.xx + p3.yz) * p3.zy);
-          }
-
-          // Simple hash for single value
-          fn hash12(p: vec2f) -> f32 {
+          // Better hash function
+          fn hash(p: vec2f) -> f32 {
             var p3 = fract(vec3f(p.xyx) * 0.1031);
             p3 += dot(p3, p3.yzx + 33.33);
             return fract((p3.x + p3.y) * p3.z);
           }
 
-          // Simplex noise function
-          fn simplex_noise(p: vec2f) -> f32 {
-            let K1 = 0.366025404; // (sqrt(3)-1)/2;
-            let K2 = 0.211324865; // (3-sqrt(3))/6;
+          // Simple 2D noise function
+          fn noise(p: vec2f) -> f32 {
+            let i = floor(p);
+            let f = fract(p);
 
-            let i = floor(p + (p.x + p.y) * K1);
-            let a = p - i + (i.x + i.y) * K2;
-            let o = select(vec2f(0.0, 1.0), vec2f(1.0, 0.0), a.x > a.y);
-            let b = a - o + K2;
-            let c = a - 1.0 + 2.0 * K2;
+            // Four corners of the grid cell
+            let a = hash(i);
+            let b = hash(i + vec2f(1.0, 0.0));
+            let c = hash(i + vec2f(0.0, 1.0));
+            let d = hash(i + vec2f(1.0, 1.0));
 
-            let h = max(0.5 - vec3f(dot(a, a), dot(b, b), dot(c, c)), vec3f(0.0));
+            // Smooth interpolation
+            let u = f * f * (3.0 - 2.0 * f);
 
-            // Generate proper gradient vectors
-            let ga = hash22(i) * 2.0 - 1.0;
-            let gb = hash22(i + o) * 2.0 - 1.0;
-            let gc = hash22(i + vec2f(1.0)) * 2.0 - 1.0;
-
-            let n = h * h * h * h * vec3f(
-              dot(a, ga),
-              dot(b, gb),
-              dot(c, gc)
-            );
-
-            return dot(n, vec3f(70.0));
+            return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
           }
 
-          // Fractional Brownian Motion (fBm) using simplex noise
+          // Fractional Brownian Motion (fBm) using the simpler noise
           fn fbm(p: vec2f) -> f32 {
             var value = 0.0;
             var amplitude = 0.5;
@@ -145,7 +128,7 @@ const HeroImage = () => {
             var pos = p;
 
             for (var i = 0; i < 4; i++) {
-              value += amplitude * simplex_noise(pos * frequency);
+              value += amplitude * (noise(pos * frequency) * 2.0 - 1.0); // Convert to -1 to 1 range
               pos *= 2.0;
               amplitude *= 0.5;
             }
@@ -177,18 +160,13 @@ const HeroImage = () => {
             let downscaled_coord = floor(fragCoord.xy / pixel_size) * pixel_size;
             let time = uniforms.time * 0.0003;
 
-            // Multiple sine waves to simulate noise - we know this works
-            let x = downscaled_coord.x * 0.01;
-            let y = downscaled_coord.y * 0.01;
-            let t = time;
+            // Much larger scale pattern - less noisy
+            let x = downscaled_coord.x * 0.03;
+            let y = downscaled_coord.y * 0.02;
 
-            // Create multiple octaves like fbm but with sine waves
-            let wave1 = sin(x * 3.0 + t * 2.0) * sin(y * 2.5 + t * 1.5);
-            let wave2 = sin(x * 6.0 + t * -1.0) * sin(y * 5.0 + t * 2.5) * 0.5;
-            let wave3 = sin(x * 12.0 + t * 3.0) * sin(y * 8.0 + t * -2.0) * 0.25;
-            let wave4 = sin(x * 24.0 + t * -4.0) * sin(y * 16.0 + t * 1.0) * 0.125;
-
-            let combined_noise = wave1 + wave2 + wave3 + wave4;
+            // Create smoother pseudo-random values
+            let noise = fbm(vec2f(x,y));
+            let combined_noise = fbm(vec2f(noise,time));
 
             // Color banding with dithering - ensure proper normalization
             let normalized_noise = clamp((combined_noise + 1.0) * 0.5, 0.0, 1.0); // Force into 0-1 range
