@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const HeroImage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isWebGPUSupported, setIsWebGPUSupported] = useState(false);
+  const [isWebGPUSupported, setIsWebGPUSupported] = useState<boolean | undefined>(undefined);
   const [colorMode, setColorMode] = useState(0); // 0=yellow, 1=red, 2=green, 3=blue, 4=purple
   const [isDarkMode, setIsDarkMode] = useState(false);
   const animationRef = useRef<number | undefined>(undefined);
@@ -335,6 +335,7 @@ const HeroImage = () => {
 
       } catch (error) {
         console.error('WebGPU initialization failed:', error);
+        setIsWebGPUSupported(false);
       }
     };
 
@@ -374,14 +375,14 @@ const HeroImage = () => {
   };
 
   return (
-    <div className="relative w-full h-64 overflow-hidden rounded-lg bg-gradient-to-br from-blue-900 to-purple-900">
+    <div className="relative w-full h-64 overflow-hidden rounded-lg">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full cursor-pointer"
         onClick={handleCanvasClick}
       />
-      {!isWebGPUSupported && (
-        <div className="absolute inset-0 flex items-center justify-center text-white/70">
+      {isWebGPUSupported === false && (
+        <div className="absolute inset-0 flex items-center justify-center font-mono">
           <div className="text-center">
             <div className="text-lg font-medium mb-2">WebGPU Visualization</div>
             <div className="text-sm">WebGPU not supported in this browser</div>
