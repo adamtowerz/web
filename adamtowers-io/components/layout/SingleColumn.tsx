@@ -9,6 +9,7 @@ type Props = {
   header?: true | ReactNode;
   footer?: boolean;
   title?: string;
+  children?: ReactNode;
 };
 
 export const DEFAULT_HEADER = (

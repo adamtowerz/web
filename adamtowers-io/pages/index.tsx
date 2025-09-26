@@ -6,7 +6,7 @@ export default function Home() {
             <hr style={{margin: '18px 4px'}}/>
             <section>
                 <ul style={{marginTop: '6px'}}>
-                    <li><i>2024 - now:</i> Lead AI at <a href="https://getclarify.ai/" target="_blank">Clarify</a> where we're making your CRM smarter
+                    <li><i>2024 - now:</i> Lead AI at <a href="https://clarify.ai/" target="_blank">Clarify</a> where we're making your CRM smarter
                     </li>
                     <li><i>2020 - 2024:</i> Worked at <a href="https://productiv.com/" target="_blank">Productiv</a> where I
                         built a bunch of platform features then led AI initiatives including the launch of <a

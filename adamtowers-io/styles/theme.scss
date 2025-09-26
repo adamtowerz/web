@@ -62,17 +62,12 @@ body {
   height: 100%;
   margin: 0;
   background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 #grand-container {
   display: flex;
   flex-direction: row;
-}
-
-h1,
-h2,
-h3 {
-  color: var(--text-color);
 }
 
 h1 {
