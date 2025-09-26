@@ -29,7 +29,7 @@ const SingleColumn: React.FC<Props> = ({
   children,
   title = DEFAULT_PAGE_TITLE,
 }) => {
-  let headerForRender = null;
+  let headerForRender: ReactNode = null;
   if (header) {
     if (header === true) {
       headerForRender = DEFAULT_HEADER;

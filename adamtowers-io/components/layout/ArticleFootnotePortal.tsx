@@ -1,7 +1,7 @@
 // does not support multiple on same page
 const FOOTNOTE_CONTAINER_ID = "footnotes";
 
-export function getFootnoteContainerEl(): HTMLElement {
+export function getFootnoteContainerEl(): HTMLElement | null {
   return document.getElementById(FOOTNOTE_CONTAINER_ID);
 }
 

@@ -25,7 +25,7 @@ const ArticleImage = ({
       })}
       style={style}
     >
-      <Image width={150} height={150} src={src} alt={caption} />
+      <Image width={150} height={150} src={src} alt={caption || ""} />
       {caption && <p>{caption}</p>}
     </div>
   );

@@ -4,7 +4,7 @@ import ArticlePara from "@/components/layout/ArticlePara";
 import ArticleFootnote from "@/components/layout/ArticleFootnote";
 import ArticleCodeBlock from "@/components/layout/ArticleCodeBlock";
 import ArticleSection from "@/components/layout/ArticleSection";
-import styles from "./blog.module.scss";
+import styles from "../../../styles/pages/blog/blog.module.scss";
 
 export default function ConcernsPost() {
     const title = `Ephermerality, Absurdism, & Actualization`;
