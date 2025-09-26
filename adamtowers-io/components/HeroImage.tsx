@@ -24,7 +24,7 @@ function useDarkMode() {
 const HeroImage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isWebGPUSupported, setIsWebGPUSupported] = useState<boolean | undefined>(undefined);
-  const [colorMode, setColorMode] = useState(0); // 0=yellow, 1=red, 2=green, 3=blue, 4=purple
+  const [colorMode, setColorMode] = useState(Math.floor(Math.random() * 5)); // 0=yellow, 1=red, 2=green, 3=blue, 4=purple
   const animationRef = useRef<number | undefined>(undefined);
   const isDarkMode = useDarkMode();
 
