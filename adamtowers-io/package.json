@@ -9,18 +9,21 @@
     "start": "next start"
   },
   "dependencies": {
-    "@googleapis/calendar": "^0.2.0",
     "classnames": "2.3.2",
     "dayjs": "^1.11.18",
     "lodash": "^4.17.21",
     "next": "15.5.4",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "sass": "^1.30.0"
+    "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^24.5.2",
     "@types/react": "^19.1.13",
+    "@webgpu/types": "^0.1.65",
+    "postcss": "^8.5.6",
+    "sass": "^1.30.0",
     "typescript": "^5.9.2"
   }
 }

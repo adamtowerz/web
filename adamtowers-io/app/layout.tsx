@@ -1,5 +1,6 @@
 import "../styles/base.css";
 import "../styles/theme.scss";
+import "../styles/tailwind.css";
 
 export default function RootLayout({
   children,

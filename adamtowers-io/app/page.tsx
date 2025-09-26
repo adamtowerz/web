@@ -1,11 +1,14 @@
+import HeroImage from '../components/HeroImage';
+
 export default function Home() {
     return (
-        <div style={{marginTop: '20px', marginLeft: '4px', marginRight: '4px'}}>
-            <h1 style={{fontFamily: 'serif'}}>Heya, I'm <strong >Adam</strong></h1>
+        <div className="p-3 md:p-6">
+            <HeroImage />
+            <div className="mt-6">
+                <h1 style={{fontFamily: 'serif'}}>Heya, I'm <strong >Adam</strong></h1>
             I like to code things, travel, play games with friends, and drive karts really fast.
-            <hr style={{margin: '18px 4px'}}/>
-            <section>
-                <ul style={{marginTop: '6px'}}>
+            <section className="mt-3 md:mt-6">
+                <ul className="!pl-0">
                     <li><i>2024 - now:</i> Lead AI at <a href="https://clarify.ai/" target="_blank">Clarify</a> where we're making your CRM smarter
                     </li>
                     <li><i>2020 - 2024:</i> Worked at <a href="https://productiv.com/" target="_blank">Productiv</a> where I
@@ -39,6 +42,7 @@ export default function Home() {
             {/*        <li>adam (at) towers (dot) email</li>*/}
             {/*    </ul>*/}
             {/*</section>*/}
+            </div>
         </div>
     );
 }
