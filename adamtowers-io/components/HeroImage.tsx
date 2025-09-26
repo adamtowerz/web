@@ -196,15 +196,15 @@ const HeroImage = () => {
 
             var target_color: vec3f;
             if (mode == 0) {
-              target_color = vec3f(1.0, 1.0, 0.0); // Yellow
+              target_color = vec3f(0.3, 0.3, 1.0); // Blue
             } else if (mode == 1) {
               target_color = vec3f(1.0, 0.0, 0.0); // Red
             } else if (mode == 2) {
               target_color = vec3f(0.0, 1.0, 0.0); // Green
             } else if (mode == 3) {
-              target_color = vec3f(0.3, 0.3, 1.0); // Blue
-            } else {
               target_color = vec3f(1.0, 0.0, 1.0); // Purple
+            } else {
+              target_color = vec3f(0.9, 0.9, 0.1); // Yellow
             }
 
             // Theme-aware color mixing
