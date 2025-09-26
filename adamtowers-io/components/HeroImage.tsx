@@ -200,7 +200,7 @@ const HeroImage = () => {
             } else if (mode == 1) {
               target_color = vec3f(1.0, 0.0, 0.0); // Red
             } else if (mode == 2) {
-              target_color = vec3f(0.0, 1.0, 0.0); // Green
+              target_color = vec3f(0.0, 0.8, 0.0); // Green
             } else if (mode == 3) {
               target_color = vec3f(1.0, 0.0, 1.0); // Purple
             } else {
