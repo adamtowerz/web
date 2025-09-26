@@ -2,12 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const HeroImage = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isWebGPUSupported, setIsWebGPUSupported] = useState<boolean | undefined>(undefined);
-  const [colorMode, setColorMode] = useState(0); // 0=yellow, 1=red, 2=green, 3=blue, 4=purple
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const animationRef = useRef<number | undefined>(undefined);
+function useDarkMode() {
+  const [isDarkMode, setIsDarkMode] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   // Theme detection effect
   useEffect(() => {
@@ -21,6 +17,17 @@ const HeroImage = () => {
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
+
+  return isDarkMode;
+}
+
+const HeroImage = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isWebGPUSupported, setIsWebGPUSupported] = useState<boolean | undefined>(undefined);
+  const [colorMode, setColorMode] = useState(0); // 0=yellow, 1=red, 2=green, 3=blue, 4=purple
+  const animationRef = useRef<number | undefined>(undefined);
+  const isDarkMode = useDarkMode();
+
 
   useEffect(() => {
     let device: GPUDevice;
@@ -96,39 +103,48 @@ const HeroImage = () => {
 
           @group(0) @binding(0) var<uniform> uniforms: Uniforms;
 
-          // Better hash function
-          fn hash(p: vec2f) -> f32 {
-            var p3 = fract(vec3f(p.xyx) * 0.1031);
+          // 3D hash function
+          fn hash3(p: vec3f) -> f32 {
+            var p3 = fract(p * 0.1031);
             p3 += dot(p3, p3.yzx + 33.33);
             return fract((p3.x + p3.y) * p3.z);
           }
 
-          // Simple 2D noise function
-          fn noise(p: vec2f) -> f32 {
+          // 3D noise function
+          fn noise3d(p: vec3f) -> f32 {
             let i = floor(p);
             let f = fract(p);
 
-            // Four corners of the grid cell
-            let a = hash(i);
-            let b = hash(i + vec2f(1.0, 0.0));
-            let c = hash(i + vec2f(0.0, 1.0));
-            let d = hash(i + vec2f(1.0, 1.0));
+            // Eight corners of the cube
+            let a = hash3(i);
+            let b = hash3(i + vec3f(1.0, 0.0, 0.0));
+            let c = hash3(i + vec3f(0.0, 1.0, 0.0));
+            let d = hash3(i + vec3f(1.0, 1.0, 0.0));
+            let e = hash3(i + vec3f(0.0, 0.0, 1.0));
+            let f_corner = hash3(i + vec3f(1.0, 0.0, 1.0));
+            let g = hash3(i + vec3f(0.0, 1.0, 1.0));
+            let h = hash3(i + vec3f(1.0, 1.0, 1.0));
 
             // Smooth interpolation
             let u = f * f * (3.0 - 2.0 * f);
 
-            return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+            // Trilinear interpolation
+            return mix(
+              mix(mix(a, b, u.x), mix(c, d, u.x), u.y),
+              mix(mix(e, f_corner, u.x), mix(g, h, u.x), u.y),
+              u.z
+            );
           }
 
-          // Fractional Brownian Motion (fBm) using the simpler noise
-          fn fbm(p: vec2f) -> f32 {
+          // 3D Fractional Brownian Motion (fBm)
+          fn fbm3d(p: vec3f) -> f32 {
             var value = 0.0;
             var amplitude = 0.5;
             var frequency = 1.0;
             var pos = p;
 
             for (var i = 0; i < 4; i++) {
-              value += amplitude * (noise(pos * frequency) * 2.0 - 1.0); // Convert to -1 to 1 range
+              value += amplitude * (noise3d(pos * frequency) * 2.0 - 1.0); // Convert to -1 to 1 range
               pos *= 2.0;
               amplitude *= 0.5;
             }
@@ -160,13 +176,12 @@ const HeroImage = () => {
             let downscaled_coord = floor(fragCoord.xy / pixel_size) * pixel_size;
             let time = uniforms.time * 0.0003;
 
-            // Much larger scale pattern - less noisy
-            let x = downscaled_coord.x * 0.03;
-            let y = downscaled_coord.y * 0.02;
+            // 3D noise coordinates with time as Z dimension
+            let x = downscaled_coord.x * 0.005;
+            let y = downscaled_coord.y * 0.0035;
 
-            // Create smoother pseudo-random values
-            let noise = fbm(vec2f(x,y));
-            let combined_noise = fbm(vec2f(noise,time));
+            // Single 3D fbm call for natural movement
+            let combined_noise = fbm3d(vec3f(x, y, time));
 
             // Color banding with dithering - ensure proper normalization
             let normalized_noise = clamp((combined_noise + 1.0) * 0.5, 0.0, 1.0); // Force into 0-1 range
@@ -187,7 +202,7 @@ const HeroImage = () => {
             } else if (mode == 2) {
               target_color = vec3f(0.0, 1.0, 0.0); // Green
             } else if (mode == 3) {
-              target_color = vec3f(0.0, 0.0, 1.0); // Blue
+              target_color = vec3f(0.3, 0.3, 1.0); // Blue
             } else {
               target_color = vec3f(1.0, 0.0, 1.0); // Purple
             }
