@@ -367,7 +367,7 @@ const HeroImage = () => {
         device.destroy();
       }
     };
-  }, [colorMode]);
+  }, [colorMode, isDarkMode]);
 
   const handleCanvasClick = () => {
     setColorMode((prev) => (prev + 1) % 5);
