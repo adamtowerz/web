@@ -3,15 +3,18 @@
 import { useEffect, useRef, useState } from 'react';
 
 function useDarkMode() {
-  const [isDarkMode, setIsDarkMode] = useState(false); // Default to false for SSR
+  // Initialize with the correct value immediately on the client
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window === 'undefined') return false; // SSR fallback
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
 
-  // Theme detection effect
+  // Theme detection effect for listening to changes
   useEffect(() => {
     // Only run on client side
     if (typeof window === 'undefined') return;
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setIsDarkMode(mediaQuery.matches);
 
     const handleChange = (e: MediaQueryListEvent) => {
       setIsDarkMode(e.matches);
