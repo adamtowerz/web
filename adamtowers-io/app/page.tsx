@@ -2,7 +2,7 @@ import HeroImage from '../components/HeroImage';
 
 export default function Home() {
     return (
-        <div className="p-3 md:p-6">
+        <div className="p-6 max-w-[600px] mx-auto">
             <HeroImage/>
             <div className="mt-6">
                 <h1 style={{ fontFamily: 'var(--font-family-headline)' }}>Heya, I'm Adam</h1>

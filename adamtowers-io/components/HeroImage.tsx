@@ -39,8 +39,12 @@ const HeroImage = () => {
     let device: GPUDevice;
     let context: GPUCanvasContext;
     let renderPipeline: GPURenderPipeline;
+    let crtPipeline: GPURenderPipeline;
     let uniformBuffer: GPUBuffer;
     let bindGroup: GPUBindGroup;
+    let crtBindGroup: GPUBindGroup;
+    let intermediateTexture: GPUTexture;
+    let sampler: GPUSampler;
 
     const initWebGPU = async () => {
       const canvas = canvasRef.current;
@@ -202,7 +206,7 @@ const HeroImage = () => {
 
             var target_color: vec3f;
             if (mode == 0) {
-              target_color = vec3f(0.3, 0.3, 1.0); // Blue
+              target_color = vec3f(0.4, 0.4, 1.0); // Blue
             } else if (mode == 1) {
               target_color = vec3f(1.0, 0.0, 0.0); // Red
             } else if (mode == 2) {
@@ -210,18 +214,86 @@ const HeroImage = () => {
             } else if (mode == 3) {
               target_color = vec3f(1.0, 0.0, 1.0); // Purple
             } else {
-              target_color = vec3f(0.9, 0.9, 0.1); // Yellow
+              target_color = vec3f(0.95, 0.95, 0.95); // White
             }
 
             // Theme-aware color mixing
             var color: vec3f;
-            if (is_dark) {
+            if (is_dark || mode == 4) {
               // Dark mode: mix from black to full color
               color = mix(vec3f(0.0), target_color, intensity);
             } else {
               // Light mode: mix from white background to target color
               color = mix(vec3f(0.9), target_color * 0.8, intensity);
             }
+
+            return vec4f(color, 1.0);
+          }
+        `;
+
+        // CRT post-processing shader
+        const crtShaderCode = /* wgsl */ `
+          struct Uniforms {
+            time: f32,
+            color_mode: f32,
+            is_dark_mode: f32,
+            resolution: vec2f,
+          }
+
+          @group(0) @binding(0) var<uniform> uniforms: Uniforms;
+          @group(0) @binding(1) var inputTexture: texture_2d<f32>;
+          @group(0) @binding(2) var inputSampler: sampler;
+
+          // CRT barrel distortion
+          fn barrelDistortion(uv: vec2f, amount: f32) -> vec2f {
+            let center = vec2f(0.5, 0.5);
+            let delta = uv - center;
+            let delta2 = delta * delta;
+            let r2 = delta2.x + delta2.y;
+            let factor = 1.0 + r2 * amount;
+            return center + delta * factor;
+          }
+
+          @fragment
+          fn main(@builtin(position) fragCoord: vec4f) -> @location(0) vec4f {
+            // Get resolution from texture dimensions instead of uniforms
+            let resolution = vec2f(textureDimensions(inputTexture));
+            var uv = fragCoord.xy / resolution;
+
+            // Pre-scale UV to zoom in slightly (eliminates black borders from distortion)
+            let zoom = 0.95;
+            uv = (uv - 0.5) * zoom + 0.5;
+
+            // Apply barrel distortion
+            let distortion_amount = 0.15;
+            uv = barrelDistortion(uv, distortion_amount);
+
+            // Clamp UVs
+            let clamped_uv = clamp(uv, vec2f(0.0), vec2f(1.0));
+
+            // Chromatic aberration (increased)
+            let aberration_amount = 0.025;
+            let r = textureSampleLevel(inputTexture, inputSampler, clamp(clamped_uv - vec2f(aberration_amount, 0.0), vec2f(0.0), vec2f(1.0)), 0.0).r;
+            let g = textureSampleLevel(inputTexture, inputSampler, clamped_uv, 0.0).g;
+            let b = textureSampleLevel(inputTexture, inputSampler, clamp(clamped_uv + vec2f(aberration_amount, 0.0), vec2f(0.0), vec2f(1.0)), 0.0).b;
+            var color = vec3f(r, g, b);
+
+            // Scanlines (reduced intensity)
+            let scanline = sin(fragCoord.y * 0.1) * 0.08;
+            color *= (1.0 - scanline);
+
+            // Vignette
+            let vignette_center = clamped_uv - vec2f(0.5);
+            let vignette = 1.0 - dot(vignette_center, vignette_center) * 0.8;
+            color *= vignette;
+
+            // Phosphor glow (reduced)
+            let glow_strength = 0.15;
+            color += color * glow_strength;
+
+            // Flicker
+            let flicker = 1.0 - (sin(uniforms.time * 0.00005) * 0.02);
+            color *= flicker;
 
             return vec4f(color, 1.0);
           }
@@ -234,6 +306,10 @@ const HeroImage = () => {
 
         const fragmentShader = device.createShaderModule({
           code: fragmentShaderCode,
+        });
+
+        const crtShader = device.createShaderModule({
+          code: crtShaderCode,
         });
 
         // Create uniform buffer
@@ -264,7 +340,7 @@ const HeroImage = () => {
           ],
         });
 
-        // Create render pipeline
+        // Create render pipeline (first pass - noise generation)
         renderPipeline = device.createRenderPipeline({
           layout: device.createPipelineLayout({
             bindGroupLayouts: [bindGroupLayout],
@@ -283,9 +359,84 @@ const HeroImage = () => {
           },
         });
 
-        // Animation loop
+        // Create intermediate texture for first pass
+        intermediateTexture = device.createTexture({
+          size: { width: canvas.width, height: canvas.height },
+          format,
+          usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+        });
+
+        // Create sampler for CRT shader
+        sampler = device.createSampler({
+          magFilter: 'nearest',
+          minFilter: 'nearest',
+        });
+
+        // Create CRT bind group layout (uniforms + texture + sampler)
+        const crtBindGroupLayout = device.createBindGroupLayout({
+          entries: [
+            {
+              binding: 0,
+              visibility: GPUShaderStage.FRAGMENT,
+              buffer: { type: 'uniform' as GPUBufferBindingType },
+            },
+            {
+              binding: 1,
+              visibility: GPUShaderStage.FRAGMENT,
+              texture: { sampleType: 'float' as GPUTextureSampleType },
+            },
+            {
+              binding: 2,
+              visibility: GPUShaderStage.FRAGMENT,
+              sampler: { type: 'filtering' as GPUSamplerBindingType },
+            },
+          ],
+        });
+
+        // Create CRT bind group
+        crtBindGroup = device.createBindGroup({
+          layout: crtBindGroupLayout,
+          entries: [
+            {
+              binding: 0,
+              resource: { buffer: uniformBuffer },
+            },
+            {
+              binding: 1,
+              resource: intermediateTexture.createView(),
+            },
+            {
+              binding: 2,
+              resource: sampler,
+            },
+          ],
+        });
+
+        // Create CRT pipeline (second pass - post-processing)
+        crtPipeline = device.createRenderPipeline({
+          layout: device.createPipelineLayout({
+            bindGroupLayouts: [crtBindGroupLayout],
+          }),
+          vertex: {
+            module: vertexShader,
+            entryPoint: 'main',
+          },
+          fragment: {
+            module: crtShader,
+            entryPoint: 'main',
+            targets: [{ format }],
+          },
+          primitive: {
+            topology: 'triangle-list',
+          },
+        });
+
+        // Animation loop with two-pass rendering
         const animate = (timestamp: number) => {
-          if (!canvas || !context || !device || !renderPipeline || !bindGroup || !uniformBuffer) return;
+          if (!canvas || !context || !device || !renderPipeline || !crtPipeline ||
+              !bindGroup || !crtBindGroup || !uniformBuffer || !intermediateTexture) {
+            return;
+          }
 
           try {
             // Update uniforms
@@ -298,13 +449,30 @@ const HeroImage = () => {
             ]);
             device.queue.writeBuffer(uniformBuffer, 0, uniformData);
 
-            // Get current texture and ensure it's from the same device
+            const commandEncoder = device.createCommandEncoder();
+
+            // First pass: Render noise to intermediate texture
+            const intermediateView = intermediateTexture.createView();
+            const firstPass = commandEncoder.beginRenderPass({
+              colorAttachments: [
+                {
+                  view: intermediateView,
+                  clearValue: { r: 0, g: 0, b: 0, a: 1 },
+                  loadOp: 'clear' as GPULoadOp,
+                  storeOp: 'store' as GPUStoreOp,
+                },
+              ],
+            });
+
+            firstPass.setPipeline(renderPipeline);
+            firstPass.setBindGroup(0, bindGroup);
+            firstPass.draw(6);
+            firstPass.end();
+
+            // Second pass: Apply CRT effect (simplified for now) to canvas
             const currentTexture = context.getCurrentTexture();
             const textureView = currentTexture.createView();
-
-            // Render
-            const commandEncoder = device.createCommandEncoder();
-            const renderPass = commandEncoder.beginRenderPass({
+            const secondPass = commandEncoder.beginRenderPass({
               colorAttachments: [
                 {
                   view: textureView,
@@ -315,10 +483,10 @@ const HeroImage = () => {
               ],
             });
 
-            renderPass.setPipeline(renderPipeline);
-            renderPass.setBindGroup(0, bindGroup);
-            renderPass.draw(6);
-            renderPass.end();
+            secondPass.setPipeline(crtPipeline);
+            secondPass.setBindGroup(0, crtBindGroup);
+            secondPass.draw(6);
+            secondPass.end();
 
             device.queue.submit([commandEncoder.finish()]);
           } catch (error) {
@@ -362,6 +530,9 @@ const HeroImage = () => {
       // Clean up WebGPU resources
       if (uniformBuffer) {
         uniformBuffer.destroy();
+      }
+      if (intermediateTexture) {
+        intermediateTexture.destroy();
       }
       if (device) {
         device.destroy();
