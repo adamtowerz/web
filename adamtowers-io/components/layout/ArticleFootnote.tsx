@@ -27,7 +27,7 @@ const ArticleFootnote = ({ symbol, children }: ArticleFootnoteProps) => {
           </sup>
           <p>{children}</p>
         </div>,
-        el
+        el as any
       )}
     </>
   );
