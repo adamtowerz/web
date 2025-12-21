@@ -1,93 +1,98 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import {useEffect, useRef, useState, useMemo} from 'react';
 
 function useDarkMode() {
-  // Initialize with the correct value immediately on the client
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window === 'undefined') return false; // SSR fallback
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+    // Initialize with the correct value immediately on the client
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        if (typeof window === 'undefined') return false; // SSR fallback
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    });
 
-  // Theme detection effect for listening to changes
-  useEffect(() => {
-    // Only run on client side
-    if (typeof window === 'undefined') return;
+    // Theme detection effect for listening to changes
+    useEffect(() => {
+        // Only run on client side
+        if (typeof window === 'undefined') return;
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsDarkMode(e.matches);
-    };
+        const handleChange = (e: MediaQueryListEvent) => {
+            setIsDarkMode(e.matches);
+        };
 
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+    }, []);
 
-  return isDarkMode;
+    return isDarkMode;
 }
 
 const HeroImage = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isWebGPUSupported, setIsWebGPUSupported] = useState<boolean | undefined>(undefined);
-  const [colorMode, setColorMode] = useState(Math.floor(Math.random() * 5)); // 0=yellow, 1=red, 2=green, 3=blue, 4=purple
-  const animationRef = useRef<number | undefined>(undefined);
-  const isDarkMode = useDarkMode();
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [isWebGPUSupported, setIsWebGPUSupported] = useState<boolean | undefined>(undefined);
+    const [colorMode, setColorMode] = useState(0); // Start with blue, randomize after mount
+    const animationRef = useRef<number | undefined>(undefined);
+    const isDarkMode = useDarkMode();
+
+    // Set random color mode after mount to avoid hydration mismatch
+    useEffect(() => {
+        setColorMode(Math.floor(Math.random() * 5));
+    }, []);
 
 
-  useEffect(() => {
-    let device: GPUDevice;
-    let context: GPUCanvasContext;
-    let renderPipeline: GPURenderPipeline;
-    let crtPipeline: GPURenderPipeline;
-    let uniformBuffer: GPUBuffer;
-    let bindGroup: GPUBindGroup;
-    let crtBindGroup: GPUBindGroup;
-    let intermediateTexture: GPUTexture;
-    let sampler: GPUSampler;
+    useEffect(() => {
+        let device: GPUDevice;
+        let context: GPUCanvasContext;
+        let renderPipeline: GPURenderPipeline;
+        let crtPipeline: GPURenderPipeline;
+        let uniformBuffer: GPUBuffer;
+        let bindGroup: GPUBindGroup;
+        let crtBindGroup: GPUBindGroup;
+        let intermediateTexture: GPUTexture;
+        let sampler: GPUSampler;
 
-    const initWebGPU = async () => {
-      const canvas = canvasRef.current;
-      if (!canvas) {
-        return;
-      }
+        const initWebGPU = async () => {
+            const canvas = canvasRef.current;
+            if (!canvas) {
+                return;
+            }
 
-      if (canvas.width === 0 || canvas.height === 0) {
-        return;
-      }
+            if (canvas.width === 0 || canvas.height === 0) {
+                return;
+            }
 
-      // Check WebGPU support
-      if (!navigator.gpu) {
-        console.log('WebGPU not supported');
-        return;
-      }
+            // Check WebGPU support
+            if (!navigator.gpu) {
+                console.log('WebGPU not supported');
+                return;
+            }
 
-      try {
-        const adapter = await navigator.gpu.requestAdapter();
-        if (!adapter) {
-          console.log('WebGPU adapter not available');
-          return;
-        }
+            try {
+                const adapter = await navigator.gpu.requestAdapter();
+                if (!adapter) {
+                    console.log('WebGPU adapter not available');
+                    return;
+                }
 
-        device = await adapter.requestDevice();
-        context = canvas.getContext('webgpu') as GPUCanvasContext;
+                device = await adapter.requestDevice();
+                context = canvas.getContext('webgpu') as GPUCanvasContext;
 
-        if (!context) {
-          console.log('WebGPU context not available');
-          return;
-        }
+                if (!context) {
+                    console.log('WebGPU context not available');
+                    return;
+                }
 
-        const format = navigator.gpu.getPreferredCanvasFormat();
-        context.configure({
-          device,
-          format,
-          alphaMode: 'premultiplied',
-        });
+                const format = navigator.gpu.getPreferredCanvasFormat();
+                context.configure({
+                    device,
+                    format,
+                    alphaMode: 'premultiplied',
+                });
 
-        setIsWebGPUSupported(true);
+                setIsWebGPUSupported(true);
 
-        // Vertex shader - simple quad covering the screen
-        const vertexShaderCode = /* wgsl */ `
+                // Vertex shader - simple quad covering the screen
+                const vertexShaderCode = /* wgsl */ `
           @vertex
           fn main(@builtin(vertex_index) vertexIndex: u32) -> @builtin(position) vec4f {
             let pos = array<vec2f, 6>(
@@ -102,8 +107,8 @@ const HeroImage = () => {
           }
         `;
 
-        // Fragment shader - simplex noise with color banding and dithering
-        const fragmentShaderCode = /* wgsl */ `
+                // Fragment shader - simplex noise with color banding and dithering
+                const fragmentShaderCode = /* wgsl */ `
           struct Uniforms {
             time: f32,
             color_mode: f32,
@@ -231,8 +236,8 @@ const HeroImage = () => {
           }
         `;
 
-        // CRT post-processing shader
-        const crtShaderCode = /* wgsl */ `
+                // CRT post-processing shader
+                const crtShaderCode = /* wgsl */ `
           struct Uniforms {
             time: f32,
             color_mode: f32,
@@ -299,268 +304,280 @@ const HeroImage = () => {
           }
         `;
 
-        // Create shaders
-        const vertexShader = device.createShaderModule({
-          code: vertexShaderCode,
-        });
+                // Create shaders
+                const vertexShader = device.createShaderModule({
+                    code: vertexShaderCode,
+                });
 
-        const fragmentShader = device.createShaderModule({
-          code: fragmentShaderCode,
-        });
+                const fragmentShader = device.createShaderModule({
+                    code: fragmentShaderCode,
+                });
 
-        const crtShader = device.createShaderModule({
-          code: crtShaderCode,
-        });
+                const crtShader = device.createShaderModule({
+                    code: crtShaderCode,
+                });
 
-        // Create uniform buffer
-        uniformBuffer = device.createBuffer({
-          size: 24, // WebGPU requires 16-byte alignment: 4+4+4+8 = 20 bytes, padded to 24
-          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-        });
+                // Create uniform buffer
+                uniformBuffer = device.createBuffer({
+                    size: 24, // WebGPU requires 16-byte alignment: 4+4+4+8 = 20 bytes, padded to 24
+                    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+                });
 
-        // Create bind group layout
-        const bindGroupLayout = device.createBindGroupLayout({
-          entries: [
-            {
-              binding: 0,
-              visibility: GPUShaderStage.FRAGMENT,
-              buffer: { type: 'uniform' as GPUBufferBindingType },
-            },
-          ],
-        });
+                // Create bind group layout
+                const bindGroupLayout = device.createBindGroupLayout({
+                    entries: [
+                        {
+                            binding: 0,
+                            visibility: GPUShaderStage.FRAGMENT,
+                            buffer: {type: 'uniform' as GPUBufferBindingType},
+                        },
+                    ],
+                });
 
-        // Create bind group
-        bindGroup = device.createBindGroup({
-          layout: bindGroupLayout,
-          entries: [
-            {
-              binding: 0,
-              resource: { buffer: uniformBuffer },
-            },
-          ],
-        });
+                // Create bind group
+                bindGroup = device.createBindGroup({
+                    layout: bindGroupLayout,
+                    entries: [
+                        {
+                            binding: 0,
+                            resource: {buffer: uniformBuffer},
+                        },
+                    ],
+                });
 
-        // Create render pipeline (first pass - noise generation)
-        renderPipeline = device.createRenderPipeline({
-          layout: device.createPipelineLayout({
-            bindGroupLayouts: [bindGroupLayout],
-          }),
-          vertex: {
-            module: vertexShader,
-            entryPoint: 'main',
-          },
-          fragment: {
-            module: fragmentShader,
-            entryPoint: 'main',
-            targets: [{ format }],
-          },
-          primitive: {
-            topology: 'triangle-list',
-          },
-        });
+                // Create render pipeline (first pass - noise generation)
+                renderPipeline = device.createRenderPipeline({
+                    layout: device.createPipelineLayout({
+                        bindGroupLayouts: [bindGroupLayout],
+                    }),
+                    vertex: {
+                        module: vertexShader,
+                        entryPoint: 'main',
+                    },
+                    fragment: {
+                        module: fragmentShader,
+                        entryPoint: 'main',
+                        targets: [{format}],
+                    },
+                    primitive: {
+                        topology: 'triangle-list',
+                    },
+                });
 
-        // Create intermediate texture for first pass
-        intermediateTexture = device.createTexture({
-          size: { width: canvas.width, height: canvas.height },
-          format,
-          usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
-        });
+                // Create intermediate texture for first pass
+                intermediateTexture = device.createTexture({
+                    size: {width: canvas.width, height: canvas.height},
+                    format,
+                    usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
+                });
 
-        // Create sampler for CRT shader
-        sampler = device.createSampler({
-          magFilter: 'nearest',
-          minFilter: 'nearest',
-        });
+                // Create sampler for CRT shader
+                sampler = device.createSampler({
+                    magFilter: 'nearest',
+                    minFilter: 'nearest',
+                });
 
-        // Create CRT bind group layout (uniforms + texture + sampler)
-        const crtBindGroupLayout = device.createBindGroupLayout({
-          entries: [
-            {
-              binding: 0,
-              visibility: GPUShaderStage.FRAGMENT,
-              buffer: { type: 'uniform' as GPUBufferBindingType },
-            },
-            {
-              binding: 1,
-              visibility: GPUShaderStage.FRAGMENT,
-              texture: { sampleType: 'float' as GPUTextureSampleType },
-            },
-            {
-              binding: 2,
-              visibility: GPUShaderStage.FRAGMENT,
-              sampler: { type: 'filtering' as GPUSamplerBindingType },
-            },
-          ],
-        });
+                // Create CRT bind group layout (uniforms + texture + sampler)
+                const crtBindGroupLayout = device.createBindGroupLayout({
+                    entries: [
+                        {
+                            binding: 0,
+                            visibility: GPUShaderStage.FRAGMENT,
+                            buffer: {type: 'uniform' as GPUBufferBindingType},
+                        },
+                        {
+                            binding: 1,
+                            visibility: GPUShaderStage.FRAGMENT,
+                            texture: {sampleType: 'float' as GPUTextureSampleType},
+                        },
+                        {
+                            binding: 2,
+                            visibility: GPUShaderStage.FRAGMENT,
+                            sampler: {type: 'filtering' as GPUSamplerBindingType},
+                        },
+                    ],
+                });
 
-        // Create CRT bind group
-        crtBindGroup = device.createBindGroup({
-          layout: crtBindGroupLayout,
-          entries: [
-            {
-              binding: 0,
-              resource: { buffer: uniformBuffer },
-            },
-            {
-              binding: 1,
-              resource: intermediateTexture.createView(),
-            },
-            {
-              binding: 2,
-              resource: sampler,
-            },
-          ],
-        });
+                // Create CRT bind group
+                crtBindGroup = device.createBindGroup({
+                    layout: crtBindGroupLayout,
+                    entries: [
+                        {
+                            binding: 0,
+                            resource: {buffer: uniformBuffer},
+                        },
+                        {
+                            binding: 1,
+                            resource: intermediateTexture.createView(),
+                        },
+                        {
+                            binding: 2,
+                            resource: sampler,
+                        },
+                    ],
+                });
 
-        // Create CRT pipeline (second pass - post-processing)
-        crtPipeline = device.createRenderPipeline({
-          layout: device.createPipelineLayout({
-            bindGroupLayouts: [crtBindGroupLayout],
-          }),
-          vertex: {
-            module: vertexShader,
-            entryPoint: 'main',
-          },
-          fragment: {
-            module: crtShader,
-            entryPoint: 'main',
-            targets: [{ format }],
-          },
-          primitive: {
-            topology: 'triangle-list',
-          },
-        });
+                // Create CRT pipeline (second pass - post-processing)
+                crtPipeline = device.createRenderPipeline({
+                    layout: device.createPipelineLayout({
+                        bindGroupLayouts: [crtBindGroupLayout],
+                    }),
+                    vertex: {
+                        module: vertexShader,
+                        entryPoint: 'main',
+                    },
+                    fragment: {
+                        module: crtShader,
+                        entryPoint: 'main',
+                        targets: [{format}],
+                    },
+                    primitive: {
+                        topology: 'triangle-list',
+                    },
+                });
 
-        // Animation loop with two-pass rendering
-        const animate = (timestamp: number) => {
-          if (!canvas || !context || !device || !renderPipeline || !crtPipeline ||
-              !bindGroup || !crtBindGroup || !uniformBuffer || !intermediateTexture) {
-            return;
-          }
+                // Animation loop with two-pass rendering
+                const animate = (timestamp: number) => {
+                    if (!canvas || !context || !device || !renderPipeline || !crtPipeline ||
+                        !bindGroup || !crtBindGroup || !uniformBuffer || !intermediateTexture) {
+                        return;
+                    }
 
-          try {
-            // Update uniforms
-            const uniformData = new Float32Array([
-              timestamp, // time
-              colorMode, // color_mode
-              isDarkMode ? 1.0 : 0.0, // is_dark_mode
-              canvas.width, // resolution.x
-              canvas.height, // resolution.y
-            ]);
-            device.queue.writeBuffer(uniformBuffer, 0, uniformData);
+                    try {
+                        // Update uniforms
+                        const uniformData = new Float32Array([
+                            timestamp, // time
+                            colorMode, // color_mode
+                            isDarkMode ? 1.0 : 0.0, // is_dark_mode
+                            canvas.width, // resolution.x
+                            canvas.height, // resolution.y
+                        ]);
+                        device.queue.writeBuffer(uniformBuffer, 0, uniformData);
 
-            const commandEncoder = device.createCommandEncoder();
+                        const commandEncoder = device.createCommandEncoder();
 
-            // First pass: Render noise to intermediate texture
-            const intermediateView = intermediateTexture.createView();
-            const firstPass = commandEncoder.beginRenderPass({
-              colorAttachments: [
-                {
-                  view: intermediateView,
-                  clearValue: { r: 0, g: 0, b: 0, a: 1 },
-                  loadOp: 'clear' as GPULoadOp,
-                  storeOp: 'store' as GPUStoreOp,
-                },
-              ],
-            });
+                        // First pass: Render noise to intermediate texture
+                        const intermediateView = intermediateTexture.createView();
+                        const firstPass = commandEncoder.beginRenderPass({
+                            colorAttachments: [
+                                {
+                                    view: intermediateView,
+                                    clearValue: {r: 0, g: 0, b: 0, a: 1},
+                                    loadOp: 'clear' as GPULoadOp,
+                                    storeOp: 'store' as GPUStoreOp,
+                                },
+                            ],
+                        });
 
-            firstPass.setPipeline(renderPipeline);
-            firstPass.setBindGroup(0, bindGroup);
-            firstPass.draw(6);
-            firstPass.end();
+                        firstPass.setPipeline(renderPipeline);
+                        firstPass.setBindGroup(0, bindGroup);
+                        firstPass.draw(6);
+                        firstPass.end();
 
-            // Second pass: Apply CRT effect (simplified for now) to canvas
-            const currentTexture = context.getCurrentTexture();
-            const textureView = currentTexture.createView();
-            const secondPass = commandEncoder.beginRenderPass({
-              colorAttachments: [
-                {
-                  view: textureView,
-                  clearValue: { r: 0, g: 0, b: 0, a: 1 },
-                  loadOp: 'clear' as GPULoadOp,
-                  storeOp: 'store' as GPUStoreOp,
-                },
-              ],
-            });
+                        // Second pass: Apply CRT effect (simplified for now) to canvas
+                        const currentTexture = context.getCurrentTexture();
+                        const textureView = currentTexture.createView();
+                        const secondPass = commandEncoder.beginRenderPass({
+                            colorAttachments: [
+                                {
+                                    view: textureView,
+                                    clearValue: {r: 0, g: 0, b: 0, a: 1},
+                                    loadOp: 'clear' as GPULoadOp,
+                                    storeOp: 'store' as GPUStoreOp,
+                                },
+                            ],
+                        });
 
-            secondPass.setPipeline(crtPipeline);
-            secondPass.setBindGroup(0, crtBindGroup);
-            secondPass.draw(6);
-            secondPass.end();
+                        secondPass.setPipeline(crtPipeline);
+                        secondPass.setBindGroup(0, crtBindGroup);
+                        secondPass.draw(6);
+                        secondPass.end();
 
-            device.queue.submit([commandEncoder.finish()]);
-          } catch (error) {
-            console.warn('WebGPU render error:', error);
-            // Skip this frame and continue
-          }
+                        device.queue.submit([commandEncoder.finish()]);
+                    } catch (error) {
+                        console.warn('WebGPU render error:', error);
+                        // Skip this frame and continue
+                    }
 
-          animationRef.current = requestAnimationFrame(animate);
+                    animationRef.current = requestAnimationFrame(animate);
+                };
+
+                // Start animation
+                animationRef.current = requestAnimationFrame(animate);
+
+            } catch (error) {
+                console.error('WebGPU initialization failed:', error);
+                setIsWebGPUSupported(false);
+            }
         };
 
-        // Start animation
-        animationRef.current = requestAnimationFrame(animate);
+        // Handle canvas resize
+        const handleResize = () => {
+            const canvas = canvasRef.current;
+            if (!canvas) return;
 
-      } catch (error) {
-        console.error('WebGPU initialization failed:', error);
-        setIsWebGPUSupported(false);
-      }
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        initWebGPU();
+
+        return () => {
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+                animationRef.current = undefined;
+            }
+            window.removeEventListener('resize', handleResize);
+
+            // Clean up WebGPU resources
+            if (uniformBuffer) {
+                uniformBuffer.destroy();
+            }
+            if (intermediateTexture) {
+                intermediateTexture.destroy();
+            }
+            if (device) {
+                device.destroy();
+            }
+        };
+    }, [colorMode, isDarkMode]);
+
+    const handleCanvasClick = () => {
+        setColorMode((prev) => (prev + 1) % 5);
     };
 
-    // Handle canvas resize
-    const handleResize = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
+    // Get the current color for the border with 50% opacity
+    const borderColor = useMemo(() => {
+        const colors = [
+            'rgba(102, 102, 255, 0.5)',  // Blue
+            'rgba(255, 0, 0, 0.5)',       // Red
+            'rgba(0, 204, 0, 0.5)',       // Green
+            'rgba(255, 0, 255, 0.5)',     // Purple
+            'rgba(242, 242, 242, 0.5)',   // White
+        ];
+        return colors[colorMode];
+    }, [colorMode]);
 
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * window.devicePixelRatio;
-      canvas.height = rect.height * window.devicePixelRatio;
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    initWebGPU();
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = undefined;
-      }
-      window.removeEventListener('resize', handleResize);
-
-      // Clean up WebGPU resources
-      if (uniformBuffer) {
-        uniformBuffer.destroy();
-      }
-      if (intermediateTexture) {
-        intermediateTexture.destroy();
-      }
-      if (device) {
-        device.destroy();
-      }
-    };
-  }, [colorMode, isDarkMode]);
-
-  const handleCanvasClick = () => {
-    setColorMode((prev) => (prev + 1) % 5);
-  };
-
-  return (
-    <div className="relative w-full h-64 overflow-hidden rounded-lg">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full cursor-pointer"
-        onClick={handleCanvasClick}
-      />
-      {isWebGPUSupported === false && (
-        <div className="absolute inset-0 flex items-center justify-center font-mono">
-          <div className="text-center">
-            <div className="text-lg font-medium mb-2">WebGPU Visualization</div>
-            <div className="text-sm">WebGPU not supported in this browser</div>
-          </div>
+    return (
+        <div className="relative w-full h-64 overflow-hidden rounded-lg" style={{border: `1px solid ${borderColor}`}} suppressHydrationWarning>
+            <canvas
+                ref={canvasRef}
+                className="absolute inset-0 w-full h-full cursor-pointer"
+                onClick={handleCanvasClick}
+            />
+            {isWebGPUSupported === false && (
+                <div className="absolute inset-0 flex items-center justify-center font-mono">
+                    <div className="text-center">
+                        <div className="text-lg font-medium mb-2">WebGPU Visualization</div>
+                        <div className="text-sm">WebGPU not supported in this browser</div>
+                    </div>
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default HeroImage;
