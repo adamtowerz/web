@@ -4,6 +4,7 @@ node_modules
 .env*
 yarn-error.log
 .vercel
+*.tsbuildinfo
 
 # pnpm
 .pnpm-store/
