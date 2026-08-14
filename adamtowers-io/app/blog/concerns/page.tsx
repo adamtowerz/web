@@ -3,14 +3,23 @@ import Article from "@/components/layout/Article";
 import ArticlePara from "@/components/layout/ArticlePara";
 import ArticleFootnote from "@/components/layout/ArticleFootnote";
 import ArticleCodeBlock from "@/components/layout/ArticleCodeBlock";
-import ArticleSection from "@/components/layout/ArticleSection";
 import styles from "../../../styles/pages/blog/blog.module.scss";
+import { pageMetadata } from "../../shared-metadata";
+
+const title = `Concerns and why they should be separated`;
+
+export const metadata = pageMetadata({
+  title,
+  description:
+    'Separation of concerns defined from first principles — what it actually ' +
+    "means, and how and why to apply it.",
+  type: "article",
+});
 
 export default function ConcernsPost() {
-  const title = `Concerns and why they should be separated`;
   const published_desc = "xx/xx/xx";
   return (
-    <SingleColumn title={title} footer>
+    <SingleColumn footer>
       <Article footnotes className={styles.slug}>
         <>
           <h1>{title}</h1>

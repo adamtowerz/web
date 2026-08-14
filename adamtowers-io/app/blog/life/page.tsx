@@ -1,17 +1,25 @@
 import SingleColumn from "@/components/layout/SingleColumn";
 import Article from "@/components/layout/Article";
 import ArticlePara from "@/components/layout/ArticlePara";
-import ArticleFootnote from "@/components/layout/ArticleFootnote";
-import ArticleCodeBlock from "@/components/layout/ArticleCodeBlock";
 import ArticleSection from "@/components/layout/ArticleSection";
 import styles from "../../../styles/pages/blog/blog.module.scss";
+import {pageMetadata} from "../../shared-metadata";
 
-export default function ConcernsPost() {
-    const title = `Ephermerality, Absurdism, & Actualization`;
+const title = `Ephermerality, Absurdism, & Actualization`;
+
+export const metadata = pageMetadata({
+    title,
+    description:
+        "Three properties of our strange and coincidental existence — ephemerality, " +
+        "absurdity, and actualization — and how I answer the question of meaning.",
+    type: "article",
+});
+
+export default function LifePost() {
     const published_desc = "12/23/2020";
     return (
-        <SingleColumn title={title} footer>
-            <Article footnotes className={styles.slug}>
+        <SingleColumn footer>
+            <Article className={styles.slug}>
                 <>
                     <h1>{title}</h1>
                     <ArticlePara>

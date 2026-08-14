@@ -74,22 +74,31 @@ post-processing pass, typed by `@webgpu/types`. It randomizes its color on mount
 specifically to avoid a hydration mismatch — keep any new randomness client-only for the same
 reason.
 
-## Known-broken legacy code
+## Metadata
 
-These predate the App Router migration. They compile, so the build won't warn you. Don't copy these
-patterns, and if you touch one of these files, fix it properly:
+Titles and social tags come from the App Router Metadata API. `SingleColumn` does **not** handle
+them — it used to, via `next/head`, which is inert in the App Router and left the whole site with
+no `<title>` at all.
 
-- **`components/layout/SingleColumn.tsx` uses `next/head`**, a Pages Router API that is a silent
-  no-op in the App Router. The consequence is real and verified: built pages ship with **no
-  `<title>` and no OG tags at all**. Fixing this means exporting a `metadata` object from each
-  route (or `generateMetadata`) and deleting the `<Head>` block.
-- **`components/layout/ArticleFootnote.tsx` guards on `process.browser`**, which was removed in
-  Next 12 and is now always `undefined`. Every footnote therefore renders `null` — the concerns
-  post has 7 footnotes and displays none of them. It also calls `ReactDOM.createPortal` from a
-  Server Component. A fix needs `'use client'` plus a real mount check.
-- **`components/ErrorPage.tsx` uses the Next 12 `<Link><a>` pattern**, which no longer works. The
-  file is dead code — nothing imports it. Prefer deleting it over fixing it. `app/not-found.tsx`
-  already does the same job correctly.
+Site-wide defaults (title template, description, OG, Twitter) live in `app/layout.tsx`. Per-route
+metadata goes through `pageMetadata()` in `app/shared-metadata.ts`. **Use that helper rather than
+writing `openGraph` inline**: Next replaces a parent's `openGraph` object wholesale instead of
+merging field by field, so a page that sets `openGraph: { title }` silently drops `siteName` from
+the root layout. Passing `description: undefined` likewise overrides the inherited description
+instead of falling back to it.
+
+`app/not-found.tsx` cannot export metadata — the App Router only supports that on
+`global-not-found.js` (experimental, off here). The 404 page inherits the default title, and Next
+injects `noindex` on 404s automatically.
+
+There is no `public/favicon.ico`. Add one at `app/favicon.ico` if you want Next to wire it up.
+
+## Footnotes
+
+`<ArticleFootnote symbol="1">` renders its marker inline and portals the note body into the
+container that `<Article footnotes>` places at the bottom. It is a Client Component because the
+portal target only exists after mount. Only pass `footnotes` to `Article` on pages that actually
+have footnotes, or you get a stray `<hr>` and an empty container.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

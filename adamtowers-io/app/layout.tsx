@@ -2,7 +2,29 @@ import "../styles/base.css";
 import "../styles/theme.scss";
 import "../styles/tailwind.css";
 
+import type {Metadata} from 'next'
 import {Playfair_Display, PT_Serif} from 'next/font/google'
+
+export const metadata: Metadata = {
+    metadataBase: new URL('https://adamtowers.io'),
+    title: {
+        default: 'Adam Towers',
+        template: '%s | Adam Towers',
+    },
+    description:
+        "Adam Towers builds things — mostly software. He leads AI at Clarify, and previously " +
+        'led AI initiatives at Productiv and founded DubHacks Next.',
+    authors: [{name: 'Adam Towers'}],
+    openGraph: {
+        type: 'website',
+        siteName: 'Adam Towers',
+    },
+    twitter: {
+        card: 'summary',
+        site: '@adamtowerz',
+        creator: '@adamtowerz',
+    },
+};
 
 const headlineFont = Playfair_Display({
     weight: '600',

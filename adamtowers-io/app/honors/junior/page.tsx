@@ -3,6 +3,13 @@ import SingleColumn from "@/components/layout/SingleColumn";
 import ArticleImage from "@/components/layout/ArticleImage";
 import ArticleImageSet from "@/components/layout/ArticleImageSet";
 import ArticleSection from "@/components/layout/ArticleSection";
+import { pageMetadata } from "../../shared-metadata";
+
+export const metadata = pageMetadata({
+  title: "Junior Year",
+  description: "Honors portfolio: junior year at the University of Washington.",
+  type: "article",
+});
 
 export default function Junior() {
   return (

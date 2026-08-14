@@ -3,6 +3,13 @@ import Image from "next/image";
 
 import styles from "../../styles/pages/honors/index.module.scss";
 import SingleColumn from "@/components/layout/SingleColumn";
+import { pageMetadata } from "../shared-metadata";
+
+export const metadata = pageMetadata({
+  title: "Honors Portfolio",
+  description:
+    "Where I actually learned things during college, and it mostly wasn't in a classroom.",
+});
 
 export default function Home() {
   return (
