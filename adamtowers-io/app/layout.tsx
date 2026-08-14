@@ -12,8 +12,8 @@ export const metadata: Metadata = {
         template: '%s | Adam Towers',
     },
     description:
-        "Adam Towers builds things — mostly software. He leads AI at Clarify, and previously " +
-        'led AI initiatives at Productiv and founded DubHacks Next.',
+        'Adam Towers builds things — mostly software. He founded Cura, the portfolio operating ' +
+        'system for the AI-native VC, and previously led AI at Clarify and Productiv.',
     authors: [{name: 'Adam Towers'}],
     openGraph: {
         type: 'website',

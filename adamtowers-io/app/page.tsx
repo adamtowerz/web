@@ -8,9 +8,12 @@ export default function Home() {
                 <h1 style={{ fontFamily: 'var(--font-family-headline)' }}>Heya, I'm Adam</h1>
                 I like to build things (mostly software), travel, play games with friends, and drive karts quick.
                 <section className="mt-3 md:mt-6 grid! gap-x-4 gap-y-2 grid-cols-[min-content_1fr] auto-rows-min">
-                    <i className="text-right text-nowrap">2024 - now</i>
-                    <p className="mb-0!">I lead AI at <a href="https://clarify.ai/" target="_blank">Clarify</a>, where
-                        we're making your CRM smarter</p>
+                    <i className="text-right text-nowrap">2026 - now</i>
+                    <p className="mb-0!">Founded <a href="https://cura.inc" target="_blank">Cura</a>, the portfolio
+                        operating system for the AI-native VC</p>
+                    <i className="text-right text-nowrap">2024 - 2026</i>
+                    <p className="mb-0!">Led AI at <a href="https://clarify.ai/" target="_blank">Clarify</a>, where
+                        we made your CRM smarter</p>
                     <i className="text-right text-nowrap">2020 - 2024</i>
                     <p className="mb-0!">Worked at <a href="https://productiv.com/" target="_blank">Productiv</a> where
                         I
