@@ -1,0 +1,4 @@
+allowBuilds:
+  '@parcel/watcher': true
+overrides:
+  '@types/react': 19.2.18
