@@ -3,9 +3,12 @@
 Adam Towers' personal site: a small Next.js App Router site (landing page, two blog posts, an
 honors portfolio). Static — every route prerenders, there is no database, API, or auth.
 
-This directory is one project inside the `web` repo, which is a loose monorepo: there is **no root
-`package.json` and no workspace tooling**. Each project (`adamtowers-io`, `ajt-to`, `cards`,
-`dropdown`) is standalone. Run all commands from this directory, not the repo root.
+This directory is one project inside the `web` repo, which is a loose monorepo with no workspace
+tooling. Each project (`adamtowers-io`, `ajt-to`, `cards`, `dropdown`) is standalone — run all
+commands from this directory, not the repo root. The repo root does have a `package.json`, but
+it only exists to pin `packageManager` for Vercel's Corepack detection (which reads that field
+from the true repo root, not the project's configured Root Directory); it has no dependencies
+and isn't a workspace root.
 
 ## Commands
 
