@@ -1,10 +1,12 @@
 import HeroImage from '../components/HeroImage';
+import PrintedText from '../components/PrintedText';
 
 export default function Home() {
     return (
         <div className="p-6 max-w-[600px] mx-auto">
-            <HeroImage/>
-            <div className="mt-6">
+            {/* Doesn't match the current aesthetic. */}
+            {/* <HeroImage/> */}
+            <PrintedText className="mt-6">
                 <h1 style={{ fontFamily: 'var(--font-family-headline)' }}>Heya, I'm Adam</h1>
                 I like to build things (mostly software), travel, play games with friends, and drive karts quick.
                 <section className="mt-3 md:mt-6 grid! gap-x-4 gap-y-2 grid-cols-[min-content_1fr] auto-rows-min">
@@ -49,7 +51,7 @@ export default function Home() {
                 {/*        <li>adam (at) towers (dot) email</li>*/}
                 {/*    </ul>*/}
                 {/*</section>*/}
-            </div>
+            </PrintedText>
         </div>
     );
 }
