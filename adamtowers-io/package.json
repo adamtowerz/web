@@ -26,6 +26,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "postcss": "^8.5.26",
     "sass": "^1.102.0",
+    "tweakpane": "^4.0.5",
     "typescript": "^7.0.2"
   }
 }
