@@ -1,4 +1,4 @@
-@import "./Vars.scss";
+@use "./Vars.scss" as *;
 
 :root {
   font-size: 18px;

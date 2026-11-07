@@ -1,4 +1,4 @@
-@import "./Vars.scss";
+@use "./Vars.scss" as *;
 
 .container {
   display: flex;
