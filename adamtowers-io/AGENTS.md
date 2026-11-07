@@ -35,7 +35,10 @@ There is no test suite, linter, or formatter configured. `pnpm build` is the che
 - **Tailwind CSS v4**, CSS-first config. There is **no `tailwind.config.js`** — the entire config is
   `@import "tailwindcss";` in `styles/tailwind.css`. Use the v4 postfix important syntax (`mb-0!`),
   not the v3 prefix form (`!mb-0`).
-- **pnpm**, pinned via `packageManager`.
+- **pnpm 12**, pinned via `packageManager` (here and in the repo-root `package.json` — keep them
+  in sync). `pnpm-workspace.yaml` sets `virtualStoreType: project` on purpose: a global virtual
+  store symlinks `node_modules/next` outside the project, and Turbopack refuses to resolve it
+  ("Could not find the Next.js package").
 
 ## Layout
 
