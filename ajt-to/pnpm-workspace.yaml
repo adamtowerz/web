@@ -1,0 +1,5 @@
+allowBuilds:
+  '@parcel/watcher': true
+minimumReleaseAgeExclude:
+  - sass@1.108.1
+virtualStoreType: project

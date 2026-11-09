@@ -1,22 +1,15 @@
-import { GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import { getLinkForAlias } from "../api/alias";
-import Page404 from "./404";
 
-const RedirectURL = () => {
-  return <Page404 />;
-};
+const RedirectURL = () => null;
 
 export default RedirectURL;
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const { res } = context;
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const alias = context.query.alias as string;
   const link = await getLinkForAlias(alias);
-  if (link) {
-    res.writeHead(301, { location: link });
-    res.end();
+  if (!link) {
+    return { notFound: true };
   }
-  return { props: {} };
+  return { redirect: { destination: link, statusCode: 301 } };
 };
