@@ -24,12 +24,19 @@ export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 template = true
 
 [sandbox]
-# nvm's Node installs, and the standalone pnpm install (read-only). pnpm has to
-# see ~/Library/pnpm, not just the store inside it, or it decides the default
-# store is unusable and puts a .pnpm-store in the worktree.
+# nvm's Node installs, and the standalone pnpm install (read-only).
 readable = ["~/.nvm", "~/Library/pnpm"]
-# Download caches: Corepack's pnpm binaries, pnpm's content store and metadata cache.
-writable = ["~/.cache/node/corepack", "~/Library/pnpm/store", "~/Library/Caches/pnpm"]
+# Download caches: Corepack's pnpm binaries, pnpm's content store and metadata
+# cache, and the pnpm versions it installs to match `packageManager`.
+# pnpm also tests that it can link files between the project and ~/Library/pnpm
+# with _tmp_* files there; if that fails it uses a .pnpm-store in the worktree.
+writable = [
+  "~/.cache/node/corepack",
+  "~/Library/pnpm/store",
+  "~/Library/pnpm/package-manager-store",
+  "~/Library/pnpm/_tmp_*",
+  "~/Library/Caches/pnpm",
+]
 
 [[ports]]
 name = "adamtowers-io"
