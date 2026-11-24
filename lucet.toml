@@ -4,30 +4,51 @@
 # Only adamtowers-io and ajt-to are set up: they are the maintained sites
 # (pnpm, Next 16). cards and dropdown are legacy (yarn, Next 10/12) and need
 # an older Node; install them by hand if you ever need to work on them.
-
-[container]
-# Next 16 needs Node >= 20.9. node:24 still ships Corepack, which provides the
-# pnpm version pinned by `packageManager` in package.json.
-image = "node:24"
-memory = "4g"
-env = ["COREPACK_ENABLE_DOWNLOAD_PROMPT=0", "NEXT_TELEMETRY_DISABLED=1"]
+#
+# Worktrees run on the Mac in a sandbox, using the Node 24 installed via nvm.
+# The sandbox doesn't pass NVM_DIR or the login shell's PATH through, so every
+# command loads nvm itself; Corepack then provides the pnpm version pinned by
+# `packageManager`.
 
 [worktree]
-setup = """
+isolation = "macos-sandbox"
+setup = { run = """
 set -e
-corepack enable
+export NVM_DIR="$HOME/.nvm"; . /opt/homebrew/opt/nvm/nvm.sh; nvm use --silent default
+export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 (cd adamtowers-io && pnpm install --frozen-lockfile)
 (cd ajt-to && pnpm install --frozen-lockfile)
-"""
+""", incremental = true }
+# Keep an installed copy of main so new worktrees start with node_modules
+# already in place (pnpm's project-local virtual store clones cleanly).
+template = true
 
-# Dev servers must bind 0.0.0.0 to be reachable through the port forward, e.g.
-#   cd adamtowers-io && pnpm dev -H 0.0.0.0 -p 3000
-#   cd ajt-to        && pnpm dev -H 0.0.0.0 -p 3001
-# then open http://127.0.0.1:$LUCET_PORT_<NAME> on the Mac.
+[sandbox]
+# nvm and its Node installs (read-only).
+readable = ["~/.nvm"]
+# Download caches: Corepack's pnpm binaries, pnpm's content store and metadata cache.
+writable = ["~/.cache/node/corepack", "~/Library/pnpm/store", "~/Library/Caches/pnpm"]
+
 [[ports]]
 name = "adamtowers-io"
-container = 3000
+container = 3000   # ignored on the Mac; the dev server listens on $LUCET_PORT_ADAMTOWERS_IO
 
 [[ports]]
 name = "ajt-to"
-container = 3001
+container = 3001   # ignored on the Mac; the dev server listens on $LUCET_PORT_AJT_TO
+
+[run.adamtowers-io]
+description = "adamtowers-io dev server (next dev)"
+command = '''
+export NVM_DIR="$HOME/.nvm"; . /opt/homebrew/opt/nvm/nvm.sh; nvm use --silent default
+export NEXT_TELEMETRY_DISABLED=1
+cd adamtowers-io && exec pnpm dev -p "$LUCET_PORT_ADAMTOWERS_IO"
+'''
+
+[run.ajt-to]
+description = "ajt-to dev server (next dev)"
+command = '''
+export NVM_DIR="$HOME/.nvm"; . /opt/homebrew/opt/nvm/nvm.sh; nvm use --silent default
+export NEXT_TELEMETRY_DISABLED=1
+cd ajt-to && exec pnpm dev -p "$LUCET_PORT_AJT_TO"
+'''
