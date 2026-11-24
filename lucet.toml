@@ -1,0 +1,33 @@
+# Lucet config for the `web` monorepo. Each project directory is standalone
+# (no workspace tooling), so setup installs each one separately.
+#
+# Only adamtowers-io and ajt-to are set up: they are the maintained sites
+# (pnpm, Next 16). cards and dropdown are legacy (yarn, Next 10/12) and need
+# an older Node; install them by hand if you ever need to work on them.
+
+[container]
+# Next 16 needs Node >= 20.9. node:24 still ships Corepack, which provides the
+# pnpm version pinned by `packageManager` in package.json.
+image = "node:24"
+memory = "4g"
+env = ["COREPACK_ENABLE_DOWNLOAD_PROMPT=0", "NEXT_TELEMETRY_DISABLED=1"]
+
+[worktree]
+setup = """
+set -e
+corepack enable
+(cd adamtowers-io && pnpm install --frozen-lockfile)
+(cd ajt-to && pnpm install --frozen-lockfile)
+"""
+
+# Dev servers must bind 0.0.0.0 to be reachable through the port forward, e.g.
+#   cd adamtowers-io && pnpm dev -H 0.0.0.0 -p 3000
+#   cd ajt-to        && pnpm dev -H 0.0.0.0 -p 3001
+# then open http://127.0.0.1:$LUCET_PORT_<NAME> on the Mac.
+[[ports]]
+name = "adamtowers-io"
+container = 3000
+
+[[ports]]
+name = "ajt-to"
+container = 3001
