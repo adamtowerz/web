@@ -6,18 +6,16 @@
 # an older Node; install them by hand if you ever need to work on them.
 #
 # Worktrees run on the Mac in a sandbox, using the Node 24 installed via nvm
-# (already on the PATH Lucet passes through). pnpm is always invoked as
-# `corepack pnpm`: a bare `pnpm` resolves to the standalone ~/Library/pnpm
-# install, which comes earlier on PATH and is outside the sandbox. Corepack
-# provides the pnpm version pinned by `packageManager`.
+# and the standalone pnpm in ~/Library/pnpm (both already on the PATH Lucet
+# passes through). pnpm switches itself to the version pinned by
+# `packageManager`.
 
 [worktree]
 isolation = "macos-sandbox"
 setup = { run = """
 set -e
-export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-(cd adamtowers-io && corepack pnpm install --frozen-lockfile)
-(cd ajt-to && corepack pnpm install --frozen-lockfile)
+(cd adamtowers-io && pnpm install --frozen-lockfile)
+(cd ajt-to && pnpm install --frozen-lockfile)
 """, incremental = true }
 # Keep an installed copy of main so new worktrees start with node_modules
 # already in place (pnpm's project-local virtual store clones cleanly).
@@ -26,12 +24,11 @@ template = true
 [sandbox]
 # nvm's Node installs, and the standalone pnpm install (read-only).
 readable = ["~/.nvm", "~/Library/pnpm"]
-# Download caches: Corepack's pnpm binaries, pnpm's content store and metadata
-# cache, and the pnpm versions it installs to match `packageManager`.
-# pnpm also tests that it can link files between the project and ~/Library/pnpm
-# with _tmp_* files there; if that fails it uses a .pnpm-store in the worktree.
+# pnpm's content store and metadata cache, and the pnpm versions it installs
+# to match `packageManager`. pnpm also tests that it can link files between
+# the project and ~/Library/pnpm with _tmp_* files there; if that fails it
+# silently uses a .pnpm-store in the worktree instead of the shared store.
 writable = [
-  "~/.cache/node/corepack",
   "~/Library/pnpm/store",
   "~/Library/pnpm/package-manager-store",
   "~/Library/pnpm/_tmp_*",
@@ -50,12 +47,12 @@ container = 3001   # ignored on the Mac; the dev server listens on $LUCET_PORT_A
 description = "adamtowers-io dev server (next dev)"
 command = '''
 export NEXT_TELEMETRY_DISABLED=1
-cd adamtowers-io && exec corepack pnpm dev -p "$LUCET_PORT_ADAMTOWERS_IO"
+cd adamtowers-io && exec pnpm dev -p "$LUCET_PORT_ADAMTOWERS_IO"
 '''
 
 [run.ajt-to]
 description = "ajt-to dev server (next dev)"
 command = '''
 export NEXT_TELEMETRY_DISABLED=1
-cd ajt-to && exec corepack pnpm dev -p "$LUCET_PORT_AJT_TO"
+cd ajt-to && exec pnpm dev -p "$LUCET_PORT_AJT_TO"
 '''
