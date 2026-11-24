@@ -24,8 +24,10 @@ export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 template = true
 
 [sandbox]
-# nvm's Node installs (read-only).
-readable = ["~/.nvm"]
+# nvm's Node installs, and the standalone pnpm install (read-only). pnpm has to
+# see ~/Library/pnpm, not just the store inside it, or it decides the default
+# store is unusable and puts a .pnpm-store in the worktree.
+readable = ["~/.nvm", "~/Library/pnpm"]
 # Download caches: Corepack's pnpm binaries, pnpm's content store and metadata cache.
 writable = ["~/.cache/node/corepack", "~/Library/pnpm/store", "~/Library/Caches/pnpm"]
 
