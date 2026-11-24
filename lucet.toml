@@ -5,26 +5,26 @@
 # (pnpm, Next 16). cards and dropdown are legacy (yarn, Next 10/12) and need
 # an older Node; install them by hand if you ever need to work on them.
 #
-# Worktrees run on the Mac in a sandbox, using the Node 24 installed via nvm.
-# The sandbox doesn't pass NVM_DIR or the login shell's PATH through, so every
-# command loads nvm itself; Corepack then provides the pnpm version pinned by
-# `packageManager`.
+# Worktrees run on the Mac in a sandbox, using the Node 24 installed via nvm
+# (already on the PATH Lucet passes through). pnpm is always invoked as
+# `corepack pnpm`: a bare `pnpm` resolves to the standalone ~/Library/pnpm
+# install, which comes earlier on PATH and is outside the sandbox. Corepack
+# provides the pnpm version pinned by `packageManager`.
 
 [worktree]
 isolation = "macos-sandbox"
 setup = { run = """
 set -e
-export NVM_DIR="$HOME/.nvm"; . /opt/homebrew/opt/nvm/nvm.sh; nvm use --silent default
 export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-(cd adamtowers-io && pnpm install --frozen-lockfile)
-(cd ajt-to && pnpm install --frozen-lockfile)
+(cd adamtowers-io && corepack pnpm install --frozen-lockfile)
+(cd ajt-to && corepack pnpm install --frozen-lockfile)
 """, incremental = true }
 # Keep an installed copy of main so new worktrees start with node_modules
 # already in place (pnpm's project-local virtual store clones cleanly).
 template = true
 
 [sandbox]
-# nvm and its Node installs (read-only).
+# nvm's Node installs (read-only).
 readable = ["~/.nvm"]
 # Download caches: Corepack's pnpm binaries, pnpm's content store and metadata cache.
 writable = ["~/.cache/node/corepack", "~/Library/pnpm/store", "~/Library/Caches/pnpm"]
@@ -40,15 +40,13 @@ container = 3001   # ignored on the Mac; the dev server listens on $LUCET_PORT_A
 [run.adamtowers-io]
 description = "adamtowers-io dev server (next dev)"
 command = '''
-export NVM_DIR="$HOME/.nvm"; . /opt/homebrew/opt/nvm/nvm.sh; nvm use --silent default
 export NEXT_TELEMETRY_DISABLED=1
-cd adamtowers-io && exec pnpm dev -p "$LUCET_PORT_ADAMTOWERS_IO"
+cd adamtowers-io && exec corepack pnpm dev -p "$LUCET_PORT_ADAMTOWERS_IO"
 '''
 
 [run.ajt-to]
 description = "ajt-to dev server (next dev)"
 command = '''
-export NVM_DIR="$HOME/.nvm"; . /opt/homebrew/opt/nvm/nvm.sh; nvm use --silent default
 export NEXT_TELEMETRY_DISABLED=1
-cd ajt-to && exec pnpm dev -p "$LUCET_PORT_AJT_TO"
+cd ajt-to && exec corepack pnpm dev -p "$LUCET_PORT_AJT_TO"
 '''
