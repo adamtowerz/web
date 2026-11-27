@@ -25,7 +25,7 @@ export default function Home() {
                 I like to build things (mostly software), travel, play games with friends, and drive karts quick.
                 <section className="mt-3 md:mt-6 grid gap-x-4 gap-y-2 grid-cols-[min-content_1fr] auto-rows-min">
                     <i className="text-right text-nowrap">2026 - now</i>
-                    <p className="mb-0">Founded <a href="https://cura.inc" target="_blank"><Logo src="/logos/cura.png">Cura</Logo></a>, the portfolio
+                    <p className="mb-0">Founded <a href="https://cura.inc" target="_blank"><Logo src="/logos/cura.svg">Cura</Logo></a>, the portfolio
                         operating system for the AI-native VC</p>
                     <i className="text-right text-nowrap">2024 - 2026</i>
                     <p className="mb-0">Led AI at <a href="https://clarify.ai/" target="_blank"><Logo src="/logos/clarify.png">Clarify</Logo></a>, where
