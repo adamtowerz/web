@@ -21,7 +21,7 @@ export default function Home() {
             {/* Doesn't match the current aesthetic. */}
             {/* <HeroImage/> */}
             <PrintedText className="mt-6">
-                <h1 className="text-[1.5em]">Heya, I'm Adam</h1>
+                <h1 className="text-[1.5em] mb-2">Heya, I'm Adam</h1>
                 I like to build things (mostly software), travel, play games with friends, and drive karts quick.
                 <section className="mt-3 md:mt-6 grid gap-x-4 gap-y-2 grid-cols-[min-content_1fr] auto-rows-min">
                     <i className="text-right text-nowrap">2026 - now</i>
