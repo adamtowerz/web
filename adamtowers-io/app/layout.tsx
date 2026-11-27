@@ -2,17 +2,16 @@ import "../styles/globals.css";
 
 import type {Metadata} from 'next'
 import {Playfair_Display, PT_Serif} from 'next/font/google'
+import {SITE_DESCRIPTION, SITE_NAME} from './shared-metadata'
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://adamtowers.io'),
     title: {
-        default: 'Adam Towers',
-        template: '%s | Adam Towers',
+        default: SITE_NAME,
+        template: `%s | ${SITE_NAME}`,
     },
-    description:
-        'Adam Towers builds things — mostly software. He founded Cura, the portfolio operating ' +
-        'system for the AI-native VC, and previously led AI at Clarify and Productiv.',
-    authors: [{name: 'Adam Towers'}],
+    description: SITE_DESCRIPTION,
+    authors: [{name: SITE_NAME}],
     // Drawn by app/icons/[name]/route.tsx, one per color scheme.
     icons: {
         icon: [
@@ -23,10 +22,11 @@ export const metadata: Metadata = {
     },
     openGraph: {
         type: 'website',
-        siteName: 'Adam Towers',
+        siteName: SITE_NAME,
     },
     twitter: {
-        card: 'summary',
+        // Shows the Open Graph card (app/**/opengraph-image.tsx) full width.
+        card: 'summary_large_image',
         site: '@adamtowerz',
         creator: '@adamtowerz',
     },

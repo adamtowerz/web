@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
 export const SITE_NAME = "Adam Towers";
+export const SITE_DESCRIPTION =
+  "Adam Towers builds things — mostly software. He founded Cura, the portfolio operating " +
+  "system for the AI-native VC, and previously led AI at Clarify and Productiv.";
 
 /**
  * Build per-route metadata.

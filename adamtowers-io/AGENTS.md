@@ -110,10 +110,18 @@ injects `noindex` on 404s automatically.
 
 ## Generated images
 
-Favicons are drawn in code, not stored as files: `app/icons/[name]/route.tsx` renders a "T" in
-the headline font with `ImageResponse` at build time, one PNG per color scheme, and the root
-layout's `metadata.icons` picks between them with `prefers-color-scheme` media queries. (The App
-Router's `icon` file convention can't target a color scheme, which is why it's a plain route.)
+Favicons and Open Graph cards are drawn in code with `ImageResponse` at build time, not stored
+as files.
+
+- **Favicons:** `app/icons/[name]/route.tsx` renders the `Monogram` (`utils/Monogram.tsx`, a "T"
+  in the headline font), one PNG per color scheme. The root layout's `metadata.icons` picks
+  between them with `prefers-color-scheme` media queries. (The App Router's `icon` file
+  convention can't target a color scheme, which is why it's a plain route.)
+- **Open Graph cards:** every page with metadata has an `opengraph-image.tsx` beside it that
+  imports that page's own `metadata` and renders it with `ogImage()` from `utils/og.tsx`, so the
+  card can't drift from the page's title and description. Add one when you add a page. The
+  homepage's card is `app/opengraph-image.tsx`, which other routes without their own (like the
+  404) fall back to. Next fills in `twitter:image` from these too.
 
 `utils/brand.ts` is the shared source for anything drawn this way. It reads colors out of the
 `light-dark()` tokens in `styles/globals.css` and fetches the same Google fonts as TrueType (what
