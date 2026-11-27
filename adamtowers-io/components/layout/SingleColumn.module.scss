@@ -13,21 +13,5 @@
   footer {
     padding-bottom: 4rem;
     color: var(--text-color);
-    font-family: var(--brand-font);
-  }
-}
-
-.titlebox {
-  margin-bottom: 1rem;
-}
-
-.titlebox > h1 {
-  margin-bottom: 0;
-  white-space: nowrap;
-
-  @media (min-aspect-ratio: 8/6) {
-    & {
-      font-size: 4rem;
-    }
   }
 }
