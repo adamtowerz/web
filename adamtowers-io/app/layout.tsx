@@ -36,12 +36,15 @@ export const metadata: Metadata = {
 // design tokens.
 const headlineFont = Playfair_Display({
     weight: '600',
+    style: ['normal', 'italic'],
     subsets: ['latin'],
     variable: '--font-playfair',
 });
 
+// Real bold and italic cuts, so the browser doesn't synthesize them for **bold** and _italic_.
 const textFont = PT_Serif({
-    weight: '400',
+    weight: ['400', '700'],
+    style: ['normal', 'italic'],
     subsets: ['latin'],
     variable: '--font-pt-serif',
 })

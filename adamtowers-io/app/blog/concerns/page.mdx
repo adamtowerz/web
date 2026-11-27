@@ -20,7 +20,7 @@ export default function Layout({ children }) {
 
 # {title}
 
-published {"xx/xx/xx"}{" "}
+published xx/xx/xx
 
 For how important "separation of concerns" is there are very few resources that define it from first principles and explain how and why to apply it. That's what I'll do here.
 
@@ -28,13 +28,13 @@ For how important "separation of concerns" is there are very few resources that 
 
 Separation of concerns is a technique for writing good code, but what defines good code is not obvious. Let's start with defining good code.
 
-<ArticlePara center border pad>_Good code_ is{" "}**easy to understand, easy to use, easy to extend, easy to change, and easy to test**.<ArticleFootnote symbol="1">Many people have many thoughts on what defines "good code", this definition likely displeases them but its enough for now.</ArticleFootnote></ArticlePara>
+<ArticlePara center border pad>_Good code_ is **easy to understand, easy to use, easy to extend, easy to change, and easy to test**.<ArticleFootnote symbol="1">Many people have many thoughts on what defines "good code", this definition likely displeases them but its enough for now.</ArticleFootnote></ArticlePara>
 
 Note that, in theory, good code can't solve harder problems than bad code, its just easier to work with. In practice, however, writing good code is a neccessary prerequisite for humans attempting to solve complex problems because otherwise the complexity will quickly overrun the author(s) &mdash; no matter how bright they may be. Now onto the good stuff.
 
 ## Defining _concern_
 
-<ArticlePara center border pad>A _concern_ is{" "}**a concept a{" "}[module](https://en.wikipedia.org/wiki/Modular_programming){" "}must comprehend**</ArticlePara>
+<ArticlePara center border pad>A _concern_ is **a concept a [module](https://en.wikipedia.org/wiki/Modular_programming) must comprehend**</ArticlePara>
 
 This use of "comprehension" instead of "dependence" is a subtle one but I think it provides a more easily applicable definition. "Dependency" in software tends to refer to literal dependence at the code level, ie the import of a package or the invocation of a function. "Comprehension" is at a higher level: what facts must our module know to accomplish its goals? There are likely many facts that are not, and often cannot, be encoded or enforced by code. Recognition of these is important for identifying subtle concerns that are potentially important to separate.
 
@@ -45,36 +45,36 @@ Before diving into what it means to separate concerns, let's make this a bit mor
 - Knowing how primitives are defined: types, shapes
 - Knowing how to call something locally: function signatures
 - Knowing how to call something remotely: API specs + location
-- Knowing properties of the environment: is this production? is{" "}`process.env.X` arg set to `y`?
+- Knowing properties of the environment: is this production? is `process.env.X` arg set to `y`?
 - Knowing how something works (datastructures, runtime, unspecified behavior)
 
 It is important to note that this is a hierarchy. Often it is impossible to remove a concern entirely, but we may not have to comprehend as much detail as we do.
 
 ## Defining _separation_ (2)
 
-Consider the module `A` which comprehends concepts{" "}`i,j,k,x,y,z` to accomplish goal `α`. Let's assume all 6 concerns are fairly complex and nuanced, and are all neccessary to achieve `α`. At this point `A`{" "}is likely quite complex.
+Consider the module `A` which comprehends concepts `i,j,k,x,y,z` to accomplish goal `α`. Let's assume all 6 concerns are fairly complex and nuanced, and are all neccessary to achieve `α`. At this point `A` is likely quite complex.
 
-Starting with `i,j,k`, let's create the module{" "}`B` to handle these responsibilities. To invoke{" "}`B`, `A` must comprehend the interface of{" "}`B` which we will name `b`. Now given{" "}`B` and `b`, the complete concerns of{" "}`A` are now `b,x,y,z`.
+Starting with `i,j,k`, let's create the module `B` to handle these responsibilities. To invoke `B`, `A` must comprehend the interface of `B` which we will name `b`. Now given `B` and `b`, the complete concerns of `A` are now `b,x,y,z`.
 
-Then, lets do the same for `x,y,z` with a module{" "}`C`. the complete concerns of `A` are now{" "}`b,c`.
+Then, lets do the same for `x,y,z` with a module `C`. the complete concerns of `A` are now `b,c`.
 
-At this point it is important to that the set of all concerns within our little system has actually increased. What was{" "}`i,j,k,x,y,z` (6 total) is now{" "}`i,j,k,x,y,z,b,c` (8 total). However, from the perspective of `A` we have actually achieved something: it only has 2 concerns (`b,c`) instead of its previous 6.
+At this point it is important to that the set of all concerns within our little system has actually increased. What was `i,j,k,x,y,z` (6 total) is now `i,j,k,x,y,z,b,c` (8 total). However, from the perspective of `A` we have actually achieved something: it only has 2 concerns (`b,c`) instead of its previous 6.
 
 ## Defining _separation_
 
 From the perspective of an individual module, we want to reduce the concerns we have (or at least their magnitude). However, at a global level the system still requires that behavior so we can't simply delete everything and carry on with our day. So we must move the concerns to other modules, separating them from our module. In this case, "it's not my problem" is the right answer.
 
-<ArticlePara center border pad>_Separation of concerns_ is{" "}**reducing the concerns of a module by moving them to others**</ArticlePara>
+<ArticlePara center border pad>_Separation of concerns_ is **reducing the concerns of a module by moving them to others**</ArticlePara>
 
-Or, phrased using our definition from earlier:{" "}**"reducing the amount a module must comprehend by moving concepts to other modules".**
+Or, phrased using our definition from earlier: **"reducing the amount a module must comprehend by moving concepts to other modules".**
 
-It is critical to note that moving code from `A` to{" "}`B` does not inherently reduce the amount of concerns{" "}`A` has, it only inherently reduces the amount of code<ArticleFootnote symbol="2">Reducing the amount of code is generally good, but not a goal of its own. Using LoC (lines of code) as a metric to optimize will yield incredibly bad (yet likely fascinating) code. For evidence: [Stackoverflow's Code Golf community](https://codegolf.stackexchange.com/)</ArticleFootnote>. It requires additional work to reduce the concerns. This work is creating a new, simpler, interface for `B` using which{" "}`A` can accomplish its origional goals without understanding as much about other concepts as it did. It is critical that this new interface is "lossy" (meaning that details are hidden from the client) otherwise although the code has been moved the concerns have not been.
+It is critical to note that moving code from `A` to `B` does not inherently reduce the amount of concerns `A` has, it only inherently reduces the amount of code<ArticleFootnote symbol="2">Reducing the amount of code is generally good, but not a goal of its own. Using LoC (lines of code) as a metric to optimize will yield incredibly bad (yet likely fascinating) code. For evidence: [Stackoverflow's Code Golf community](https://codegolf.stackexchange.com/)</ArticleFootnote>. It requires additional work to reduce the concerns. This work is creating a new, simpler, interface for `B` using which `A` can accomplish its origional goals without understanding as much about other concepts as it did. It is critical that this new interface is "lossy" (meaning that details are hidden from the client) otherwise although the code has been moved the concerns have not been.
 
 ### A formal definition
 
-Given the module `A` which comprehends concepts{" "}`X,Y,Z` to accomplish goal `α`, construct the module `B` such that `A` can use{" "}`B` to accomplish `α` while comprehending less than `X,Y,Z`.
+Given the module `A` which comprehends concepts `X,Y,Z` to accomplish goal `α`, construct the module `B` such that `A` can use `B` to accomplish `α` while comprehending less than `X,Y,Z`.
 
-This implies the existence of a function{" "}`c: (concept) => number` which can measure the "amount of comprehension" concepts are worth, this function is the developer (you) applying the hierarchy above. This is good, if this was fully formally provable we'd all be out of a job.
+This implies the existence of a function `c: (concept) => number` which can measure the "amount of comprehension" concepts are worth, this function is the developer (you) applying the hierarchy above. This is good, if this was fully formally provable we'd all be out of a job.
 
 ### With an example
 
@@ -94,7 +94,7 @@ Separating our concerns enables us to make progress towards each of those goals.
 
 Let's go through an example: imagine you are developing a new feature and there is a requirement to log analytics events when the user takes an action. In this case you need to comprehend the analytics system's primitives ("events") and how to send the system an event. You hopefully do not need to understand any of the implementation details of the analytics system. Only the analytics system should be concerned with how the analytics system works. This is an example of separation of concerns: because you invoke a separate system which owns the behavior of how this event is proccessed/organized/visualized you are not concerned about those details. This is great, but there's more we can do here.
 
-Calling a remote system is a fairly complex process that requires comprehension of a lot of specific information; specifically out new feature would have to know how to make an API request, where the service is, and how to interpret its errors. In this example it would be good to separate the concerns around sending this event to a remote service from our new feature that simply wants to log an event. We could{" "}[encapsulate](https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)){" "}this concern in a local utility for our new feature, perhaps called "AnalyticsClient", and invoke that local function to send an event. This pulls out the specific information about a remote call and abstracts over it by creating a local utility. The verb "abstract" is very apt here, the utility we are creating ("AnalyticsClient") presents an interface (in the form of a callable function) to our feature that allows it to access the behavior it needs (sending a message to the analytics service) without understanding how it works. Our feature understands less details (less concerns) so the behavior has been 'abstracted' away from it.<ArticleFootnote symbol="3">I'd expect almost any concern that can be sufficiently seperated from not one but many businesses to be a successful company (even, and maybe especially, for non-technical concerns).</ArticleFootnote>
+Calling a remote system is a fairly complex process that requires comprehension of a lot of specific information; specifically out new feature would have to know how to make an API request, where the service is, and how to interpret its errors. In this example it would be good to separate the concerns around sending this event to a remote service from our new feature that simply wants to log an event. We could [encapsulate](https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)) this concern in a local utility for our new feature, perhaps called "AnalyticsClient", and invoke that local function to send an event. This pulls out the specific information about a remote call and abstracts over it by creating a local utility. The verb "abstract" is very apt here, the utility we are creating ("AnalyticsClient") presents an interface (in the form of a callable function) to our feature that allows it to access the behavior it needs (sending a message to the analytics service) without understanding how it works. Our feature understands less details (less concerns) so the behavior has been 'abstracted' away from it.<ArticleFootnote symbol="3">I'd expect almost any concern that can be sufficiently seperated from not one but many businesses to be a successful company (even, and maybe especially, for non-technical concerns).</ArticleFootnote>
 
 At a local level we're reducing the concerns our client has by moving them away. At the global level these concerns still exist but they've been separated into more manageable pieces so the individual pieces can do their jobs without comprehending as much of the whole system. This is the core idea of separating concerns.
 
@@ -106,6 +106,6 @@ Although separation of concerns is predominantly applied at the service or class
 
 Consider this example:<ArticleCodeBlock block>{`
               for (let i = 0; i < lst.length; i++) console.log(lst[i]);
-              `}</ArticleCodeBlock>In order to print the list we've introduced a new concern: a counter called `i`. In order to understand what this line does we need to comprehend the application of this counter to iterate through the loop. I'd argue that replacing this{" "}[imperative](https://en.wikipedia.org/wiki/Imperative_programming){" "}loop with a{" "}[declarative](https://en.wikipedia.org/wiki/Declarative_programming){" "}one like the next example is a separation of concerns.<ArticleCodeBlock block>{`
+              `}</ArticleCodeBlock>In order to print the list we've introduced a new concern: a counter called `i`. In order to understand what this line does we need to comprehend the application of this counter to iterate through the loop. I'd argue that replacing this [imperative](https://en.wikipedia.org/wiki/Imperative_programming) loop with a [declarative](https://en.wikipedia.org/wiki/Declarative_programming) one like the next example is a separation of concerns.<ArticleCodeBlock block>{`
               lst.forEach(el => console.log(el));
-              `}</ArticleCodeBlock>Behind the scenes, inside the standard library implementation of{" "}`forEach`, is a counter (maybe even also called{" "}`i`) but its not visible to us so it has been separated from our code. Without the additional concern that requires extra comprehension the code is simpler to read and the flow is easier to follow.
+              `}</ArticleCodeBlock>Behind the scenes, inside the standard library implementation of `forEach`, is a counter (maybe even also called `i`) but its not visible to us so it has been separated from our code. Without the additional concern that requires extra comprehension the code is simpler to read and the flow is easier to follow.
