@@ -5,7 +5,7 @@ import ArticleSection from "@/components/layout/ArticleSection";
 import styles from "../../../styles/pages/blog/blog.module.css";
 import {pageMetadata} from "../../shared-metadata";
 
-const title = `Ephermerality, Absurdism, & Actualization`;
+const title = `Ephemerality, Absurdism, & Actualization`;
 
 export const metadata = pageMetadata({
     title,
