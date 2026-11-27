@@ -1,5 +1,5 @@
 allowBuilds:
   '@parcel/watcher': true
 overrides:
-  '@types/react': 19.3.0
+  '@types/react': 19.3.3
 virtualStoreType: project
