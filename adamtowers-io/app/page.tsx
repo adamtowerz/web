@@ -2,13 +2,13 @@ import type {ReactNode} from 'react';
 import HeroImage from '../components/HeroImage';
 import PrintedText from '../components/PrintedText';
 
-// A name with its brand mark inline before it, sized to the surrounding text. Kept on one line
-// so the mark never wraps away from the name.
-function Logo({src, rounded = true, children}: {src: string; rounded?: boolean; children: ReactNode}) {
+// A name with its brand mark inline before it, as a rounded tile sized to the surrounding text.
+// Kept on one line so the mark never wraps away from the name.
+function Logo({src, children}: {src: string; children: ReactNode}) {
     return (
         <span className="whitespace-nowrap">
             <img src={src} alt="" aria-hidden
-                 className={`inline-block h-[1em] w-auto mr-[0.3em] align-[-0.15em] ${rounded ? 'rounded-[3px]' : ''}`}/>
+                 className="inline-block size-[1em] rounded-[0.22em] mr-[0.3em] align-[-0.15em]"/>
             {children}
         </span>
     );
@@ -30,18 +30,18 @@ export default function Home() {
                     <p className="mb-0!">Led AI at <a href="https://clarify.ai/" target="_blank"><Logo src="/logos/clarify.png">Clarify</Logo></a>, where
                         we made your CRM smarter</p>
                     <i className="text-right text-nowrap">2020 - 2024</i>
-                    <p className="mb-0!">Worked at <a href="https://productiv.com/" target="_blank">Productiv</a> where
+                    <p className="mb-0!">Worked at <Logo src="/logos/productiv.svg">Productiv</Logo> where
                         I
                         built a bunch of platform features then led AI initiatives including the launch of <a
                             href="https://venturebeat.com/ai/productiv-launches-sidekick-an-ai-powered-assistant-for-smarter-saas-management/"
-                            target="_blank">Sidekick</a>
+                            target="_blank"><Logo src="/logos/sidekick.png">Sidekick</Logo></a>
                     </p>
                     <i className="text-right text-nowrap">2020</i>
-                    <p className="mb-0!">Founded <a href="https://next.dubhacks.co/" target="_blank"><Logo src="/logos/dubhacks-next.png" rounded={false}>DubHacks Next</Logo></a>, the
+                    <p className="mb-0!">Founded <a href="https://next.dubhacks.co/" target="_blank"><Logo src="/logos/dubhacks-next.png">DubHacks Next</Logo></a>, the
                         first student run startup incubator at UW
                     </p>
                     <i className="text-right text-nowrap">2017 - 2021</i>
-                    <p className="mb-0!"><span><Logo src="/logos/uw.svg" rounded={false}>University</Logo> of Washington, Seattle:</span> Computer science &amp; interdisciplinary honors</p>
+                    <p className="mb-0!"><span><Logo src="/logos/uw.svg">University</Logo> of Washington, Seattle:</span> Computer science &amp; interdisciplinary honors</p>
                 </section>
                 {/*<hr style={{margin: '18px 4px'}}/>*/}
                 {/*<section>*/}
