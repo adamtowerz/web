@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <SingleColumn footer>
       <h1>Adam Towers' Honors Portfolio</h1>
-      <div className="flex">
+      <div className="flex flex-col sm:flex-row">
         <article>
           <p>
             I've never been one for classrooms. Partially because it's a fairly

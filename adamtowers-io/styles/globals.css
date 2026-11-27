@@ -26,11 +26,6 @@
   :root {
     color-scheme: light dark;
     font-size: 18px;
-
-    /* Phone-width screens. */
-    @media (width <= 640px) {
-      font-size: 14px;
-    }
   }
 
   html {

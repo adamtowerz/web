@@ -25,4 +25,15 @@
   &.right {
     float: right;
   }
+
+  /* On phones a floated image leaves only a few words of text beside it, so center it on its
+     own line instead. */
+  @media (width < 40rem) {
+    &.left,
+    &.right {
+      float: none;
+      display: block;
+      margin-inline: auto;
+    }
+  }
 }

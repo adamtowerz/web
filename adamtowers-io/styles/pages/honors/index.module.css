@@ -5,4 +5,11 @@
   max-width: 40vw;
   min-width: 20vw;
   flex-grow: 1;
+
+  /* Stacked under the intro on phones (see the flex-col on its parent). */
+  @media (width < 40rem) {
+    margin-left: 0;
+    max-width: none;
+    aspect-ratio: 3 / 4;
+  }
 }
