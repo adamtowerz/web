@@ -1,5 +1,18 @@
+import type {ReactNode} from 'react';
 import HeroImage from '../components/HeroImage';
 import PrintedText from '../components/PrintedText';
+
+// A name with its brand mark inline before it, sized to the surrounding text. Kept on one line
+// so the mark never wraps away from the name.
+function Logo({src, rounded = true, children}: {src: string; rounded?: boolean; children: ReactNode}) {
+    return (
+        <span className="whitespace-nowrap">
+            <img src={src} alt="" aria-hidden
+                 className={`inline-block h-[1em] w-auto mr-[0.3em] align-[-0.15em] ${rounded ? 'rounded-[3px]' : ''}`}/>
+            {children}
+        </span>
+    );
+}
 
 export default function Home() {
     return (
@@ -11,10 +24,10 @@ export default function Home() {
                 I like to build things (mostly software), travel, play games with friends, and drive karts quick.
                 <section className="mt-3 md:mt-6 grid! gap-x-4 gap-y-2 grid-cols-[min-content_1fr] auto-rows-min">
                     <i className="text-right text-nowrap">2026 - now</i>
-                    <p className="mb-0!">Founded <a href="https://cura.inc" target="_blank">Cura</a>, the portfolio
+                    <p className="mb-0!">Founded <a href="https://cura.inc" target="_blank"><Logo src="/logos/cura.png">Cura</Logo></a>, the portfolio
                         operating system for the AI-native VC</p>
                     <i className="text-right text-nowrap">2024 - 2026</i>
-                    <p className="mb-0!">Led AI at <a href="https://clarify.ai/" target="_blank">Clarify</a>, where
+                    <p className="mb-0!">Led AI at <a href="https://clarify.ai/" target="_blank"><Logo src="/logos/clarify.png">Clarify</Logo></a>, where
                         we made your CRM smarter</p>
                     <i className="text-right text-nowrap">2020 - 2024</i>
                     <p className="mb-0!">Worked at <a href="https://productiv.com/" target="_blank">Productiv</a> where
@@ -24,11 +37,11 @@ export default function Home() {
                             target="_blank">Sidekick</a>
                     </p>
                     <i className="text-right text-nowrap">2020</i>
-                    <p className="mb-0!">Founded <a href="https://next.dubhacks.co/" target="_blank">DubHacks Next</a>, the
+                    <p className="mb-0!">Founded <a href="https://next.dubhacks.co/" target="_blank"><Logo src="/logos/dubhacks-next.png" rounded={false}>DubHacks Next</Logo></a>, the
                         first student run startup incubator at UW
                     </p>
                     <i className="text-right text-nowrap">2017 - 2021</i>
-                    <p className="mb-0!"><span>University of Washington, Seattle:</span> Computer science &amp; interdisciplinary honors</p>
+                    <p className="mb-0!"><span><Logo src="/logos/uw.svg" rounded={false}>University</Logo> of Washington, Seattle:</span> Computer science &amp; interdisciplinary honors</p>
                 </section>
                 {/*<hr style={{margin: '18px 4px'}}/>*/}
                 {/*<section>*/}
