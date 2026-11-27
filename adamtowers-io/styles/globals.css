@@ -10,7 +10,7 @@
   --color-code: light-dark(#527ea4, #262c37);
   --color-accent: #128cf7;
 
-  --font-headline: var(--font-playfair), serif;
+  --font-headline: var(--font-grenze), serif;
   --font-text: var(--font-pt-serif), serif;
   --font-mono: "SFMono-Regular", Consolas, "Roboto Mono", Menlo, monospace;
 

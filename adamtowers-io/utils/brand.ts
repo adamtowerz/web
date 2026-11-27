@@ -34,7 +34,7 @@ async function googleFont(family: string, weight: number): Promise<ArrayBuffer> 
 }
 
 // Keep these in step with the next/font calls in app/layout.tsx, which only accept literals.
-const HEADLINE = { name: "Playfair Display", weight: 600 } as const;
+const HEADLINE = { name: "Grenze", weight: 600 } as const;
 const TEXT = { name: "PT Serif", weight: 400 } as const;
 
 export const fonts = {

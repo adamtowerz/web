@@ -99,7 +99,7 @@ Dark mode comes from `color-scheme: light dark` plus `light-dark()` in the color
 Colors written as tokens adapt automatically; don't hard-code a light-only color.
 
 Fonts load through `next/font/google` in `app/layout.tsx`, which exposes them as
-`--font-playfair` / `--font-pt-serif`; `globals.css` maps those to the `--font-headline` and
+`--font-grenze` / `--font-pt-serif`; `globals.css` maps those to the `--font-headline` and
 `--font-text` tokens. Use the tokens rather than importing fonts again. All headings use the
 headline font.
 

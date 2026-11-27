@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 
 import type {Metadata} from 'next'
-import {Playfair_Display, PT_Serif} from 'next/font/google'
+import {Grenze, PT_Serif} from 'next/font/google'
 import {SITE_DESCRIPTION, SITE_NAME} from './shared-metadata'
 
 export const metadata: Metadata = {
@@ -34,11 +34,11 @@ export const metadata: Metadata = {
 
 // Exposed as CSS variables, which styles/globals.css maps to the --font-headline and --font-text
 // design tokens.
-const headlineFont = Playfair_Display({
+const headlineFont = Grenze({
     weight: '600',
     style: ['normal', 'italic'],
     subsets: ['latin'],
-    variable: '--font-playfair',
+    variable: '--font-grenze',
 });
 
 // Real bold and italic cuts, so the browser doesn't synthesize them for **bold** and _italic_.

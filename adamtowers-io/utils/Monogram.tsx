@@ -25,10 +25,11 @@ export default function Monogram({
         background: inverted ? fg : bg,
         color: inverted ? bg : fg,
         fontFamily: fonts.headline,
-        fontSize: size * 1.1,
+        // Sized and lifted for Grenze's metrics so the T's cap fills about 3/4 of the square and
+        // sits at the optical center. Re-measure if the headline font changes.
+        fontSize: size * 1.28,
         lineHeight: 1,
-        // Playfair's line box puts the cap low; lift the T to the optical center.
-        paddingBottom: size * 0.125,
+        paddingBottom: size * 0.14,
       }}
     >
       T
