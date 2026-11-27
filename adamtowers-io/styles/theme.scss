@@ -29,7 +29,9 @@
   }
 }
 
-@media (max-aspect-ratio: 8/6) {
+// Phone-width screens only. This used to be `max-aspect-ratio: 8/6`, which also shrank the text
+// in any desktop window narrower than 4:3.
+@media (max-width: 640px) {
   :root {
     font-size: 14px;
   }
