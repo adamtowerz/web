@@ -13,6 +13,14 @@ export const metadata: Metadata = {
         'Adam Towers builds things — mostly software. He founded Cura, the portfolio operating ' +
         'system for the AI-native VC, and previously led AI at Clarify and Productiv.',
     authors: [{name: 'Adam Towers'}],
+    // Drawn by app/icons/[name]/route.tsx, one per color scheme.
+    icons: {
+        icon: [
+            {url: '/icons/light.png', type: 'image/png', sizes: '64x64', media: '(prefers-color-scheme: light)'},
+            {url: '/icons/dark.png', type: 'image/png', sizes: '64x64', media: '(prefers-color-scheme: dark)'},
+        ],
+        apple: {url: '/icons/apple-touch.png', sizes: '180x180'},
+    },
     openGraph: {
         type: 'website',
         siteName: 'Adam Towers',

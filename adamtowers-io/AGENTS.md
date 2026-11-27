@@ -108,7 +108,19 @@ instead of falling back to it.
 `global-not-found.js` (experimental, off here). The 404 page inherits the default title, and Next
 injects `noindex` on 404s automatically.
 
-There is no `public/favicon.ico`. Add one at `app/favicon.ico` if you want Next to wire it up.
+## Generated images
+
+Favicons are drawn in code, not stored as files: `app/icons/[name]/route.tsx` renders a "T" in
+the headline font with `ImageResponse` at build time, one PNG per color scheme, and the root
+layout's `metadata.icons` picks between them with `prefers-color-scheme` media queries. (The App
+Router's `icon` file convention can't target a color scheme, which is why it's a plain route.)
+
+`utils/brand.ts` is the shared source for anything drawn this way. It reads colors out of the
+`light-dark()` tokens in `styles/globals.css` and fetches the same Google fonts as TrueType (what
+`ImageResponse` needs), so generated images follow the site's styles. It does need network
+access at build time, as `next/font/google` already does. If you change a font in
+`app/layout.tsx`, change it in `utils/brand.ts` too: `next/font` only accepts literals, so the
+two can't share a constant.
 
 ## Footnotes
 
