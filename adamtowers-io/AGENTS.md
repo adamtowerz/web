@@ -53,12 +53,14 @@ Import via the `@/components/*` alias (the dominant style). `@/utils/*` is also 
 `utils/` does not exist. Stylesheets are imported by relative path — there is no alias for them.
 
 Blog posts and the honors portfolio are **`page.mdx` files** (via `@next/mdx`; no CMS). Write
-prose as markdown and reach for JSX only where markdown can't express the markup: `<section>`
-wrappers, `ArticleSection`, `ArticleImage`/`ArticleImageSet`, `ArticleFootnote`, bordered
-`<ArticlePara center border pad>` callouts, `<span className="thematic">`, and layout divs.
+prose as markdown, with `##`/`###` headings for each part (the `article` prose styles in
+`globals.css` space them out and clear floated images), and reach for JSX only where markdown
+can't express the markup: `ArticleImage`/`ArticleImageSet`, `ArticleFootnote`, bordered
+`<ArticlePara center border pad>` callouts, and layout divs.
 
 - **Wrappers:** `app/blog/layout.tsx` and `app/honors/layout.tsx` wrap their pages in
-  `SingleColumn`. A blog post also sets its MDX layout to `BlogPost`
+  `SingleColumn`, and the honors year pages live in the `app/honors/(years)/` route group, whose
+  layout adds the link back to the portfolio intro. A blog post also sets its MDX layout to `BlogPost`
   (`export default function Layout({ children }) { return <BlogPost>{children}</BlogPost>; }`),
   passing `footnotes` only if it has any.
 - **Metadata:** each `page.mdx` does `export const metadata = pageMetadata({...})`, which its
@@ -66,8 +68,10 @@ wrappers, `ArticleSection`, `ArticleImage`/`ArticleImageSet`, `ArticleFootnote`,
 - **Links:** `mdx-components.tsx` sends markdown links to `/...` through `next/link` and opens
   everything else in a new tab, so write plain markdown links.
 - **MDX gotchas:** content on the lines after a JSX tag that's alone on its line is parsed as
-  blocks, so it gets wrapped in `<p>`; put blank lines inside block wrappers like `<section>`
-  and keep inline JSX on the text's own line. Escape literal `{`, `}` and `<` in prose.
+  blocks, so it gets wrapped in `<p>`; put blank lines inside JSX wrappers that contain prose
+  (like `<article>`) and keep inline JSX on the text's own line. JSX children can be indented
+  (MDX 3 has no indented code blocks); there's no formatter, so indent by hand. Escape literal
+  `{`, `}` and `<` in prose.
 
 Indentation is inconsistent across the codebase (4-space in `app/page.tsx` and `HeroImage.tsx`,
 2-space in `components/layout/`). Match the file you are editing rather than reformatting it.

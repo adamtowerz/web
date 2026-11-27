@@ -118,24 +118,28 @@
       line-height: 1em;
     }
 
-    section {
-      margin-block: 1rem;
+    /* Headings open each part of a piece. They clear floated images so a photo never runs
+       into the next part. */
+    > h2 {
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      clear: both;
+    }
 
-      &:not(:last-child) { margin-bottom: 2rem; }
+    > h3 {
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      clear: both;
     }
 
     > hr {
       margin: 2rem 1rem;
+      clear: both;
     }
   }
 
   footer {
     a { text-decoration: none; }
     > hr { margin-top: 0; }
-  }
-
-  /* The thread running through an honors portfolio entry. */
-  .thematic {
-    font-weight: bold;
   }
 }

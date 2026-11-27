@@ -22,13 +22,7 @@ export default function Layout({ children }) {
 
 published {"xx/xx/xx"}{" "}
 
-<section>
-
 For how important "separation of concerns" is there are very few resources that define it from first principles and explain how and why to apply it. That's what I'll do here.
-
-</section>
-
-<section>
 
 ## Starting at the start
 
@@ -38,19 +32,11 @@ Separation of concerns is a technique for writing good code, but what defines go
 
 Note that, in theory, good code can't solve harder problems than bad code, its just easier to work with. In practice, however, writing good code is a neccessary prerequisite for humans attempting to solve complex problems because otherwise the complexity will quickly overrun the author(s) &mdash; no matter how bright they may be. Now onto the good stuff.
 
-</section>
-
-<section>
-
 ## Defining _concern_
 
 <ArticlePara center border pad>A _concern_ is{" "}**a concept a{" "}[module](https://en.wikipedia.org/wiki/Modular_programming){" "}must comprehend**</ArticlePara>
 
 This use of "comprehension" instead of "dependence" is a subtle one but I think it provides a more easily applicable definition. "Dependency" in software tends to refer to literal dependence at the code level, ie the import of a package or the invocation of a function. "Comprehension" is at a higher level: what facts must our module know to accomplish its goals? There are likely many facts that are not, and often cannot, be encoded or enforced by code. Recognition of these is important for identifying subtle concerns that are potentially important to separate.
-
-</section>
-
-<section>
 
 ## Types of concerns
 
@@ -64,10 +50,6 @@ Before diving into what it means to separate concerns, let's make this a bit mor
 
 It is important to note that this is a hierarchy. Often it is impossible to remove a concern entirely, but we may not have to comprehend as much detail as we do.
 
-</section>
-
-<section>
-
 ## Defining _separation_ (2)
 
 Consider the module `A` which comprehends concepts{" "}`i,j,k,x,y,z` to accomplish goal `α`. Let's assume all 6 concerns are fairly complex and nuanced, and are all neccessary to achieve `α`. At this point `A`{" "}is likely quite complex.
@@ -77,10 +59,6 @@ Starting with `i,j,k`, let's create the module{" "}`B` to handle these responsib
 Then, lets do the same for `x,y,z` with a module{" "}`C`. the complete concerns of `A` are now{" "}`b,c`.
 
 At this point it is important to that the set of all concerns within our little system has actually increased. What was{" "}`i,j,k,x,y,z` (6 total) is now{" "}`i,j,k,x,y,z,b,c` (8 total). However, from the perspective of `A` we have actually achieved something: it only has 2 concerns (`b,c`) instead of its previous 6.
-
-</section>
-
-<section>
 
 ## Defining _separation_
 
@@ -102,10 +80,6 @@ This implies the existence of a function{" "}`c: (concept) => number` which can 
 
 TODO
 
-</section>
-
-<section>
-
 ## Why does separating concerns yield good code?
 
 Call back to good code
@@ -116,10 +90,6 @@ Separating our concerns enables us to make progress towards each of those goals.
 - **Easy to change:** Code needs to be understood before it can be changed so this follows from the previous point.
 - **Easy to test:** Good tests test concerns. With less concerns there is less to test. Also, concerns of a lower magnitude tend to be easier to test correctly: it is generally easier to mock a function call than an API call and it is definitely easier to test either of those than the complete behavior encapsulated by a function or API.
 
-</section>
-
-<section>
-
 ## Separating concerns: an example
 
 Let's go through an example: imagine you are developing a new feature and there is a requirement to log analytics events when the user takes an action. In this case you need to comprehend the analytics system's primitives ("events") and how to send the system an event. You hopefully do not need to understand any of the implementation details of the analytics system. Only the analytics system should be concerned with how the analytics system works. This is an example of separation of concerns: because you invoke a separate system which owns the behavior of how this event is proccessed/organized/visualized you are not concerned about those details. This is great, but there's more we can do here.
@@ -128,11 +98,7 @@ Calling a remote system is a fairly complex process that requires comprehension 
 
 At a local level we're reducing the concerns our client has by moving them away. At the global level these concerns still exist but they've been separated into more manageable pieces so the individual pieces can do their jobs without comprehending as much of the whole system. This is the core idea of separating concerns.
 
-</section>
-
 <h2 id="anthology">Additional thoughts:</h2>
-
-<section>
 
 ### Declarative programming
 
@@ -143,5 +109,3 @@ Consider this example:<ArticleCodeBlock block>{`
               `}</ArticleCodeBlock>In order to print the list we've introduced a new concern: a counter called `i`. In order to understand what this line does we need to comprehend the application of this counter to iterate through the loop. I'd argue that replacing this{" "}[imperative](https://en.wikipedia.org/wiki/Imperative_programming){" "}loop with a{" "}[declarative](https://en.wikipedia.org/wiki/Declarative_programming){" "}one like the next example is a separation of concerns.<ArticleCodeBlock block>{`
               lst.forEach(el => console.log(el));
               `}</ArticleCodeBlock>Behind the scenes, inside the standard library implementation of{" "}`forEach`, is a counter (maybe even also called{" "}`i`) but its not visible to us so it has been separated from our code. Without the additional concern that requires extra comprehension the code is simpler to read and the flow is easier to follow.
-
-</section>
