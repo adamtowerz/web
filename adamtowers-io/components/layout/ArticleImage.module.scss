@@ -5,16 +5,16 @@
   margin: 16px;
   margin-top: 8px;
   div {
-    border: 1px solid var(--text-color);
+    border: 1px solid var(--color-fg);
     padding: 1px;
   }
 
   p {
     width: 100%;
-    color: var(--text-color);
+    color: var(--color-fg);
     opacity: 0.7;
-    font-size: var(--small-text);
-    line-height: var(--small-text);
+    font-size: var(--text-small);
+    line-height: var(--text-small);
     text-align: center;
   }
 

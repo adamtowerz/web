@@ -123,7 +123,7 @@ export default function Senior() {
         </ArticleSection>
         <p>- adam</p>
       </article>
-      <div className="d-flex sp-between">
+      <div className="flex justify-between">
         <Link href="/honors/junior">← Junior year</Link>
       </div>
     </SingleColumn>

@@ -30,7 +30,7 @@ export default function Freshman() {
         </p>
         <hr />
         <ArticleSection title="Week 1">
-          <div className="d-flex align-center">
+          <div className="flex items-center">
             <div style={{ marginRight: "1rem" }}>
               <p>
                 <ArticleImage
@@ -173,7 +173,7 @@ export default function Freshman() {
           </p>
         </ArticleSection>
         <ArticleSection title="CSE">
-          <div className="d-flex align-center">
+          <div className="flex items-center">
             <div style={{ marginRight: "1rem" }}>
               <p>
                 <ArticleImage
@@ -221,7 +221,7 @@ export default function Freshman() {
           .
         </p>
       </article>
-      <div className="d-flex sp-between">
+      <div className="flex justify-between">
         <Link href="/honors">← Intro</Link>
         <Link href="/honors/sophmore">Sophmore year →</Link>
       </div>

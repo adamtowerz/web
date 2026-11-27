@@ -17,32 +17,32 @@ function Logo({src, children}: {src: string; children: ReactNode}) {
 export default function Home() {
     // Larger type, and a proportionally wider column, on desktop.
     return (
-        <div className="p-6 max-w-[600px] mx-auto md:max-w-[720px] md:text-[1.25rem] md:leading-[1.45]">
+        <div className="p-6 max-w-[600px] mx-auto md:max-w-[720px] md:text-[1.25rem]">
             {/* Doesn't match the current aesthetic. */}
             {/* <HeroImage/> */}
             <PrintedText className="mt-6">
-                <h1 style={{ fontFamily: 'var(--font-family-headline)', fontSize: '1.5em' }}>Heya, I'm Adam</h1>
+                <h1 className="text-[1.5em]">Heya, I'm Adam</h1>
                 I like to build things (mostly software), travel, play games with friends, and drive karts quick.
-                <section className="mt-3 md:mt-6 grid! gap-x-4 gap-y-2 grid-cols-[min-content_1fr] auto-rows-min">
+                <section className="mt-3 md:mt-6 grid gap-x-4 gap-y-2 grid-cols-[min-content_1fr] auto-rows-min">
                     <i className="text-right text-nowrap">2026 - now</i>
-                    <p className="mb-0!">Founded <a href="https://cura.inc" target="_blank"><Logo src="/logos/cura.png">Cura</Logo></a>, the portfolio
+                    <p className="mb-0">Founded <a href="https://cura.inc" target="_blank"><Logo src="/logos/cura.png">Cura</Logo></a>, the portfolio
                         operating system for the AI-native VC</p>
                     <i className="text-right text-nowrap">2024 - 2026</i>
-                    <p className="mb-0!">Led AI at <a href="https://clarify.ai/" target="_blank"><Logo src="/logos/clarify.png">Clarify</Logo></a>, where
+                    <p className="mb-0">Led AI at <a href="https://clarify.ai/" target="_blank"><Logo src="/logos/clarify.png">Clarify</Logo></a>, where
                         we made your CRM smarter</p>
                     <i className="text-right text-nowrap">2020 - 2024</i>
-                    <p className="mb-0!">Worked at <Logo src="/logos/productiv.svg">Productiv</Logo> where
+                    <p className="mb-0">Worked at <Logo src="/logos/productiv.svg">Productiv</Logo> where
                         I
                         built a bunch of platform features then led AI initiatives including the launch of <a
                             href="https://venturebeat.com/ai/productiv-launches-sidekick-an-ai-powered-assistant-for-smarter-saas-management/"
                             target="_blank"><Logo src="/logos/sidekick.png">Sidekick</Logo></a>
                     </p>
                     <i className="text-right text-nowrap">2020</i>
-                    <p className="mb-0!">Founded <a href="https://next.dubhacks.co/" target="_blank"><Logo src="/logos/dubhacks-next.png">DubHacks Next</Logo></a>, the
+                    <p className="mb-0">Founded <a href="https://next.dubhacks.co/" target="_blank"><Logo src="/logos/dubhacks-next.png">DubHacks Next</Logo></a>, the
                         first student run startup incubator at UW
                     </p>
                     <i className="text-right text-nowrap">2017 - 2021</i>
-                    <p className="mb-0!"><span><Logo src="/logos/uw.svg">University</Logo> of Washington, Seattle:</span> Computer science &amp; interdisciplinary honors</p>
+                    <p className="mb-0"><span><Logo src="/logos/uw.svg">University</Logo> of Washington, Seattle:</span> Computer science &amp; interdisciplinary honors</p>
                 </section>
                 {/*<hr style={{margin: '18px 4px'}}/>*/}
                 {/*<section>*/}

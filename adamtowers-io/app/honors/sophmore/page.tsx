@@ -287,7 +287,7 @@ export default function Sophmore() {
           that I can provide. Anyways, onwards.
         </p>
       </article>
-      <div className="d-flex sp-between">
+      <div className="flex justify-between">
         <Link href="/honors/freshman">← Freshman year</Link>
         <Link href="/honors/junior">Junior year →</Link>
       </div>

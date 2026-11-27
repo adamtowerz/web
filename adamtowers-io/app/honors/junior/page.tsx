@@ -241,7 +241,7 @@ export default function Junior() {
           things were going well. Cheers to that.
         </p>
       </article>
-      <div className="d-flex sp-between">
+      <div className="flex justify-between">
         <Link href="/honors/sophmore">← Sophmore year</Link>
         <Link href="/honors/senior">Senior year →</Link>
       </div>

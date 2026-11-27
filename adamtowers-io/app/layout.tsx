@@ -1,6 +1,4 @@
-import "../styles/base.css";
-import "../styles/theme.scss";
-import "../styles/tailwind.css";
+import "../styles/globals.css";
 
 import type {Metadata} from 'next'
 import {Playfair_Display, PT_Serif} from 'next/font/google'
@@ -26,14 +24,18 @@ export const metadata: Metadata = {
     },
 };
 
+// Exposed as CSS variables, which styles/globals.css maps to the --font-headline and --font-text
+// design tokens.
 const headlineFont = Playfair_Display({
     weight: '600',
     subsets: ['latin'],
+    variable: '--font-playfair',
 });
 
 const textFont = PT_Serif({
     weight: '400',
     subsets: ['latin'],
+    variable: '--font-pt-serif',
 })
 
 
@@ -43,12 +45,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" style={{
-            // @ts-ignore
-            '--font-family-headline': headlineFont.style.fontFamily,
-            '--font-family-text': textFont.style.fontFamily,
-            fontFamily: 'var(--font-family-text)',
-        }}>
+        <html lang="en" className={`${headlineFont.variable} ${textFont.variable}`}>
         <body>{children}</body>
         </html>
     );

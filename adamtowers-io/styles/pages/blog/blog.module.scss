@@ -8,11 +8,11 @@
 }
 
 .slug {
-  color: var(--text-color);
+  color: var(--color-fg);
 
   code {
     padding: 4px;
     margin-left: 4px;
-    font-size: var(--small-text);
+    font-size: var(--text-small);
   }
 }
