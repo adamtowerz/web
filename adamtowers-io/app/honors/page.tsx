@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import styles from "../../styles/pages/honors/index.module.scss";
+import styles from "../../styles/pages/honors/index.module.css";
 import SingleColumn from "@/components/layout/SingleColumn";
 import { pageMetadata } from "../shared-metadata";
 

@@ -1,4 +1,4 @@
-import styles from "./ArticleImageSet.module.scss";
+import styles from "./ArticleImageSet.module.css";
 
 type ArticleImageProps = {
   caption?: string;

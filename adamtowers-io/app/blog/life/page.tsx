@@ -2,7 +2,7 @@ import SingleColumn from "@/components/layout/SingleColumn";
 import Article from "@/components/layout/Article";
 import ArticlePara from "@/components/layout/ArticlePara";
 import ArticleSection from "@/components/layout/ArticleSection";
-import styles from "../../../styles/pages/blog/blog.module.scss";
+import styles from "../../../styles/pages/blog/blog.module.css";
 import {pageMetadata} from "../../shared-metadata";
 
 const title = `Ephermerality, Absurdism, & Actualization`;

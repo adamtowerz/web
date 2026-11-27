@@ -206,9 +206,6 @@ importers:
       postcss:
         specifier: ^8.5.32
         version: 8.5.32
-      sass:
-        specifier: ^1.108.0
-        version: 1.108.0
       tweakpane:
         specifier: ^4.0.5
         version: 4.0.5
@@ -1467,6 +1464,7 @@ snapshots:
   chokidar@5.0.0:
     dependencies:
       readdirp: 5.1.1
+    optional: true
 
   classnames@2.5.1: {}
 
@@ -1491,7 +1489,8 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  immutable@5.1.9: {}
+  immutable@5.1.9:
+    optional: true
 
   is-extglob@2.1.1:
     optional: true
@@ -1629,7 +1628,8 @@ snapshots:
 
   react@19.3.1: {}
 
-  readdirp@5.1.1: {}
+  readdirp@5.1.1:
+    optional: true
 
   sass@1.108.0:
     dependencies:
@@ -1638,6 +1638,7 @@ snapshots:
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.1
+    optional: true
 
   scheduler@0.28.0: {}
 

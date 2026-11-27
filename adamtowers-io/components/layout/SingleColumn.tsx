@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 
-import styles from "./SingleColumn.module.scss";
+import styles from "./SingleColumn.module.css";
 
 type Props = {
   footer?: boolean;

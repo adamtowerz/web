@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { getFootnoteContainerEl } from "./ArticleFootnotePortal";
 
-import styles from "./ArticleFootnote.module.scss";
+import styles from "./ArticleFootnote.module.css";
 
 type ArticleFootnoteProps = {
   children: React.ReactNode;

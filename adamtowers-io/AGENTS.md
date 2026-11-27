@@ -32,9 +32,9 @@ There is no test suite, linter, or formatter configured. `pnpm build` is the che
 - **TypeScript 7.** `baseUrl` was **removed** in TS7. Path aliases in `tsconfig.json` must be
   relative (`"./components/*"`, not `"components/*"`). If you touch the aliases, keep the leading
   `./` or the build fails with TS5090.
-- **Tailwind CSS v4**, CSS-first config. There is **no `tailwind.config.js`** — the entire config is
-  `@import "tailwindcss";` in `styles/tailwind.css`. Use the v4 postfix important syntax (`mb-0!`),
-  not the v3 prefix form (`!mb-0`).
+- **Tailwind CSS v4**, CSS-first config. There is **no `tailwind.config.js`** — the config is the
+  `@import "tailwindcss"` and `@theme` block at the top of `styles/globals.css`. You should not
+  need `!` overrides (see Styling); if you do, use the v4 postfix form (`mb-0!`), not `!mb-0`.
 - **pnpm 12**, pinned via `packageManager` (here and in the repo-root `package.json` — keep them
   in sync). `pnpm-workspace.yaml` sets `virtualStoreType: project` on purpose: a global virtual
   store symlinks `node_modules/next` outside the project, and Turbopack refuses to resolve it
@@ -45,7 +45,7 @@ There is no test suite, linter, or formatter configured. `pnpm build` is the che
 ```
 app/            routes (App Router). Server Components by default.
 components/     shared components; components/layout/* are the article/page primitives
-styles/         base.css (reset), theme.scss (CSS custom properties), tailwind.css, pages/*.module.scss
+styles/         globals.css (Tailwind, design tokens, element and prose defaults), pages/*.module.css
 public/honors/  portfolio images
 ```
 
@@ -61,19 +61,30 @@ Indentation is inconsistent across the codebase (4-space in `app/page.tsx` and `
 
 ## Styling
 
-Three layers coexist deliberately; don't consolidate them without being asked:
+All global CSS is `styles/globals.css`. There is no Sass; stylesheets are plain CSS using native
+nesting.
 
-1. **CSS custom properties** in `styles/theme.scss` — colors, type scale, `--brand-border`. This is
-   the source of truth for theming.
-2. **SCSS modules** for component styles.
-3. **Tailwind utilities** for layout, mostly on newer pages like `app/page.tsx`.
+1. **Design tokens** are the `@theme static` block: `--color-bg`, `--color-fg`, `--color-code`,
+   `--color-accent`, `--font-headline`, `--font-text`, `--font-mono`, and the type scale
+   (`--text-h1`..`--text-h3`, `--text-small`). Each is a CSS variable and a Tailwind utility
+   (`text-fg`, `bg-code`, `text-small`, `font-headline`). It's `static` so every variable is
+   emitted even when no utility uses it — CSS modules reference them, and Tailwind doesn't scan
+   those. Add new colors and sizes here rather than hard-coding them.
+2. **Element defaults** (headings, lists, links, `hr`, `code`) are in `@layer base`, and the prose
+   rules for `<article>` in `@layer components`. Because they're layered, Tailwind utilities
+   always beat them, with no `!`.
+3. **CSS modules** (`*.module.css`) for component styles. These are unlayered, so they beat
+   utilities on the same element; prefer one or the other per element.
+4. **Tailwind utilities** for layout, mostly on newer pages like `app/page.tsx`.
 
-Dark mode is driven by the `prefers-color-scheme` media query in `theme.scss` (and, in
+Dark mode comes from `color-scheme: light dark` plus `light-dark()` in the color tokens (and, in
 `HeroImage`, a `matchMedia` listener) — **not** Tailwind's `dark:` variant or a class toggle.
+Colors written as tokens adapt automatically; don't hard-code a light-only color.
 
-Fonts load through `next/font/google` in `app/layout.tsx` and are exposed to CSS as
-`--font-family-headline` / `--font-family-text`. Reference those variables rather than importing
-fonts again.
+Fonts load through `next/font/google` in `app/layout.tsx`, which exposes them as
+`--font-playfair` / `--font-pt-serif`; `globals.css` maps those to the `--font-headline` and
+`--font-text` tokens. Use the tokens rather than importing fonts again. All headings use the
+headline font.
 
 `components/HeroImage.tsx` is the only `'use client'` component: a WebGPU canvas with a CRT
 post-processing pass, typed by `@webgpu/types`. It randomizes its color on mount inside an effect

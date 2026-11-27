@@ -1,6 +1,6 @@
 import SingleColumn from "../components/layout/SingleColumn";
 import Link from "next/link";
-import styles from "../styles/pages/404.module.scss";
+import styles from "../styles/pages/404.module.css";
 
 export default function NotFound() {
   return (

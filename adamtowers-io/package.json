@@ -23,7 +23,6 @@
     "@webgpu/types": "^0.1.74",
     "babel-plugin-react-compiler": "^1.0.0",
     "postcss": "^8.5.32",
-    "sass": "^1.108.0",
     "tweakpane": "^4.0.5",
     "typescript": "^7.0.2"
   }

@@ -1,4 +1,4 @@
-import styles from "./ArticlePara.module.scss";
+import styles from "./ArticlePara.module.css";
 import classNames from "classnames";
 
 type ArticleParaProps = {

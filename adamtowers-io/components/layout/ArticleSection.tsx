@@ -1,4 +1,4 @@
-import styles from "./ArticleSection.module.scss";
+import styles from "./ArticleSection.module.css";
 
 type ArticleSectionProps = {
   title: string;

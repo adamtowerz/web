@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import styles from "./ArticleCodeBlock.module.scss";
+import styles from "./ArticleCodeBlock.module.css";
 
 type ArticleCodeBlockProps = {
   children: React.ReactNode;

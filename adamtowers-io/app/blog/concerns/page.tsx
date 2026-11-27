@@ -3,7 +3,7 @@ import Article from "@/components/layout/Article";
 import ArticlePara from "@/components/layout/ArticlePara";
 import ArticleFootnote from "@/components/layout/ArticleFootnote";
 import ArticleCodeBlock from "@/components/layout/ArticleCodeBlock";
-import styles from "../../../styles/pages/blog/blog.module.scss";
+import styles from "../../../styles/pages/blog/blog.module.css";
 import { pageMetadata } from "../../shared-metadata";
 
 const title = `Concerns and why they should be separated`;

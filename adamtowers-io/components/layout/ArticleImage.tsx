@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./ArticleImage.module.scss";
+import styles from "./ArticleImage.module.css";
 import classNames from "classnames";
 
 type ArticleImageProps = {
